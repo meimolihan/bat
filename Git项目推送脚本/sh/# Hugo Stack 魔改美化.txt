@@ -1,0 +1,1271 @@
+# Hugo Stack 魔改美化
+
+## 全局配置
+在 /assets/scss/custom.scss 中加入以下代码：
+```cs
+// ---------------页面基本配色---------------
+:root {
+  // 全局顶部边距
+  --main-top-padding: 30px;
+  // 全局卡片圆角
+  --card-border-radius: 25px;
+  // 标签云卡片圆角
+  --tag-border-radius: 8px;
+  // 卡片间距
+  --section-separation: 40px;
+  // 全局字体大小
+  --article-font-size: 1.8rem;
+  // 行内代码背景色
+  --code-background-color: #f8f8f8;
+  // 行内代码前景色
+  --code-text-color: #e96900;
+  // 暗色模式下样式
+  &[data-scheme="dark"] {
+    // 行内代码背景色
+    --code-background-color: #ff6d1b17;
+    // 行内代码前景色
+    --code-text-color: #e96900;
+  }
+}
+
+//------------------------------------------------------
+// 修复引用块内容窄页面显示问题
+a {
+  word-break: break-all;
+}
+
+code {
+  word-break: break-all;
+}
+
+//---------------------------------------------------
+// 文章内容图片圆角阴影
+.article-page .main-article .article-content {
+  img {
+    max-width: 96% !important;
+    height: auto !important;
+    border-radius: 8px;
+  }
+}
+
+//------------------------------------------------
+// 文章内容引用块样式
+.article-content {
+  blockquote {
+    border-left: 6px solid #358b9a1f !important;
+    background: #3a97431f;
+  }
+}
+
+// ---------------------------------------
+// 代码块基础样式修改
+.highlight {
+  max-width: 102% !important;
+  background-color: var(--pre-background-color);
+  padding: var(--card-padding);
+  position: relative;
+  border-radius: 20px;
+  margin-left: -7px !important;
+  margin-right: -12px;
+  box-shadow: var(--shadow-l1) !important;
+
+  &:hover {
+    .copyCodeButton {
+      opacity: 1;
+    }
+  }
+
+  // keep Codeblocks LTR
+  [dir="rtl"] & {
+    direction: ltr;
+  }
+
+  pre {
+    margin: initial;
+    padding: 0;
+    margin: 0;
+    width: auto;
+  }
+}
+
+//------------------------------------------------------
+// light模式下的代码块样式调整
+[data-scheme="light"] .article-content .highlight {
+  background-color: #fff9f3;
+}
+
+[data-scheme="light"] .chroma {
+  color: #ff6f00;
+  background-color: #fff9f3cc;
+}
+
+//-------------------------------------------
+// 设置选中字体的区域背景颜色
+//修改选中颜色
+::selection {
+  color: #fff;
+  background: #34495e;
+}
+
+a {
+  text-decoration: none;
+  color: var(--accent-color);
+
+  &:hover {
+    color: var(--accent-color-darker);
+  }
+
+  &.link {
+    color: #4288b9ad;
+    font-weight: 600;
+    padding: 0 2px;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+//-------------------------------------------------
+//文章封面高度更改
+.article-list article .article-image img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+
+  @include respond(md) {
+    height: 200px;
+  }
+
+  @include respond(xl) {
+    height: 305px;
+  }
+}
+
+//---------------------------------------------------
+// 全局页面布局间距调整
+.main-container {
+  min-height: 100vh;
+  align-items: flex-start;
+  padding: 0 15px;
+  gap: var(--section-separation);
+  padding-top: var(--main-top-padding);
+
+  @include respond(md) {
+    padding: 0 37px;
+  }
+}
+
+//--------------------------------------------------
+//页面三栏宽度调整
+.container {
+  margin-left: auto;
+  margin-right: auto;
+
+  .left-sidebar {
+    order: -3;
+    max-width: var(--left-sidebar-max-width);
+  }
+
+  .right-sidebar {
+    order: -1;
+    max-width: var(--right-sidebar-max-width);
+
+    /// Display right sidebar when min-width: lg
+    @include respond(lg) {
+      display: flex;
+    }
+  }
+
+  &.extended {
+    @include respond(md) {
+      max-width: 1024px;
+      --left-sidebar-max-width: 25%;
+      --right-sidebar-max-width: 22% !important;
+    }
+
+    @include respond(lg) {
+      max-width: 1280px;
+      --left-sidebar-max-width: 20%;
+      --right-sidebar-max-width: 30%;
+    }
+
+    @include respond(xl) {
+      max-width: 1453px; //1536px;
+      --left-sidebar-max-width: 15%;
+      --right-sidebar-max-width: 25%;
+    }
+  }
+
+  &.compact {
+    @include respond(md) {
+      --left-sidebar-max-width: 25%;
+      max-width: 768px;
+    }
+
+    @include respond(lg) {
+      max-width: 1024px;
+      --left-sidebar-max-width: 20%;
+    }
+
+    @include respond(xl) {
+      max-width: 1280px;
+    }
+  }
+}
+
+//-------------------------------------------------------
+//全局页面小图片样式微调
+.article-list--compact article .article-image img {
+  width: var(--image-size);
+  height: var(--image-size);
+  object-fit: cover;
+  border-radius: 17%;
+}
+
+//------------------------------------------------------
+// 菜单栏样式
+// 下拉菜单改圆角样式
+.menu {
+  padding-left: 0;
+  list-style: none;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  flex-grow: 1;
+  font-size: 1.6rem;
+  background-color: var(--card-background);
+
+  box-shadow: var(--shadow-l2); //改个阴影
+  display: none;
+  margin: 0; //改为0
+  border-radius: 10px; //加个圆角
+  padding: 30px 30px;
+
+  @include respond(xl) {
+    padding: 15px 0;
+  }
+
+  &,
+  .menu-bottom-section {
+    gap: 30px;
+
+    @include respond(xl) {
+      gap: 25px;
+    }
+  }
+
+  &.show {
+    display: flex;
+  }
+
+  @include respond(md) {
+    align-items: flex-end;
+    display: flex;
+    background-color: transparent;
+    padding: 0;
+    box-shadow: none;
+    margin: 0;
+  }
+
+  li {
+    position: relative;
+    vertical-align: middle;
+    padding: 0;
+
+    @include respond(md) {
+      width: 100%;
+    }
+
+    svg {
+      stroke-width: 1.33;
+
+      width: 20px;
+      height: 20px;
+    }
+
+    a {
+      height: 100%;
+      display: inline-flex;
+      align-items: center;
+      color: var(--body-text-color);
+      gap: var(--menu-icon-separation);
+    }
+
+    span {
+      flex: 1;
+    }
+
+    &.current {
+      a {
+        color: var(--accent-color);
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+//------------------------------------------------------
+//将滚动条修改为圆角样式
+//菜单滚动条美化
+.menu::-webkit-scrollbar {
+  display: none;
+}
+
+// 全局滚动条美化
+html {
+  ::-webkit-scrollbar {
+    width: 20px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #d6dee1;
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #a8bbbf;
+  }
+}
+
+//------------------------------------------------------
+// 友情链接三栏
+@media (min-width: 1024px) {
+  .article-list--compact {
+    display: grid;
+    // 目前是三列，如需二列，则后面减去一个1fr，以此类推
+    grid-template-columns: 1fr 1fr 1fr;
+    background: none;
+    box-shadow: none;
+    gap: 1rem;
+
+    article {
+      background: var(--card-background);
+      border: none;
+      box-shadow: var(--shadow-l2);
+      margin-bottom: 8px;
+      margin-right: 8px;
+      border-radius: 16px;
+    }
+  }
+}
+
+//-------------------------------------------------------
+/*-----------归档页面----------*/
+//归档页面卡片缩放
+.article-list--tile article {
+  transition: .6s ease;
+}
+
+.article-list--tile article:hover {
+  transform: scale(1.03, 1.03);
+}
+
+//------------------------------------------------------
+//------------------------------------------------------
+/*------------------右侧导航栏动画--------------*/
+// 搜索菜单动画
+.search-form.widget {
+  transition: transform 0.6s ease;
+}
+
+.search-form.widget:hover {
+  transform: scale(1.1, 1.1);
+}
+
+//------------------------------------------------------
+//归档小图标放大动画
+.widget.archives .widget-archive--list {
+  transition: transform .3s ease;
+}
+
+.widget.archives .widget-archive--list:hover {
+  transform: scale(1.05, 1.05);
+}
+
+//------------------------------------------------------
+//右侧标签放大动画
+.tagCloud .tagCloud-tags a {
+  border-radius: 10px;
+  font-size: 1.4rem;
+  transition: transform .3s ease;
+}
+
+.tagCloud .tagCloud-tags a:hover {
+  transform: scale(1.1, 1.1);
+}
+
+//------------------------------------------------------
+/* 左侧栏选项动画 */
+#main-menu {
+    overflow: visible;
+    li {
+        a {
+            -webkit-font-smoothing: antialiased;
+            will-change: transform;
+            transition: transform 0.6s ease;
+            &:hover {
+                transform: scale(1.1, 1.1);
+                will-change: transform;
+            }
+        }
+    }
+}
+
+/* 归档和链接卡片动画 */
+.article-list--compact {
+    overflow: visible;
+}
+
+.article-list--compact article {
+    transition: transform 0.6s ease;
+    -webkit-font-smoothing: antialiased;
+    will-change: transform;
+    
+    &:hover {
+        transform: scale(1.05,1.05);
+        z-index: 4;
+    }
+}
+
+/* 分类页面动画 */
+.article-list--tile article {
+  transition: 0.6s ease;
+}
+
+.article-list--tile article:hover {
+  transform: scale(1.05, 1.05);
+  will-change: transform;
+}
+//------------------------------------------------------
+```
+
+### 鼠标样式
+(1) 准备好鼠标样式图片(默认，指针，文本…)，图片大小建议控制在 32px 左右，将图片放入static/mouse文件夹下(文件夹自己创建)  
+修改对应的图片名即可
+(2) 修改assets/scss/custom.scss(文件不存在则自己创建)，将以下代码复制进去，根据主题按实际情况填写对应的css选择器
+```cs
+// 【Stack主题鼠标样式写法】
+// default光标图片
+body,
+html,
+.article-content img {
+  cursor: url(../mouse/default.png),
+  auto !important;
+}
+
+// pointer光标图片
+a:hover,
+button:hover,
+.copyCodeButton:hover,
+#dark-mode-toggle {
+  cursor: url(../mouse/pointer.png),
+  auto;
+}
+
+// text光标图片
+input:hover,
+.site-description,
+.article-subtitle,
+.article-content span,
+.article-content li,
+.article-content p {
+  cursor: url(../mouse/text.png),
+  auto;
+}
+
+/*主页布局间距调整*/
+.main-container {
+  gap: 50px; //文章宽度
+
+  @include respond(md) {
+    padding: 0 30px;
+    gap: 40px; //中等屏幕时的文章宽度
+  }
+}
+
+.related-contents {
+  overflow-x: visible; //显示隐藏的图标
+  padding-bottom: 15px;
+}
+```
+
+
+### 修改布局
+在 `/assets/scss/grid.scss` 中修改 `left-sidebar` 和 `right-sidebar` 的描述：
+```bash
+    .left-sidebar {
+        order: -3;
+        // max-width: var(--left-sidebar-max-width);
+        max-width: 10%;
+    }
+
+    .right-sidebar {
+        order: -1;
+        // max-width: var(--right-sidebar-max-width);
+        max-width: 20%;
+
+        /// Display right sidebar when min-width: lg
+        @include respond(lg) {
+            display: flex;
+        }
+    }
+```
+把正文的占比改到了 70%, 原来的只有 50% 左右
+
+### 新建的文章会随机匹配一张图片
+推荐在模板中设置，修改 archetypes/default.md（如果没有则新建一个即可）
+
+```md
+---
+title: "{{ replace .Name "-" " " | title }}"
+date: {{ .Date }}
+image: https://picsum.photos/800/600.webp?random={{ substr (md5 (.Date)) 4 8 }}
+---
+```
+
+这里的重点是 image 这一行，即使用了 Lorem Picsum 的接口，然后就可以得到一张随机的图片，更多详情也可前往 Lorem Picsum 了解。
+之后，我们通过 hugo new 命令时，新建的文章会随机匹配一张图片
+
+### 文字渐变
+```bash
+<font class="colorfulfont"> 我挑的配色很好看吧！<br>好喜欢蓝色（再次）（再次）<br> 但总之换行的话就加个空标签。</font>
+```
+
+### 页面左右边栏宽度
+在 /themes/hugo-theme-stack/assets/scss/grid.scss 的第 29、30 行，修改为
+```
+--left-sidebar-max-width: 14%;
+--right-sidebar-max-width: 22%;
+```
+
+### 内容折叠
+```nash
+<details>
+      <summary>Click to expand!</summary>
+      
+     Hidden explanation
+</details>
+```
+
+### 缩小归档页的分类卡片尺寸
+* 默认的卡片有些太大了，修改 assets\scss\partials\layout\list.scss
+
+```bash
+//---------------缩小归档页的分类卡片尺寸---------------
+.subsection-list {
+    overflow-x: auto;
+
+    .article-list--tile {
+        display: flex;
+        padding-bottom: 0px;
+
+        article {
+            width: 230px;
+            height: 120px;
+            margin-right: 5px;
+            flex-shrink: 0;
+
+            .article-title {
+                margin: 0;
+                font-size: 1.8rem;
+            }
+
+            .article-details {
+                padding: 20px;
+            }
+        }
+    }
+}
+```
+
+### 代码块样式
+修改边距
+背景框添加圆角
+调整 copy 按钮位置
+修改 assets\scss\partials\layout\article.scss, 在文件尾添加
+
+```bash
+// --------------------代码块样式------------------------
+.highlight {
+    margin-left: 0;
+    margin-right: 0;
+    width: calc(100%);
+    border-radius: var(--card-border-radius);
+}
+
+.copyCodeButton {
+    top: 6px;
+    right: 6px;
+}
+```
+
+### 首页欢迎横幅
+在 `/layouts/index.html`的 `<section class="article-list">` 前添加以下代码：
+```bash
+<!-- 首页欢迎字幅 -->
+<div class="welcome">
+  <p style="font-size: 2rem; text-align: center; font-weight: bold">
+    <span class="shake">👋</span>
+    <span class="jump-text1" > Welcome</span>
+    <span class="jump-text2"> To </span>
+    <span class="jump-text3" style="color:#e99312">Xa</span><span class="jump-text4" style="color:#e99312">l</span><span class="jump-text5" style="color:#e99312">a</span><span class="jump-text6" style="color:#e99312">o</span><span class="jump-text7" style="color:#e99312">k</span><span class="jump-text8" style="color:#e99312">'s</span>
+    <span class="jump-text9" style="color:#e99312">Blog</span>
+  </p>
+</div>
+<!-- 首页欢迎字幅 -->
+```
+在 /assets/scss/custom.scss 中加入以下代码：
+```bash
+//首页欢迎板块样式
+.welcome {
+  color: var(--card-text-color-main);
+  background: var(--card-background);
+  box-shadow: var(--shadow-l2);
+  border-radius: 30px;
+  display: inline-block;
+}
+
+// 👋emoji实现摆动效果
+.shake {
+  display: inline-block;
+  animation: shake 1s;
+  animation-duration: 1s;
+  animation-timing-function: ease;
+  animation-delay: 0s;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-fill-mode: none;
+  animation-play-state: running;
+  animation-name: shake;
+  animation-timeline: auto;
+  animation-range-start: normal;
+  animation-range-end: normal;
+  animation-delay: 2s;
+  @keyframes shake {
+    0% {
+      transform: rotate(0);
+    }
+    25% {
+      transform: rotate(45deg) scale(1.2);
+    }
+    50% {
+      transform: rotate(0) scale(1.2);
+    }
+    75% {
+      transform: rotate(45deg) scale(1.2);
+    }
+    100% {
+      transform: rotate(0);
+    }
+  }
+}
+// 实现字符跳动动画
+.jump-text1 {
+  display: inline-block;
+  animation: jump 0.5s 1;
+}
+
+.jump-text2 {
+  display: inline-block;
+  animation: jump 0.5s 1;
+  animation-delay: 0.1s;
+}
+
+.jump-text3 {
+  display: inline-block;
+  animation: jump 0.5s 1;
+  animation-delay: 0.2s;
+}
+
+.jump-text4 {
+  display: inline-block;
+  animation: jump 0.5s 1;
+  animation-delay: 0.3s;
+}
+
+.jump-text5 {
+  display: inline-block;
+  animation: jump 0.5s 1;
+  animation-delay: 0.4s;
+}
+
+.jump-text6 {
+  display: inline-block;
+  animation: jump 0.5s 1;
+  animation-delay: 0.5s;
+}
+
+.jump-text7 {
+  display: inline-block;
+  animation: jump 0.5s 1;
+  animation-delay: 0.6s;
+}
+
+.jump-text8 {
+  display: inline-block;
+  animation: jump 0.5s 1;
+  animation-delay: 0.7s;
+}
+
+.jump-text9 {
+  display: inline-block;
+  animation: jump 0.5s 1;
+  animation-delay: 0.9s;
+}
+
+@keyframes jump {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+```
+
+### macOS 风格红绿灯图标
+在 /assets/scss/custom.scss 中加入以下代码：
+```bash
+// macOS 风格代码块
+.article-content {
+  .highlight:before {
+    content: '';
+    display: block;
+    background: url(/code-header.svg);
+    height: 32px;
+    width: 100%;
+    background-size: 57px;
+    background-repeat: no-repeat;
+    margin-bottom: 5px;
+    background-position: -1px 2px;
+  }
+}
+```
+在 static 文件夹下新建 code-header.svg，写入以下代码：
+```bash
+// macOS 红绿灯图标
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1"  x="0px" y="0px" width="450px" height="130px">
+    <ellipse cx="65" cy="65" rx="50" ry="52" stroke="rgb(220,60,54)" stroke-width="2" fill="rgb(237,108,96)"/>
+    <ellipse cx="225" cy="65" rx="50" ry="52"  stroke="rgb(218,151,33)" stroke-width="2" fill="rgb(247,193,81)"/>
+    <ellipse cx="385" cy="65" rx="50" ry="52"  stroke="rgb(27,161,37)" stroke-width="2" fill="rgb(100,200,86)"/>
+</svg>
+```
+
+### 头像旋转
+在 /assets/scss/custom.scss 中加入以下代码：
+```bash
+// ----------头像旋转动画--------------
+.sidebar header .site-avatar .site-logo {
+  transition: transform 1.65s ease-in-out; // 旋转时间
+}
+
+.sidebar header .site-avatar .site-logo:hover {
+  transform: rotate(360deg); // 旋转角度为360度
+}
+```
+
+###  自定义MD引用块颜色模板
+参考文章：让Hugo支持GitHub风格的块引用Alerts
+(1) 创建文件layouts/_default/_markup/render-blockquote-alert.html，并将以下代码复制进去
+```bash
+<blockquote class="alert alert-{{ .AlertType }}">
+    {{ .Text | safeHTML -}}
+</blockquote>
+```
+(2) 将以下代码复制进assets/scss/custom.scss文件中(不存在则自行创建)
+配色参考来源：martignoni/hugo-notice
+
+```bash
+[data-scheme="light"] {
+  .alert-note {
+    --card-separator-color: #65bbee;
+    --blockquote-background-color: #e7f2fa;
+  }
+  .alert-tip {
+    --card-separator-color: #55aa55;
+    --blockquote-background-color: #eeffee;
+  }
+  .alert-warn {
+    --card-separator-color: #ffbb78;
+    --blockquote-background-color: #ffeecc;
+  }
+  .alert-error {
+    --card-separator-color: #cc3334;
+    --blockquote-background-color: #ffeeef;
+  }
+}
+
+[data-scheme="dark"] {
+  .alert-note {
+    --card-separator-color: #006699;
+    --blockquote-background-color: #002234;
+  }
+  .alert-tip {
+    --card-separator-color: #336733;
+    --blockquote-background-color: #112310;
+  }
+  .alert-warn {
+    --card-separator-color: #aa5501;
+    --blockquote-background-color: #452300;
+  }
+  .alert-error {
+    --card-separator-color: #880000;
+    --blockquote-background-color: #450000;
+  }
+}
+```
+(3) 使用方法
+可选项：NOTE | TIP | WARN | ERROR
+可仿照上面css写法，自行添加新的css样式，来实现更多的可选项
+
+```bash
+> [!NOTE]
+> 这是markdown的引用块语法
+```
+(4) 效果演示
+
+> [!NOTE]
+> 这是NOTE风格
+
+> [!TIP]
+> 这是TIP风格
+
+### 使图床链接的图片居中
+来自 Hugo Stack 主题装修笔记 Part 3 | 第三夏尔
+目前 Stack 默认只支持本地引用的图片居中，而在使用 url 图片链接时没有居中格式。在 /assets/scss/partials/layout/article.scss Line 256 处（同级任意位置）增加以下代码：
+```bash
+// Center image from url source
+p > img {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+}
+```
+
+### 统计站点文章数量和字数
+参考：多语言 hugo 添加总字数统计和建站时间 - 滑翔闪’S BLOG (huaxiangshan.com)
+`./layout/partials/footer/footer.html` 在 `<section class="powerby">` 里边，加入
+```cs
+        {{ $articleCount := len .Site.RegularPages }}
+        {{ $totalWordCount := 0 }}
+        {{ range .Site.Pages }}
+        {{ $totalWordCount = add $totalWordCount .WordCount }}
+        {{ end }}
+
+        <p>发布了 {{ $articleCount }} 篇文章 | 共 {{$totalWordCount}} 字</p>
+```
+
+### 首页文章样式
+在 hugo-theme-stack/assets/scss/custom.scss 加入
+```cs
+/*主页文章图片样式*/
+$image-scale: 1.2;
+.article-list article .article-image img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  //不同显示器（手机，小屏幕电脑，大屏幕电脑）显示的图片高度大小
+  @include respond(sm) {
+    height: 305px;
+  }
+
+  @include respond(md) {
+    height: 305px;
+  }
+  @include respond(xl) {
+    height: 325px;
+  }
+}
+
+/*主页文章图片圆角*/
+.article-list article {
+  --card-border-radius: 24px;
+}
+
+/*文章标签圆角*/
+.article-category a, .article-tags a {
+  border-radius: 11px;
+}
+
+
+/*鼠标移动到文章图片放大*/
+.article-list article .article-image {
+  position: relative;
+  overflow: hidden; //不显示超出的部分
+}
+
+.article-list article .article-image img:hover {
+  transform: scale($image-scale); //放大尺寸
+}
+
+.article-list article .article-image img {
+  transition: transform 0.85s ease-in-out;//持续时间
+}
+```
+
+### 文章内部图片样式
+在 hugo-theme-stack/assets/scss/custom.scss 加入
+```cs
+/*文章内部-页脚-相关文章图片圆角*/
+.article-list--compact article .article-image img {
+  border-radius: 17%;
+}
+
+
+/*文章内部-页脚-相关文章图片放大动画*/
+.article-list--compact article > a {
+  transition: .6s ease;
+}
+
+.article-list--compact article > a:hover {
+  transform: scale(1.03, 1.03);
+  overflow: visible;
+}
+```
+
+### 首页右侧导航栏美化
+在 hugo-theme-stack/assets/scss/custom.scss 加入
+```cs
+/*------------------右侧导航栏--------------*/
+/*搜索菜单动画*/
+.search-form.widget {
+  transition: transform 0.6s ease;
+}
+
+.search-form.widget:hover {
+  transform: scale(1.1, 1.1);
+}
+
+
+/*归档小图标放大动画*/
+.widget.archives .widget-archive--list {
+  transition: transform .3s ease;
+}
+
+.widget.archives .widget-archive--list:hover {
+  transform: scale(1.05, 1.05);
+}
+
+
+/*右侧标签放大动画*/
+.tagCloud .tagCloud-tags a {
+  border-radius: 10px;
+  font-size: 1.4rem;
+  transition: transform .3s ease;
+}
+
+.tagCloud .tagCloud-tags a:hover {
+  transform: scale(1.1, 1.1);
+}
+```
+
+### 首页左侧导航栏美化
+在 hugo-theme-stack/assets/scss/custom.scss 加入
+```cs
+
+/*--------------------左侧导航栏---------------*/
+.left-sidebar {
+  --sidebar-avatar-size: 115px; //左侧头像大小
+  --sidebar-element-separation: 15px; //头像下方间距
+  --emoji-size: 40px; //emoji容器大小
+  --emoji-font-size: 25px; //emoji字体大小
+}
+
+
+
+/*头像旋转动画*/
+.sidebar header .site-avatar .site-logo {
+  transition: transform 1.65s ease-in-out; //旋转时间
+
+}
+
+.sidebar header .site-avatar .site-logo:hover {
+  transform: rotate(360deg); //旋转角度为360度
+}
+
+
+/*社交菜单居中*/
+.social-menu svg {
+  gap: 15px;
+  justify-content: center;
+  width: 30px;
+  height: 30px; //社交菜单大小
+  stroke: var(--body-text-color);
+  stroke-width: 1.33;
+}
+
+
+/*暗色模式按钮距离上边按钮边距调整*/
+.menu .menu-bottom-section {
+  margin-top: 70px;
+}
+
+// #dark-mode-toggle {
+//   gap: 30px; //暗色模式横向长度
+// }
+
+
+/*下拉菜单美化*/
+.menu {
+  list-style: none;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: scroll; //搭配菜单滚动条美化使用
+  flex-grow: 1;
+  font-size: 1.7rem;
+  // background-color: rgb(252, 252, 252);
+
+  box-shadow: var(--shadow-l2); //改个阴影
+  display: none;
+  margin: 0; //改为0
+  // border-radius: 20px; //加个圆角 	这个圆角看起来怪怪的，不适合，注释掉
+  padding: 30px 30px;
+
+  @include respond(xl) {
+    padding: 15px 0;
+  }
+
+  &,
+  .menu-bottom-section {
+    gap: 30px;
+
+    @include respond(xl) {
+      gap: 25px;
+    }
+  }
+
+  &.show {
+    display: flex;
+  }
+
+  @include respond(md) {
+    align-items: flex-end;
+    display: flex;
+    background-color: transparent;
+    padding: 0;
+    box-shadow: none;
+    margin: 0;
+  }
+
+  li {
+    position: relative;
+    vertical-align: middle;
+    padding: 0;
+
+    @include respond(md) {
+      width: 100%;
+    }
+
+    svg {
+      stroke-width: 1.33;
+
+      width: 20px;
+      height: 20px;
+    }
+
+    a {
+      height: 100%;
+      display: inline-flex;
+      align-items: center;
+      color: var(--body-text-color);
+      gap: var(--menu-icon-separation);
+    }
+
+    span {
+      flex: 1;
+    }
+
+    &.current {
+      a {
+        color: var(--accent-color);
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+
+/*手机模式下的菜单滚动条美化*/
+.menu::-webkit-scrollbar {
+  display: none; //防止大屏幕时出现滚动条
+}
+
+.sidebar header .site-name {
+  margin: 8px;
+  font-size: 2rem; //字体大小
+}
+
+
+// --------------------------------
+// 菜单栏样式
+// 下拉菜单改圆角样式
+.menu {
+  padding-left: 0;
+  list-style: none;
+  flex-direction: column;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  flex-grow: 1;
+  font-size: 1.6rem;
+  background-color: var(--card-background);
+
+  box-shadow: var(--shadow-l2); //改个阴影
+  display: none;
+  margin: 0; //改为0
+  border-radius: 10px; //加个圆角
+  padding: 30px 30px;
+
+  @include respond(xl) {
+    padding: 15px 0;
+  }
+
+  &,
+  .menu-bottom-section {
+    gap: 30px;
+
+    @include respond(xl) {
+      gap: 25px;
+    }
+  }
+
+  &.show {
+    display: flex;
+  }
+
+  @include respond(md) {
+    align-items: flex-end;
+    display: flex;
+    background-color: transparent;
+    padding: 0;
+    box-shadow: none;
+    margin: 0;
+  }
+
+  li {
+    position: relative;
+    vertical-align: middle;
+    padding: 0;
+
+    @include respond(md) {
+      width: 100%;
+    }
+
+    svg {
+      stroke-width: 1.33;
+
+      width: 20px;
+      height: 20px;
+    }
+
+    a {
+      height: 100%;
+      display: inline-flex;
+      align-items: center;
+      color: var(--body-text-color);
+      gap: var(--menu-icon-separation);
+    }
+
+    span {
+      flex: 1;
+    }
+
+    &.current {
+      a {
+        color: var(--accent-color);
+        font-weight: bold;
+      }
+    }
+  }
+}
+```
+
+### 代码块高亮
+在 hugo.yaml 中，添加 highlight 参数，我文章里的代码块配置是这样子的：
+```cs
+markup:
+    highlight:
+        noClasses: false
+        codeFences: true
+        guessSyntax: true
+    #     lineNoStart: 1
+        lineNos: true
+    #     lineNumbersInTable: true
+    #     tabWidth: 4
+        style: github-dark
+```
+
+### 代码块样式
+在 hugo-theme-stack/assets/scss/custom.scss 加入
+```cs
+//为代码块顶部添加macos样式
+.article-content {
+  .highlight:before {
+    content: "";
+    display: block;
+    background: #fc625d;
+    border-radius: 50%;
+    box-shadow: 20px 0 #fdbc40, 40px 0 #35cd4b;
+    height: 12px;
+    width: 12px;
+    margin-bottom: 5px;
+  }
+}
+
+// 代码块基础样式修改
+.highlight {
+  max-width: 102% !important;
+  background-color: var(--pre-background-color);
+  padding: var(--card-padding);
+  position: relative;
+  border-radius: 20px;
+  margin-left: -7px !important;
+  margin-right: -12px;
+  box-shadow: var(--shadow-l1) !important;
+
+  &:hover {
+    .copyCodeButton {
+      opacity: 1;
+    }
+  }
+
+  // keep Codeblocks LTR
+  [dir="rtl"] & {
+    direction: ltr;
+  }
+
+  pre {
+    margin: initial;
+    padding: 0;
+    margin: 0;
+    width: auto;
+    // background-color: #282c34 !important;
+  }
+}
+
+
+// light模式下的代码块样式调整
+[data-scheme="light"] .article-content .highlight {
+  background-color: #fff9f3;
+}
+
+[data-scheme="light"] .chroma {
+  color: #ff6f00;
+  background-color: #fff9f3cc;
+}
+```
+
+
+

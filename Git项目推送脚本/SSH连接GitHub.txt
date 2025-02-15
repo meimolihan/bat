@@ -1,0 +1,11 @@
+查看‮程远‬仓库URL：
+
+git remote -v
+
+查询结果：
+
+git@github.com:meimolihan/music.git
+
+修改为SSH连接：
+
+git remote set-url origin git@github.com:meimolihan/music.git

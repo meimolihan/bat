@@ -1,0 +1,100 @@
+[
+    {
+        "name": "海边探戈",
+        "artist": "王鹤棣",
+        "audio": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/海边探戈-王鹤棣.mp3",
+        "cover": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/海边探戈-王鹤棣.jpg",
+        "lrc": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/海边探戈-王鹤棣.lrc"
+    },
+    {
+        "name": "冲动的惩罚",
+        "artist": "刀郎",
+        "audio": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/冲动的惩罚-刀郎.mp3",
+        "cover": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/冲动的惩罚-刀郎.jpg",
+        "lrc": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/冲动的惩罚-刀郎.lrc"
+    },
+    {
+        "name": "火力全开",
+        "artist": "王力宏",
+        "audio": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/火力全开-王力宏.mp3",
+        "cover": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/火力全开-王力宏.jpg",
+        "lrc": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/火力全开-王力宏.lrc"
+    },
+    {
+        "name": "手心里的温柔",
+        "artist": "刀郎",
+        "audio": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/手心里的温柔-刀郎.mp3",
+        "cover": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/手心里的温柔-刀郎.jpg",
+        "lrc": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/手心里的温柔-刀郎.lrc"
+    },
+    {
+        "name": "西楼儿女-岳云鹏",
+        "artist": "岳云鹏",
+        "audio": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/西楼儿女-岳云鹏.mp3",
+        "cover": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/西楼儿女-岳云鹏.jpg",
+        "lrc": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/西楼儿女-岳云鹏.lrc"
+    },
+    {
+        "name": "星星点灯",
+        "artist": "大波浪",
+        "audio": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/星星点灯-大波浪.mp3",
+        "cover": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/星星点灯-大波浪.jpg",
+        "lrc": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/星星点灯-大波浪.lrc"
+    },
+    {
+        "name": "破碎的梦",
+        "artist": "陈柏曦",
+        "audio": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/破碎的梦-陈柏曦.mp3",
+        "cover": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/破碎的梦-陈柏曦.jpg",
+        "lrc": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/破碎的梦-陈柏曦.lrc"
+    },
+    {
+        "name": "苹果香",
+        "artist": "狼戈",
+        "audio": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/苹果香-狼戈.mp3",
+        "cover": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/苹果香-狼戈.jpg",
+        "lrc": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/苹果香-狼戈.lrc"
+    },
+
+    {
+        "name": "天高任鸟飞",
+        "artist": "侯泽润",
+        "audio": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/天高任鸟飞-侯泽润.mp3",
+        "cover": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/天高任鸟飞-侯泽润.jpg",
+        "lrc": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/天高任鸟飞-侯泽润.lrc"
+    },
+    {
+        "name": "一亿个伤心",
+        "artist": "蒙面哥",
+        "audio": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/一亿个伤心-蒙面哥.mp3",
+        "cover": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/一亿个伤心-蒙面哥.jpg",
+        "lrc": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/一亿个伤心-蒙面哥.lrc"
+    },
+    {
+        "name": "心态才是你风水",
+        "artist": "艺凌",
+        "audio": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/心态才是你风水-艺凌.mp3",
+        "cover": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/心态才是你风水-艺凌.jpg",
+        "lrc": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/心态才是你风水-艺凌.lrc"
+    },
+    {
+        "name": "爱你十分泪七分",
+        "artist": "裘海正",
+        "audio": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/爱你十分泪七分-裘海正.mp3",
+        "cover": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/爱你十分泪七分-裘海正.jpg",
+        "lrc": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/爱你十分泪七分-裘海正.lrc"
+    },
+    {
+        "name": "败",
+        "artist": "侯泽润",
+        "audio": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/败-侯泽润.mp3",
+        "cover": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/败-侯泽润.jpg",
+        "lrc": "https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/败-侯泽润.lrc"
+    }
+]
+
+修改上面的代码，
+将.mp3替换为/song.mp3
+将.jpg替换为/cover.jpg
+将.lrc替换为/lyric.lrc
+给我修改后的完整代码

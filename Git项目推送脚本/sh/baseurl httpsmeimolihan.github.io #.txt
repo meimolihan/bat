@@ -1,0 +1,252 @@
+baseurl: "https://meimolihan.github.io" # 网站的基础 URL
+languageCode: en-us # 网站的语言代码
+theme: stack # 使用的主题名称
+
+title: Example Site # 网站标题
+copyright: 凡凡小站 # 网站版权信息
+
+# 主题国际化（i18n）支持
+# 可用值: ar, bn, ca, de, el, en, es, fr, hu, id, it, ja, ko, nl, pt-br, th, uk, zh-cn, zh-hk, zh-tw
+DefaultContentLanguage: zh-cn # 默认内容语言
+# 如果 DefaultContentLanguage 位于 [zh-cn, ja, ko] 中，则将 hasCJKLanguage 设置为 true
+# 这将使 .Summary 和 .WordCount 对 CJK 语言的行为正确。
+hasCJKLanguage: true
+
+languages:
+    zh-cn:
+        languageName: 中文 # 语言名称
+        title: 凡凡小站 # 网站标题
+        weight: 2 # 语言权重
+        params:
+            sidebar:
+                subtitle: 欢迎来到我的小站 # 侧边栏副标题
+
+# 服务配置
+services:
+    # 使用前将其更改为您的 Disqus 简称
+    disqus:
+        shortname: "hugo-theme-stack"
+    # GA 跟踪 ID
+    googleAnalytics:
+        id:
+
+# 每页文章数
+pagination:
+    pagerSize: 8 # 每页显示的文章数量
+
+# 永久链接设置
+permalinks:
+    post: /p/:slug/ # 文章永久链接结构
+    page: /:slug/ # 页面永久链接结构
+
+params:
+    mainSections:
+        - post # 主要内容部分
+    featuredImageField: image # 特色图片字段
+    rssFullContent: true # 是否在 RSS 中显示完整内容
+    favicon: /favicon.ico # 网站图标路径
+
+    footer:
+        since: 2025 # 网站创建年份
+        customText: # 自定义页脚文本
+
+    dateFormat:
+        published: 2006-01-02 # 发布日期格式
+        lastUpdated: Jan 02, 2006 15:04 MST # 最后更新日期格式
+
+    sidebar:
+        emoji: 👍 # 侧边栏表情符号
+        subtitle: Lorem ipsum dolor sit amet, consectetur adipiscing elit. # 侧边栏副标题
+        avatar:
+            enabled: true # 是否启用头像
+            local: true # 是否使用本地头像
+            src: img/mobufan.gif # 头像图片路径
+
+    article:
+        math: false # 是否启用数学公式渲染
+        toc: true # 是否启用目录
+        readingTime: false # 是否显示阅读时间
+        license:
+            enabled: false # 是否启用许可证
+            default: Licensed under CC BY-NC-SA 4.0 # 默认许可证文本
+
+    # 评论系统配置
+    comments:
+        enabled: true # 是否启用评论
+        provider: giscus # 评论系统提供商
+
+        disqusjs:
+            shortname: # Disqus 简称
+            apiUrl: https://giscus.app/client.js # Disqus API URL
+            apiKey: # Disqus API 密钥
+            admin: # 管理员用户名
+            adminLabel: # 管理员标签
+
+        utterances:
+            repo: # GitHub 仓库名称
+            issueTerm: pathname # 问题术语
+            label: # 标签
+
+        beaudar:
+            repo: # 仓库名称
+            issueTerm: pathname # 问题术语
+            label: # 标签
+            theme: # 主题
+
+        remark42:
+            host: # Remark42 服务地址
+            site: # 站点名称
+            locale: # 语言
+
+        vssue:
+            platform: # 平台名称
+            owner: # 所有者名称
+            repo: # 仓库名称
+            clientId: # 客户端 ID
+            clientSecret: # 客户端密钥
+            autoCreateIssue: false # 是否自动创建问题
+
+        # Waline 客户端配置
+        waline:
+            serverURL: # Waline 服务器地址
+            lang: # 语言
+            pageview: # 是否启用页面浏览量统计
+            emoji:
+                - https://unpkg.com/@waline/emojis@1.0.1/weibo # 表情包地址
+            requiredMeta:
+                - name # 必填元数据
+                - email
+                - url
+            locale:
+                admin: Admin # 管理员标签
+                placeholder: # 占位符文本
+
+        twikoo:
+            envId: # Twikoo 环境 ID
+            region: # 区域
+            path: # 路径
+            lang: # 语言
+
+        # Cactus 评论系统配置
+        cactus:
+            defaultHomeserverUrl: "https://matrix.cactus.chat:8448" # 默认 HomeServer 地址
+            serverName: "cactus.chat" # 服务器名称
+            siteName: "" # 您必须在此处插入与您注册的唯一标识符相匹配的标识符
+
+        giscus:
+            repo: # GitHub 仓库名称
+            repoID: # 仓库 ID
+            category: # 分类名称
+            categoryID: # 分类 ID
+            mapping: # 映射方式
+            lightTheme: # 浅色主题
+            darkTheme: # 深色主题
+            reactionsEnabled: 1 # 是否启用反应
+            emitMetadata: 0 # 是否发送元数据
+
+        gitalk:
+            owner: # GitHub 用户名
+            admin: # 管理员用户名
+            repo: # 仓库名称
+            clientID: # 客户端 ID
+            clientSecret: # 客户端密钥
+            proxy: # 代理地址
+
+        cusdis:
+            host: # Cusdis 服务地址
+            id: # 评论 ID
+
+    # 小部件配置
+    widgets:
+        homepage:
+            - type: search # 搜索小部件
+            - type: archives # 归档小部件
+              params:
+                  limit: 5 # 显示数量限制
+            - type: categories # 分类小部件
+              params:
+                  limit: 10 # 显示数量限制
+            - type: tag-cloud # 标签云小部件
+              params:
+                  limit: 10 # 显示数量限制
+        page:
+            - type: toc # 目录小部件
+
+    opengraph:
+        twitter:
+            site: # 您的推特用户名
+            card: summary_large_image # Twitter 卡片类型
+
+    defaultImage:
+        opengraph:
+            enabled: false # 是否启用 OpenGraph 图片
+            local: false # 是否使用本地图片路径
+            src: # 指定图片来源
+
+    colorScheme:
+        toggle: true # 是否显示切换按钮
+        default: dark # 默认颜色方案
+
+    imageProcessing:
+        cover:
+            enabled: true # 是否启用封面图片处理
+        content:
+            enabled: true # 是否启用内容图片处理
+
+# 自定义菜单
+# 请参阅 https://stack.jimmycai.com/config/menu
+menu:
+    main: [] # 主菜单
+
+    social:
+        - identifier: bilibili # 标识符
+          name: Bilibili # 显示名称
+          url: https://space.bilibili.com/35158479 # 链接地址
+          params:
+              icon: brand-bilibili # 图标名称
+        - identifier: github
+          name: GitHub
+          url: https://github.com/meimolihan
+          params:
+              icon: brand-github
+
+related:
+    includeNewer: true # 是否包含较新的内容
+    threshold: 60 # 相关性阈值
+    toLower: false # 是否转换为小写
+    indices:
+        - name: tags # 标签索引
+          weight: 100 # 权重
+        - name: categories
+          weight: 200 # 分类索引
+
+markup:
+    goldmark:
+        extensions:
+            passthrough:
+                enable: true # 是否启用透传扩展
+                delimiters:
+                    block:
+                        - - \[
+                          - \]
+                        - - $$
+                          - $$
+                    inline:
+                        - - \(
+                          - \)
+        renderer:
+            unsafe: true # 是否允许不安全的 HTML
+
+    tableOfContents:
+        endLevel: 4 # 目录结束级别
+        ordered: true # 是否有序
+        startLevel: 2 # 目录起始级别
+
+    highlight:
+        noClasses: false # 是否禁用类名
+        codeFences: true # 是否启用代码围栏
+        guessSyntax: true # 是否自动检测语法
+        lineNoStart: 1 # 行号起始值
+        lineNos: true # 是否显示行号
+        lineNumbersInTable: true # 是否在表格中显示行号
+        tabWidth: 4 # 制表符宽度
