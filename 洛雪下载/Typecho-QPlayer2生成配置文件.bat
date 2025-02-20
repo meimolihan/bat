@@ -42,7 +42,7 @@ for %%f in (*.mp3) do (
         set "coverUrl="
     )
     if defined lrcExists (
-        set "lrcUrl=https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/!filename!.lrc"
+        set "lrcUrl=https://cdn.jsdelivr.net/gh/meimolihan/music@v1.0.0/!filename!/lyric.lrc"
     ) else (
         set "lrcUrl="
     )
