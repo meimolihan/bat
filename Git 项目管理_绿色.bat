@@ -247,26 +247,38 @@ rem ================= 新建文章 =======================
 :create_article
 rem 提示用户输入文章名字
 set /p name=请输入文章名字：
+
 rem 切换到hugo项目的根目录
 call :change_dir "%baseDir%\hugo-main" || (
     echo 无法切换到hugo项目根目录，请检查路径。
     pause >nul
     goto menu
 )
+
 rem 使用hugo命令创建新文章
-call hugo new "post/%name%.md"
+call hugo new "post\%name%\index.md"
 if %errorlevel% neq 0 (
     echo 文章创建失败，请检查Hugo配置或路径。
     pause >nul
     goto menu
 )
+
 echo 文章创建成功，正在打开notepad.exe编辑器...
+
 rem 打开记事本编辑器编辑新创建的文章
-start "" "notepad.exe" "%baseDir%\hugo-main\content\post\%name%.md"
+set articlePath=%baseDir%\hugo-main\content\post\%name%\index.md
+if not exist "%articlePath%" (
+    echo 文章文件未正确生成，请检查Hugo配置。
+    pause >nul
+    goto menu
+)
+
+start "" "notepad.exe" "%articlePath%"
 if %errorlevel% neq 0 (
     echo 无法打开notepad.exe编辑器，请检查notepad.exe是否安装。
     pause >nul
 )
+
 echo 请在notepad.exe中编辑文章，编辑完成后按任意键返回菜单。
 pause >nul
 exit /b
