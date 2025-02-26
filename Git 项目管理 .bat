@@ -42,10 +42,14 @@ if "%~1"=="2" goto hugo_commands
 if "%~1"=="3" goto submenu
 if "%~1"=="4" goto Pull_updates
 if "%~1"=="5" goto update_tags
-if "%~1"=="0" goto exit_script
-echo 输入无效，请重新选择
+if "%~1"=="0"  (
+    echo 正在退出...
+    goto exit_script
+)
+
+echo 无效的选择，请输入（0 - 9）之间的数字。
 timeout /t 2 >nul
-exit /b
+goto menu
 
 rem =====================================================
 :git_menu
@@ -72,10 +76,14 @@ if "%choice%"=="4" call :set_user_name && goto git_menu
 if "%choice%"=="5" call :set_user_email && goto git_menu
 if "%choice%"=="6" call :set_git_proxy && goto git_menu
 if "%choice%"=="9" goto menu
-if "%choice%"=="0" goto exit_script
-echo 无效的选择，请输入 1 - 7 之间的数字。
-pause
-goto menu
+if "%choice%"=="0"  (
+    echo 正在退出...
+    goto exit_script
+)
+
+echo 无效的选择，请输入（0 - 9）之间的数字。
+timeout /t 2 >nul
+goto git_menu
 
 rem ========================= 安装 Git 以管理员权限 ============================
 :install_git
@@ -198,12 +206,15 @@ if "%~1"=="4" call :post_hugo && goto hugo_commands
 if "%~1"=="5" call :run_hugo && goto hugo_commands
 if "%~1"=="6" call :open_browser && goto hugo_commands
 if "%~1"=="7" call :run_hugo_link && goto hugo_commands
-
 if "%~1"=="9" goto menu
-if "%~1"=="0" goto exit_script
-echo 输入无效，请重新选择
+if "%~1"=="0"  (
+    echo 正在退出...
+    goto exit_script
+)
+
+echo 无效的选择，请输入（0 - 9）之间的数字。
 timeout /t 2 >nul
-exit /b
+goto hugo_commands
 
 rem =================== 安装 hugo =====================
 :install_hugo
@@ -339,10 +350,14 @@ if "%~1"=="5" set "REPO_PATH=%baseDir%\random-pic-api" && call :ValidateRepoAndC
 if "%~1"=="6" set "REPO_PATH=%baseDir%\compose" && call :ValidateRepoAndCommit && goto submenu
 if "%~1"=="7" set "REPO_PATH=%baseDir%\sh" && call :ValidateRepoAndCommit && goto submenu
 if "%~1"=="9" goto menu
-if "%~1"=="0" goto exit_script
-echo 输入无效，请重新选择
+if "%~1"=="0" (
+    echo 正在退出...
+    goto exit_script
+)
+
+echo 无效的选择，请输入（0 - 9）之间的数字。
 timeout /t 2 >nul
-exit /b
+goto submenu
 
 :ValidateRepoAndCommit
 REM 检查目标目录是否存在
@@ -371,7 +386,7 @@ CALL :ShowMessage "正在检查是否有文件需要提交..."
 git status >nul 2>&1
 IF ERRORLEVEL 1 (
     CALL :ShowError "错误：无法获取 Git 仓库状态，请检查环境。"
-    EXIT /B 1
+    exit /b 1
 )
 
 SET "CHANGES="
@@ -394,52 +409,48 @@ IF DEFINED CHANGES (
 REM 提示完成
 CALL :ShowMessage "脚本执行完成。"
 pause
-EXIT /B 0
+exit /b 0
 
 :ShowMessage
 ECHO ============================================
 ECHO %~1
 ECHO ============================================
 ECHO.
-EXIT /B 0
+exit /b 0
 
 :ShowError
 ECHO ============================================
 ECHO %~1
 ECHO ============================================
 pause
-EXIT /B 0
+exit /b 0
 
 :AddChanges
 CALL :ShowMessage "正在添加所有更改..."
 git add .
 IF ERRORLEVEL 1 (
     CALL :ShowError "错误：无法添加文件，请检查 Git 仓库。"
-    EXIT /B 1
+    exit /b 1
 )
-EXIT /B 0
+exit /b 0
 
 :CommitChanges
 CALL :ShowMessage "正在提交更改..."
 git commit -m "update"
 IF ERRORLEVEL 1 (
     CALL :ShowError "错误：提交失败，请检查 Git 仓库。"
-    EXIT /B 1
+    exit /b 1
 )
-EXIT /B 0
+exit /b 0
 
 :PushChanges
 CALL :ShowMessage "正在推送更改到远程仓库..."
 git push
 IF ERRORLEVEL 1 (
     CALL :ShowError "错误：推送失败，请检查网络连接或远程配置。"
-    EXIT /B 1
+    exit /b 1
 )
-EXIT /B 0
-
-:exit_script
-ENDLOCAL
-exit /b
+exit /b 0
 
 rem =====================================================
 :update_tags
@@ -471,10 +482,14 @@ if "%~1"=="4" set "projectDir=%baseDir%\random-pic-api" && call :update_project_
 if "%~1"=="5" set "projectDir=%baseDir%\bat" && call :update_project_tags && goto update_tags
 if "%~1"=="6" set "projectDir=%baseDir%\sh" && call :update_project_tags && goto update_tags
 if "%~1"=="9" goto menu
-if "%~1"=="0" goto exit_script
-echo 输入无效，请重新选择
+if "%~1"=="0"  (
+    echo 正在退出...
+    goto exit_script
+)
+
+echo 无效的选择，请输入（0 - 9）之间的数字。
 timeout /t 2 >nul
-exit /b
+goto update_tags
 
 :update_project_tags
 call :change_dir "%projectDir%" || (
@@ -645,9 +660,13 @@ if "%subchoice%"=="6" call :update_single_project "%baseDir%\compose" && goto Pu
 if "%subchoice%"=="7" call :update_single_project "%baseDir%\sh" && goto Pull_updates
 if "%subchoice%"=="8" call :update_all_projects && goto Pull_updates
 if "%subchoice%"=="9" goto menu
-if "%subchoice%"=="0" goto exit_script
-echo 无效的选择，请输入 0 - 9 之间的数字。
-pause
+if "%subchoice%"=="0"  (
+    echo 正在退出...
+    goto exit_script
+)
+
+echo 无效的选择，请输入（0 - 9）之间的数字。
+timeout /t 2 >nul
 goto Pull_updates
 
 :update_single_project
@@ -755,8 +774,6 @@ for /d %%F in ("%baseDir%\*") do (
     )
 )
 echo 所有项目更新完成。
-
-
 
 rem ===========================================================================
 :exit_script
