@@ -559,7 +559,7 @@ powershell -Command ^
     Write-Host '* 5. 项目提交：random-pic-api               *' -ForegroundColor DarkRed; ^
     Write-Host '* 6. 项目提交：compose                      *' -ForegroundColor DarkYellow; ^
     Write-Host '* 7. 项目提交：sh                           *' -ForegroundColor DarkBlue; ^
-	Write-Host '* 8. 项目提交：所有项目                     *' -ForegroundColor DarkBlue; ^
+	Write-Host '* 8. 项目提交：所有项目                     *' -ForegroundColor Cyan; ^
     Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
