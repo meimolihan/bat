@@ -65,8 +65,8 @@ powershell -Command ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
     Write-Host '*****************Git 命令菜单****************' -ForegroundColor Green; ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
-	Write-Host '* 1. 安装 scoop 以管理员权限                *' -ForegroundColor Cyan; ^
-    Write-Host '* 2. 安装 Git 以管理员权限                  *' -ForegroundColor DarkYellow; ^
+	Write-Host '* 1. 安装 scoop                             *' -ForegroundColor Cyan; ^
+    Write-Host '* 2. 安装 Git                               *' -ForegroundColor DarkYellow; ^
 	Write-Host '* 3. 更新 Git 版本                          *' -ForegroundColor Magenta; ^
     Write-Host '* 4. 查看 Git 版本                          *' -ForegroundColor DarkCyan; ^
     Write-Host '* 5. 克隆 Git 仓库                          *' -ForegroundColor DarkGreen; ^
