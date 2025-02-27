@@ -751,8 +751,8 @@ echo %separator%
 echo 所有项目处理完成。
 echo %separator%
 
-echo 操作完成，等待 5 秒后返回子菜单...
-timeout /t 5 >nul
+echo 操作完成，等待 8 秒后返回子菜单...
+timeout /t 8 >nul
 goto submenu
 
 rem ==============================  四 、拉取更新的项目  ==================================
