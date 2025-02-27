@@ -15,24 +15,19 @@ echo 基础工作目录: %baseDir%
 :menu
 rem 清屏，显示主菜单
 cls
-rem 生成临时的 PowerShell 脚本文件
-(
-    echo Write-Host '*********************************************' -ForegroundColor Yellow
-    echo Write-Host '*              Git 项目管理                 *' -ForegroundColor Green
-    echo Write-Host '*********************************************' -ForegroundColor Yellow
-    echo Write-Host '* 1. Git_命令菜单                           *' -ForegroundColor Cyan
-    echo Write-Host '* 2. Hugo_命令菜单                          *' -ForegroundColor Magenta
-    echo Write-Host '* 3. 项目_提交更新                          *' -ForegroundColor Red
-    echo Write-Host '* 4. 项目_拉取更新                          *' -ForegroundColor Blue
-    echo Write-Host '* 5. 项目_更新标签                          *' -ForegroundColor DarkYellow
-    echo Write-Host '* 0. 退出                                   *' -ForegroundColor White
-    echo Write-Host '*********************************************' -ForegroundColor Yellow
-) > temp.ps1
-rem 执行临时的 PowerShell 脚本文件
-powershell -ExecutionPolicy Bypass -File temp.ps1
 
-rem 删除临时的 PowerShell 脚本文件
-del temp.ps1
+powershell -Command ^
+"Clear-Host; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+    Write-Host '*************  Git 项目管理  ****************' -ForegroundColor Green; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+    Write-Host '* 1. Git_命令菜单                           *' -ForegroundColor Cyan; ^
+    Write-Host '* 2. Hugo_命令菜单                          *' -ForegroundColor Magenta; ^
+    Write-Host '* 3. 项目_提交更新                          *' -ForegroundColor Red; ^
+    Write-Host '* 4. 项目_拉取更新                          *' -ForegroundColor Blue; ^
+    Write-Host '* 5. 项目_更新标签                          *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow"
 
 rem 提示用户输入选择
 set /p choice=请输入您的选择（0 - 9）：
@@ -64,22 +59,21 @@ rem =====================================================
 :git_menu
 rem 清屏，显示 Git 命令子菜单
 cls
-(
-    echo Write-Host '*********************************************' -ForegroundColor Yellow
-    echo Write-Host '*               Git 命令菜单                *' -ForegroundColor Green
-    echo Write-Host '*********************************************' -ForegroundColor Yellow
-    echo Write-Host '1. 安装 Git 以管理员权限                    *' -ForegroundColor Cyan
-    echo Write-Host '2. 查看 Git 版本                            *' -ForegroundColor Magenta
-    echo Write-Host '3. 克隆 Git 仓库                            *' -ForegroundColor DarkCyan
-    echo Write-Host '4. 设置 Git 用户名                          *' -ForegroundColor DarkGreen
-    echo Write-Host '5. 设置 Git 用户邮箱                        *' -ForegroundColor DarkRed
-    echo Write-Host '6. 设置 Git 代理                            *' -ForegroundColor DarkYellow
-    echo Write-Host '9. 返回主菜单                               *' -ForegroundColor DarkBlue
-    echo Write-Host '0. 退出                                     *' -ForegroundColor White
-    echo Write-Host '*********************************************' -ForegroundColor Yellow
-) > temp.ps1
-powershell -ExecutionPolicy Bypass -File temp.ps1
-del temp.ps1
+
+powershell -Command ^
+"Clear-Host; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+    Write-Host '*****************Git 命令菜单****************' -ForegroundColor Green; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+    Write-Host '* 1. 安装 Git 以管理员权限                  *' -ForegroundColor Cyan; ^
+    Write-Host '* 2. 查看 Git 版本                          *' -ForegroundColor Magenta; ^
+    Write-Host '* 3. 克隆 Git 仓库                          *' -ForegroundColor DarkCyan; ^
+    Write-Host '* 4. 设置 Git 用户名                        *' -ForegroundColor DarkGreen; ^
+    Write-Host '* 5. 设置 Git 用户邮箱                      *' -ForegroundColor DarkRed; ^
+    Write-Host '* 6. 设置 Git 代理                          *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
+    Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow"
 
 set /p choice="请输入你的选择 (0 - 9): "
 
@@ -226,23 +220,22 @@ rem ======================== Hugo_命令菜单 =============================
 :hugo_commands
 rem 清屏，显示hugo命令子菜单
 cls
-(
-    echo Write-Host '*********************************************' -ForegroundColor Yellow
-    echo Write-Host '*             Hugo_命令菜单                 *' -ForegroundColor Green
-    echo Write-Host '*********************************************' -ForegroundColor Yellow
-    echo Write-Host '* 1. 安装 hugo                              *' -ForegroundColor Cyan
-    echo Write-Host '* 2. 查看 hugo 版本                         *' -ForegroundColor Magenta
-    echo Write-Host '* 3. 新建文章                               *' -ForegroundColor DarkCyan
-    echo Write-Host '* 4. 打开文章目录                           *' -ForegroundColor DarkGreen
-    echo Write-Host '* 5. 运行 hugo                              *' -ForegroundColor DarkRed
-    echo Write-Host '* 6. 浏览器打开 :1313                       *' -ForegroundColor DarkYellow
-    echo Write-Host '* 7. 运行 hugo 并打开                       *' -ForegroundColor DarkBlue
-    echo Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White
-    echo Write-Host '* 0. 退出                                   *' -ForegroundColor Gray
-    echo Write-Host '*********************************************' -ForegroundColor Yellow
-) > temp.ps1
-powershell -ExecutionPolicy Bypass -File temp.ps1
-del temp.ps1
+
+powershell -Command ^
+"Clear-Host; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+    Write-Host '*************  Hugo_命令菜单  ***************' -ForegroundColor Green; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+    Write-Host '* 1. 安装 hugo                              *' -ForegroundColor Cyan; ^
+    Write-Host '* 2. 查看 hugo 版本                         *' -ForegroundColor Magenta; ^
+    Write-Host '* 3. 新建文章                               *' -ForegroundColor DarkCyan; ^
+    Write-Host '* 4. 打开文章目录                           *' -ForegroundColor DarkGreen; ^
+    Write-Host '* 5. 运行 hugo                              *' -ForegroundColor DarkRed; ^
+    Write-Host '* 6. 浏览器打开 :1313                       *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 7. 运行 hugo 并打开                       *' -ForegroundColor DarkBlue; ^
+    Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
+    Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow"
 
 rem 提示用户输入操作编号
 set /p subchoice=请输入操作编号（0 - 9）：
@@ -408,23 +401,21 @@ rem ======================= GitHub 项目提交 ==============================
 :submenu
 rem 清屏，显示项目提交子菜单
 cls
-(
-    echo Write-Host '*********************************************' -ForegroundColor Yellow
-    echo Write-Host '*            GitHub 项目提交                *' -ForegroundColor Green
-    echo Write-Host '*********************************************' -ForegroundColor Yellow
-    echo Write-Host '* 1. 项目提交：hugo-main                    *' -ForegroundColor Cyan
-    echo Write-Host '* 2. 项目提交：music                        *' -ForegroundColor Magenta
-    echo Write-Host '* 3. 项目提交：file                         *' -ForegroundColor DarkCyan
-    echo Write-Host '* 4. 项目提交：bat                          *' -ForegroundColor DarkGreen
-    echo Write-Host '* 5. 项目提交：random-pic-api               *' -ForegroundColor DarkRed
-    echo Write-Host '* 6. 项目提交：compose                      *' -ForegroundColor DarkYellow
-    echo Write-Host '* 7. 项目提交：sh                           *' -ForegroundColor DarkBlue
-    echo Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White
-    echo Write-Host '* 0. 退出                                   *' -ForegroundColor Gray
-    echo Write-Host '*********************************************' -ForegroundColor Yellow
-) > temp.ps1
-powershell -ExecutionPolicy Bypass -File temp.ps1
-del temp.ps1
+powershell -Command ^
+"Clear-Host; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+    Write-Host '**************  GitHub 项目提交  ************' -ForegroundColor Green; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+    Write-Host '* 1. 项目提交：hugo-main                    *' -ForegroundColor Cyan; ^
+    Write-Host '* 2. 项目提交：music                        *' -ForegroundColor Magenta; ^
+    Write-Host '* 3. 项目提交：file                         *' -ForegroundColor DarkCyan; ^
+    Write-Host '* 4. 项目提交：bat                          *' -ForegroundColor DarkGreen; ^
+    Write-Host '* 5. 项目提交：random-pic-api               *' -ForegroundColor DarkRed; ^
+    Write-Host '* 6. 项目提交：compose                      *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 7. 项目提交：sh                           *' -ForegroundColor DarkBlue; ^
+    Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
+    Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow"
 
 rem 提示用户输入项目编号
 set /p subchoice=请输入项目编号（0 - 9）：
@@ -552,22 +543,21 @@ rem =========================项目更新标签============================
 :update_tags
 rem 清屏，显示项目更新标签子菜单
 cls
-(
-    echo Write-Host '*********************************************' -ForegroundColor Yellow
-    echo Write-Host '*               项目更新标签                *' -ForegroundColor Green
-    echo Write-Host '*********************************************' -ForegroundColor Yellow
-    echo Write-Host '* 1. 更新标签：hugo-main                    *' -ForegroundColor Cyan
-    echo Write-Host '* 2. 更新标签：music                        *' -ForegroundColor Magenta
-    echo Write-Host '* 3. 更新标签：file                         *' -ForegroundColor DarkCyan
-    echo Write-Host '* 4. 更新标签：random-pic-api               *' -ForegroundColor DarkGreen
-    echo Write-Host '* 5. 更新标签：bat                          *' -ForegroundColor DarkRed
-    echo Write-Host '* 6. 更新标签：sh                           *' -ForegroundColor DarkYellow
-    echo Write-Host '* 9. 返回主菜单                             *' -ForegroundColor DarkBlue
-    echo Write-Host '* 0. 退出                                   *' -ForegroundColor White
-    echo Write-Host '*********************************************' -ForegroundColor Yellow
-) > temp.ps1
-powershell -ExecutionPolicy Bypass -File temp.ps1
-del temp.ps1
+
+powershell -Command ^
+"Clear-Host; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+    Write-Host '*****************  项目更新标签  ************' -ForegroundColor Green; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+    Write-Host '* 1. 更新标签：hugo-main                    *' -ForegroundColor Cyan; ^
+    Write-Host '* 2. 更新标签：music                        *' -ForegroundColor Magenta; ^
+    Write-Host '* 3. 更新标签：file                         *' -ForegroundColor DarkCyan; ^
+    Write-Host '* 4. 更新标签：random-pic-api               *' -ForegroundColor DarkGreen; ^
+    Write-Host '* 5. 更新标签：bat                          *' -ForegroundColor DarkRed; ^
+    Write-Host '* 6. 更新标签：sh                           *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
+    Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow"
 
 :input_subchoice
 rem 提示用户输入操作编号
@@ -757,25 +747,23 @@ rem ==============================拉取更新的项目================================
 :Pull_updates
 rem 清屏，显示项目拉取更新子菜单
 cls
-(
-    echo Write-Host '*********************************************' -ForegroundColor Yellow
-    echo Write-Host '*              拉取更新的项目               *' -ForegroundColor Green
-    echo Write-Host '*********************************************' -ForegroundColor Yellow
-    echo Write-Host '* 1. 拉取更新：hugo-main                    *' -ForegroundColor Cyan
-    echo Write-Host '* 2. 拉取更新：music                        *' -ForegroundColor Magenta
-    echo Write-Host '* 3. 拉取更新：file                         *' -ForegroundColor DarkCyan
-    echo Write-Host '* 4. 拉取更新：bat                          *' -ForegroundColor DarkGreen
-    echo Write-Host '* 5. 拉取更新：random-pic-api               *' -ForegroundColor DarkRed
-    echo Write-Host '* 6. 拉取更新：compose                      *' -ForegroundColor DarkYellow
-    echo Write-Host '* 7. 拉取更新：sh                           *' -ForegroundColor DarkBlue
-    echo Write-Host '* 8. 拉取更新：所有项目                     *' -ForegroundColor White
-    echo Write-Host '* 9. 返回主菜单                             *' -ForegroundColor Gray
-    echo Write-Host '* 0. 退出                                   *' -ForegroundColor DarkGray
-    echo Write-Host '*********************************************' -ForegroundColor Yellow
-) > temp.ps1
-powershell -ExecutionPolicy Bypass -File temp.ps1
-del temp.ps1
 
+powershell -Command ^
+"Clear-Host; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+    Write-Host '**************  拉取更新的项目  *************' -ForegroundColor Green; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+    Write-Host '* 1. 拉取更新：hugo-main                    *' -ForegroundColor Cyan; ^
+    Write-Host '* 2. 拉取更新：music                        *' -ForegroundColor Magenta; ^
+    Write-Host '* 3. 拉取更新：file                         *' -ForegroundColor DarkCyan; ^
+    Write-Host '* 4. 拉取更新：bat                          *' -ForegroundColor DarkGreen; ^
+    Write-Host '* 5. 拉取更新：random-pic-api               *' -ForegroundColor DarkRed; ^
+    Write-Host '* 6. 拉取更新：compose                      *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 7. 拉取更新：sh                           *' -ForegroundColor DarkBlue; ^
+    Write-Host '* 8. 拉取更新：所有项目                     *' -ForegroundColor Cyan; ^
+    Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
+    Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow"
 
 rem 提示用户输入项目编号
 set /p subchoice=请输入项目编号（0 - 9）：
