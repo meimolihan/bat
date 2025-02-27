@@ -55,7 +55,7 @@ echo 无效的选择，请输入（0 - 9）之间的数字。
 timeout /t 2 >nul
 goto menu
 
-rem =====================================================
+rem ==========================  一 、Git 命令菜单  ===========================
 :git_menu
 rem 清屏，显示 Git 命令子菜单
 cls
@@ -65,24 +65,28 @@ powershell -Command ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
     Write-Host '*****************Git 命令菜单****************' -ForegroundColor Green; ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
-    Write-Host '* 1. 安装 Git 以管理员权限                  *' -ForegroundColor Cyan; ^
-    Write-Host '* 2. 查看 Git 版本                          *' -ForegroundColor Magenta; ^
-    Write-Host '* 3. 克隆 Git 仓库                          *' -ForegroundColor DarkCyan; ^
-    Write-Host '* 4. 设置 Git 用户名                        *' -ForegroundColor DarkGreen; ^
-    Write-Host '* 5. 设置 Git 用户邮箱                      *' -ForegroundColor DarkRed; ^
-    Write-Host '* 6. 设置 Git 代理                          *' -ForegroundColor DarkYellow; ^
+	Write-Host '* 1. 安装 scoop 以管理员权限                *' -ForegroundColor Cyan; ^
+    Write-Host '* 2. 安装 Git 以管理员权限                  *' -ForegroundColor DarkYellow; ^
+	Write-Host '* 3. 更新 Git 版本                          *' -ForegroundColor Magenta; ^
+    Write-Host '* 4. 查看 Git 版本                          *' -ForegroundColor DarkCyan; ^
+    Write-Host '* 5. 克隆 Git 仓库                          *' -ForegroundColor DarkGreen; ^
+    Write-Host '* 6. 设置 Git 用户名和邮箱                  *' -ForegroundColor Cyan; ^
+    Write-Host '* 7. 设置 Git 代理                          *' -ForegroundColor DarkYellow; ^
+	Write-Host '* 8. 取消 Git 代理                          *' -ForegroundColor DarkYellow; ^
     Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
 set /p choice="请输入你的选择 (0 - 9): "
 
-if "%choice%"=="1" call :install_git && goto git_menu
-if "%choice%"=="2" call :check_git_version && goto git_menu
-if "%choice%"=="3" call :clone_git_repo && goto git_menu
-if "%choice%"=="4" call :set_user_name && goto git_menu
-if "%choice%"=="5" call :set_user_email && goto git_menu
-if "%choice%"=="6" call :set_git_proxy && goto git_menu
+if "%choice%"=="1" call :install_scoop && goto git_menu
+if "%choice%"=="2" call :install_git && goto git_menu
+if "%choice%"=="3" call :update_git && goto git_menu
+if "%choice%"=="4" call :check_git_version && goto git_menu
+if "%choice%"=="5" call :clone_git_repo && goto git_menu
+if "%choice%"=="6" call :set_user_name && goto git_menu
+if "%choice%"=="7" call :set_git_proxy && goto git_menu
+if "%choice%"=="8" call :unset_git_proxy && goto git_menu
 if "%choice%"=="9" goto menu
 if "%choice%"=="0"  (
     echo 正在退出...
@@ -93,10 +97,71 @@ echo 无效的选择，请输入（0 - 9）之间的数字。
 timeout /t 2 >nul
 goto git_menu
 
-rem ========================= 安装 Git 以管理员权限 ============================
-@echo off
-setlocal enabledelayedexpansion
+rem ========================= （1）安装 scoop 以管理员权限 ============================
+:install_scoop
 
+	REM 定义 scoop 的 main 存储桶目录
+	set "scoop_main_dir=%USERPROFILE%\scoop\buckets\main"
+
+	REM 输出当前系统环境变量中的 USERPROFILE 和计算得到的 scoop_main_dir
+	echo 当前系统环境变量中的 USERPROFILE: %USERPROFILE%
+	echo 计算得到的 scoop_main_dir: %scoop_main_dir%
+
+	REM 检查 Git 是否可用
+	where git >nul 2>&1
+	if !errorlevel! neq 0 (
+		call :handle_error "Git 未安装或者未添加到系统环境变量，请先安装 Git 并配置环境变量。"
+		exit /b
+	)
+	echo Git 已安装并配置到系统环境变量。
+
+	REM 检查目录是否存在
+	if not exist "%scoop_main_dir%" (
+		call :handle_error "指定的目录 %scoop_main_dir% 不存在。"
+		exit /b
+	)
+	echo 目录 %scoop_main_dir% 存在。
+
+	REM 检查目录是否为 Git 仓库
+	if not exist "%scoop_main_dir%\.git" (
+		call :handle_error "指定的目录 %scoop_main_dir% 不是一个有效的 Git 仓库。"
+		exit /b
+	)
+	echo 目录 %scoop_main_dir% 是一个有效的 Git 仓库。
+
+	REM 添加安全目录配置
+	echo 正在添加安全目录配置...
+	git config --global --add safe.directory "%scoop_main_dir%"
+	if !errorlevel! neq 0 (
+		call :handle_error "添加安全目录配置失败，请检查 Git 配置权限。"
+		exit /b
+	)
+	echo 安全目录配置添加成功。
+
+	REM 切换到 scoop 的 main 存储桶目录
+	echo 正在切换到目录: %scoop_main_dir%
+	cd /d "%scoop_main_dir%"
+	if !errorlevel! neq 0 (
+		call :handle_error "切换目录失败，请检查路径是否正确。"
+		exit /b
+	)
+	echo 成功切换到目录: %scoop_main_dir%
+
+	REM 执行 git pull 命令拉取最新代码
+	echo 正在拉取最新代码...
+	git pull origin master
+	if !errorlevel! neq 0 (
+		call :handle_error "拉取最新代码失败，请检查网络或 Git 仓库状态。"
+		exit /b
+	)
+	echo 最新代码拉取成功。
+
+    echo 即将在 3 秒后返回 Git 命令菜单...
+	powershell -Command "Start-Sleep -Seconds 3"
+	goto git_menu  rem 定义要返回的菜单
+	exit /b
+
+rem ========================= （2）安装 Git 以管理员权限 ============================
 :install_git
     REM 检查 winget 是否可用
     winget --version >nul 2>&1
@@ -136,7 +201,16 @@ setlocal enabledelayedexpansion
 
 endlocal
 
-rem ========================= 查看 Git 版本 ============================
+rem ========================= （3）更新 Git 版本 ============================
+:update_git
+    echo 正在更新 Git 版本...
+    git update-git-for-windows
+    echo 即将在 3 秒后返回 Git 命令菜单...
+	powershell -Command "Start-Sleep -Seconds 3"
+	goto git_menu  rem 定义要返回的菜单
+	exit /b
+
+rem ========================= （4）查看 Git 版本 ============================
 :check_git_version
     echo 正在查看 Git 版本...
     git --version
@@ -148,7 +222,7 @@ rem ========================= 查看 Git 版本 ============================
 	goto git_menu  rem 定义要返回的菜单
 	exit /b
 
-rem ========================= 克隆 Git 仓库 ============================
+rem ========================= （5）克隆 Git 仓库 ============================
 :clone_git_repo
     REM 提示用户输入 Git 仓库的 URL
     set /p repoUrl="请输入 Git 仓库的 URL: "
@@ -172,7 +246,7 @@ rem ========================= 克隆 Git 仓库 ============================
 	goto git_menu  rem 定义要返回的菜单
 	exit /b
 
-rem ========================= 设置 Git 用户名 ============================
+rem ========================= （6）设置 Git 用户名和邮箱 ============================
 :set_user_name
     set /p userName="请输入用户名: "
     if "%userName%"=="" (
@@ -182,27 +256,22 @@ rem ========================= 设置 Git 用户名 ============================
     )
     git config --global user.name "%userName%"
     echo 用户名已设置为 %userName%
+	
+	set /p userEmail="请输入用户邮箱: "
+	if "%userEmail%"=="" (
+	    echo 未输入有效的用户邮箱，请重新运行脚本并输入正确的用户邮箱。
+	    pause
+	    exit /b
+	)
+	git config --global user.email "%userEmail%"
+	echo 用户邮箱已设置为 %userEmail%
+	
     echo 即将在 3 秒后返回 Git 命令菜单...
 	powershell -Command "Start-Sleep -Seconds 3"
 	goto git_menu  rem 定义要返回的菜单
 	exit /b
 
-rem ========================= 设置 Git 用户邮箱 ============================
-:set_user_email
-    set /p userEmail="请输入用户邮箱: "
-    if "%userEmail%"=="" (
-        echo 未输入有效的用户邮箱，请重新运行脚本并输入正确的用户邮箱。
-        pause
-        exit /b
-    )
-    git config --global user.email "%userEmail%"
-    echo 用户邮箱已设置为 %userEmail%
-    echo 即将在 3 秒后返回 Git 命令菜单...
-	powershell -Command "Start-Sleep -Seconds 3"
-	goto git_menu  rem 定义要返回的菜单
-	exit /b
-
-rem ========================= 设置 Git 代理 ============================
+rem ========================= （7）设置 Git 代理 ============================
 :set_git_proxy
     git config --global --unset http.proxy
     git config --global --unset https.proxy
@@ -215,8 +284,19 @@ rem ========================= 设置 Git 代理 ============================
 	powershell -Command "Start-Sleep -Seconds 3"
 	goto git_menu  rem 定义要返回的菜单
 	exit /b
+	
+rem ========================= （8）取消 Git 代理 ============================
+:unset_git_proxy
+    git config --global --unset http.proxy
+    git config --global --unset https.proxy
+	echo Git 取消历史配置成功
+	
+    echo 即将在 3 秒后返回 Git 命令菜单...
+	powershell -Command "Start-Sleep -Seconds 3"
+	goto git_menu  rem 定义要返回的菜单
+	exit /b
 
-rem ======================== Hugo_命令菜单 =============================
+rem ======================== 二 、Hugo_命令菜单 =============================
 :hugo_commands
 rem 清屏，显示hugo命令子菜单
 cls
@@ -226,13 +306,14 @@ powershell -Command ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
     Write-Host '*************  Hugo_命令菜单  ***************' -ForegroundColor Green; ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
-    Write-Host '* 1. 安装 hugo                              *' -ForegroundColor Cyan; ^
-    Write-Host '* 2. 查看 hugo 版本                         *' -ForegroundColor Magenta; ^
-    Write-Host '* 3. 新建文章                               *' -ForegroundColor DarkCyan; ^
-    Write-Host '* 4. 打开文章目录                           *' -ForegroundColor DarkGreen; ^
-    Write-Host '* 5. 运行 hugo                              *' -ForegroundColor DarkRed; ^
-    Write-Host '* 6. 浏览器打开 :1313                       *' -ForegroundColor DarkYellow; ^
-    Write-Host '* 7. 运行 hugo 并打开                       *' -ForegroundColor DarkBlue; ^
+	Write-Host '* 1. 安装 scoop                             *' -ForegroundColor DarkBlue; ^
+    Write-Host '* 2. 安装 hugo                              *' -ForegroundColor Cyan; ^
+    Write-Host '* 3. 查看 hugo 版本                         *' -ForegroundColor Magenta; ^
+    Write-Host '* 4. 新建文章                               *' -ForegroundColor DarkCyan; ^
+    Write-Host '* 5. 打开文章目录                           *' -ForegroundColor DarkGreen; ^
+    Write-Host '* 6. 运行 hugo                              *' -ForegroundColor DarkRed; ^
+    Write-Host '* 7. 浏览器打开 :1313                       *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 8. 运行 hugo 并打开                       *' -ForegroundColor DarkBlue; ^
     Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
@@ -244,13 +325,14 @@ call :handle_hugo_choice %subchoice%
 goto hugo_commands
 
 :handle_hugo_choice
-if "%~1"=="1" call :install_hugo && goto hugo_commands
-if "%~1"=="2" call :hugo_v && goto hugo_commands
-if "%~1"=="3" call :create_article && goto hugo_commands
-if "%~1"=="4" call :post_hugo && goto hugo_commands
-if "%~1"=="5" call :run_hugo && goto hugo_commands
-if "%~1"=="6" call :open_browser && goto hugo_commands
-if "%~1"=="7" call :run_hugo_link && goto hugo_commands
+if "%~1"=="1" call :install_scoop && goto hugo_commands
+if "%~1"=="2" call :install_hugo && goto hugo_commands
+if "%~1"=="3" call :hugo_v && goto hugo_commands
+if "%~1"=="4" call :create_article && goto hugo_commands
+if "%~1"=="5" call :post_hugo && goto hugo_commands
+if "%~1"=="6" call :run_hugo && goto hugo_commands
+if "%~1"=="7" call :open_browser && goto hugo_commands
+if "%~1"=="8" call :run_hugo_link && goto hugo_commands
 if "%~1"=="9" goto menu
 if "%~1"=="0"  (
     echo 正在退出...
@@ -261,7 +343,71 @@ echo 无效的选择，请输入（0 - 9）之间的数字。
 timeout /t 2 >nul
 goto hugo_commands
 
-rem =================== 安装 hugo =====================
+rem ========================= （1）安装 scoop 以管理员权限 ============================
+:install_scoop
+
+	REM 定义 scoop 的 main 存储桶目录
+	set "scoop_main_dir=%USERPROFILE%\scoop\buckets\main"
+
+	REM 输出当前系统环境变量中的 USERPROFILE 和计算得到的 scoop_main_dir
+	echo 当前系统环境变量中的 USERPROFILE: %USERPROFILE%
+	echo 计算得到的 scoop_main_dir: %scoop_main_dir%
+
+	REM 检查 Git 是否可用
+	where git >nul 2>&1
+	if !errorlevel! neq 0 (
+		call :handle_error "Git 未安装或者未添加到系统环境变量，请先安装 Git 并配置环境变量。"
+		exit /b
+	)
+	echo Git 已安装并配置到系统环境变量。
+
+	REM 检查目录是否存在
+	if not exist "%scoop_main_dir%" (
+		call :handle_error "指定的目录 %scoop_main_dir% 不存在。"
+		exit /b
+	)
+	echo 目录 %scoop_main_dir% 存在。
+
+	REM 检查目录是否为 Git 仓库
+	if not exist "%scoop_main_dir%\.git" (
+		call :handle_error "指定的目录 %scoop_main_dir% 不是一个有效的 Git 仓库。"
+		exit /b
+	)
+	echo 目录 %scoop_main_dir% 是一个有效的 Git 仓库。
+
+	REM 添加安全目录配置
+	echo 正在添加安全目录配置...
+	git config --global --add safe.directory "%scoop_main_dir%"
+	if !errorlevel! neq 0 (
+		call :handle_error "添加安全目录配置失败，请检查 Git 配置权限。"
+		exit /b
+	)
+	echo 安全目录配置添加成功。
+
+	REM 切换到 scoop 的 main 存储桶目录
+	echo 正在切换到目录: %scoop_main_dir%
+	cd /d "%scoop_main_dir%"
+	if !errorlevel! neq 0 (
+		call :handle_error "切换目录失败，请检查路径是否正确。"
+		exit /b
+	)
+	echo 成功切换到目录: %scoop_main_dir%
+
+	REM 执行 git pull 命令拉取最新代码
+	echo 正在拉取最新代码...
+	git pull origin master
+	if !errorlevel! neq 0 (
+		call :handle_error "拉取最新代码失败，请检查网络或 Git 仓库状态。"
+		exit /b
+	)
+	echo 最新代码拉取成功。
+
+    echo 即将在 3 秒后返回 Git 命令菜单...
+	powershell -Command "Start-Sleep -Seconds 3"
+	goto git_menu  rem 定义要返回的菜单
+	exit /b
+
+rem =================== （2）安装 hugo =====================
 :install_hugo
     REM 检查 winget 是否可用
     winget --version >nul 2>&1
@@ -287,7 +433,7 @@ rem =================== 安装 hugo =====================
 	goto hugo_commands  rem 定义要返回的菜单
 	exit /b
 
-rem ================ 查看 hugo 版本 ========================
+rem ================ （3）查看 hugo 版本 ========================
 :hugo_v
 rem 启动一个新的命令行窗口并运行hugo服务器
 start cmd /k "hugo version"
@@ -297,7 +443,7 @@ powershell -Command "Start-Sleep -Seconds 2"
 goto hugo_commands  rem 定义要返回的菜单
 exit /b
 
-rem ================= 新建文章 =======================
+rem ================= （4）新建文章 =======================
 :create_article
 rem 提示用户输入文章名字
 set /p name=请输入文章名字：
@@ -340,7 +486,7 @@ powershell -Command "Start-Sleep -Seconds 2"
 goto hugo_commands  rem 定义要返回的菜单
 exit /b
 
-rem ================== 打开文章目录 ======================
+rem ================== （5）打开文章目录 ======================
 :post_hugo
 :: 定义目标目录（使用 %USERPROFILE% 使路径通用）
 start "" "%baseDir%\hugo-main\content\post"
@@ -350,7 +496,7 @@ powershell -Command "Start-Sleep -Seconds 2"
 goto hugo_commands  rem 定义要返回的菜单
 exit /b
 
-rem ================== 运行 hugo ======================
+rem ================== （6）运行 hugo ======================
 :run_hugo
 call :change_dir "%baseDir%\hugo-main" || (
     echo 无法切换到hugo项目根目录，请检查路径。
@@ -365,7 +511,7 @@ powershell -Command "Start-Sleep -Seconds 2"
 goto hugo_commands  rem 定义要返回的菜单
 exit /b
 
-rem ================== 浏览器打开 :1313 ======================
+rem ================== （7）浏览器打开 :1313 ======================
 :open_browser
 echo 本地服务器已启动，请访问 http://localhost:1313/，浏览器打开。
 timeout /t 2 >nul
@@ -377,7 +523,7 @@ timeout /t 3 >nul  REM 等待 3 秒
 goto hugo_commands  REM 返回到 Hugo 命令菜单
 exit /b
 
-rem ================== 运行 hugo 并打开   ======================
+rem ================== （8）运行 hugo 并打开   ======================
 :run_hugo_link
 call :change_dir "%baseDir%\hugo-main" || (
     echo 无法切换到hugo项目根目录，请检查路径。
@@ -397,7 +543,7 @@ goto hugo_commands  REM 返回到 Hugo 命令菜单
 exit /b
 
 
-rem ======================= GitHub 项目提交 ==============================
+rem =======================  三 、GitHub 项目提交  ==============================
 :submenu
 rem 清屏，显示项目提交子菜单
 cls
@@ -413,6 +559,7 @@ powershell -Command ^
     Write-Host '* 5. 项目提交：random-pic-api               *' -ForegroundColor DarkRed; ^
     Write-Host '* 6. 项目提交：compose                      *' -ForegroundColor DarkYellow; ^
     Write-Host '* 7. 项目提交：sh                           *' -ForegroundColor DarkBlue; ^
+	Write-Host '* 8. 项目提交：所有项目                     *' -ForegroundColor DarkBlue; ^
     Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
@@ -431,6 +578,7 @@ if "%~1"=="4" set "REPO_PATH=%baseDir%\bat" && call :ValidateRepoAndCommit && go
 if "%~1"=="5" set "REPO_PATH=%baseDir%\random-pic-api" && call :ValidateRepoAndCommit && goto after_commit
 if "%~1"=="6" set "REPO_PATH=%baseDir%\compose" && call :ValidateRepoAndCommit && goto after_commit
 if "%~1"=="7" set "REPO_PATH=%baseDir%\sh" && call :ValidateRepoAndCommit && goto after_commit
+if "%~1"=="8" set "REPO_PATH=%baseDir%\" && call :git_push_add && goto after_commit
 if "%~1"=="9" goto menu
 if "%~1"=="0" (
     echo 正在退出...
@@ -539,7 +687,254 @@ echo 操作完成，等待 3 秒后返回子菜单...
 timeout /t 3 >nul
 goto submenu
 
-rem =========================项目更新标签============================
+rem ================== 提交所有项目 ======================
+:git_push_add
+batch
+@echo off
+setlocal enabledelayedexpansion
+
+rem 设置基础目录
+set "baseDir=%USERPROFILE%\Desktop\GitHub"
+set "separator=------------------------------"
+
+rem 检查基础目录是否存在
+if not exist "%baseDir%" (
+    echo 目录 %baseDir% 不存在。
+    pause
+    exit /b 1
+)
+
+echo %separator%
+echo 开始处理所有项目
+echo %separator%
+
+rem 遍历基础目录下的所有子目录
+for /d %%i in ("%baseDir%\*") do (
+    echo %separator%
+    echo 正在处理项目: %%~nxi
+    cd /d "%%i"
+    
+    rem 检查当前目录是否为 Git 仓库
+    git rev-parse --is-inside-work-tree >nul 2>&1
+    if !errorlevel! equ 0 (
+        echo 此目录是 Git 仓库，开始检查是否有变更...
+        git diff --quiet --exit-code
+        if !errorlevel! equ 0 (
+            echo 项目 %%~nxi 没有文件变更，跳过提交。
+        ) else (
+            echo 项目 %%~nxi 有文件变更，开始提交...
+            echo 执行 git add .
+            git add .
+            
+            echo 执行 git commit -m "update"
+            git commit -m "update"
+            if !errorlevel! equ 0 (
+                echo 项目 %%~nxi 提交成功，开始推送...
+                echo 执行 git push
+                git push
+                if !errorlevel! equ 0 (
+                    echo 项目 %%~nxi 推送成功。
+                ) else (
+                    echo 项目 %%~nxi 推送失败，请检查网络或仓库权限。
+                )
+            ) else (
+                echo 项目 %%~nxi 提交失败，请检查文件状态或提交信息。
+            )
+        )
+    ) else (
+        echo 项目 %%~nxi 不是一个 Git 仓库，跳过。
+    )
+    echo %separator%
+)
+
+echo %separator%
+echo 所有项目处理完成。
+echo %separator%
+
+echo 操作完成，等待 5 秒后返回子菜单...
+timeout /t 5 >nul
+goto submenu
+
+rem ==============================  四 、拉取更新的项目  ==================================
+:Pull_updates
+rem 清屏，显示项目拉取更新子菜单
+cls
+
+powershell -Command ^
+"Clear-Host; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+    Write-Host '**************  拉取更新的项目  *************' -ForegroundColor Green; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+    Write-Host '* 1. 拉取更新：hugo-main                    *' -ForegroundColor Cyan; ^
+    Write-Host '* 2. 拉取更新：music                        *' -ForegroundColor Magenta; ^
+    Write-Host '* 3. 拉取更新：file                         *' -ForegroundColor DarkCyan; ^
+    Write-Host '* 4. 拉取更新：bat                          *' -ForegroundColor DarkGreen; ^
+    Write-Host '* 5. 拉取更新：random-pic-api               *' -ForegroundColor DarkRed; ^
+    Write-Host '* 6. 拉取更新：compose                      *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 7. 拉取更新：sh                           *' -ForegroundColor DarkBlue; ^
+    Write-Host '* 8. 拉取更新：所有项目                     *' -ForegroundColor Cyan; ^
+    Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
+    Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow"
+
+rem 提示用户输入项目编号
+set /p subchoice=请输入项目编号（0 - 9）：
+
+
+rem 根据用户输入跳转到相应的功能模块
+if "%subchoice%"=="1" call :update_single_project "%baseDir%\hugo-main" && goto after_update
+if "%subchoice%"=="2" call :update_single_project "%baseDir%\music" && goto after_update
+if "%subchoice%"=="3" call :update_single_project "%baseDir%\file" && goto after_update
+if "%subchoice%"=="4" call :update_single_project "%baseDir%\bat" && goto after_update
+if "%subchoice%"=="5" call :update_single_project "%baseDir%\random-pic-api" && goto after_update
+if "%subchoice%"=="6" call :update_single_project "%baseDir%\compose" && goto after_update
+if "%subchoice%"=="7" call :update_single_project "%baseDir%\sh" && goto after_update
+if "%subchoice%"=="8" call :update_all_projects && goto after_update
+if "%subchoice%"=="9" goto menu
+if "%subchoice%"=="0"  (
+    echo 正在退出...
+    goto exit_script
+)
+
+
+echo 无效的选择，请输入（0 - 9）之间的数字。
+timeout /t 3 >nul
+goto Pull_updates
+
+
+:update_single_project
+SET "REPO_PATH=%~1"
+REM 检查目标目录是否存在
+IF NOT EXIST "%REPO_PATH%" (
+    echo ===========================================
+    echo 错误：目录 %REPO_PATH% 不存在，请检查路径！
+    echo ===========================================
+    pause
+    EXIT /B 1
+)
+REM 切换到目标目录
+CD /D "%REPO_PATH%"
+REM 检查是否为有效的 Git 仓库
+IF NOT EXIST .git (
+    echo ===========================================
+    echo 错误：目录 %REPO_PATH% 不是一个有效的 Git 仓库。
+    echo ===========================================
+    pause
+    EXIT /B 1
+)
+REM 确保当前分支是 main 分支
+git rev-parse --abbrev-ref HEAD >nul 2>&1
+IF ERRORLEVEL 1 (
+    echo ===========================================
+    echo 错误：无法检测当前分支，请确保这是一个有效的 Git 仓库。
+    echo ===========================================
+    pause
+    EXIT /B 1
+)
+SET CURRENT_BRANCH=main
+git checkout %CURRENT_BRANCH% >nul 2>&1
+IF ERRORLEVEL 1 (
+    echo ===========================================
+    echo 错误：无法切换到分支 %CURRENT_BRANCH%，请检查分支名称。
+    echo ===========================================
+    pause
+    EXIT /B 1
+)
+REM 检查远程仓库是否有更新
+SET "RETRY_COUNT=0"
+:CHECK_UPDATES_LOOP
+echo ===========================================
+echo 正在检查远程仓库是否有更新...
+git fetch origin %CURRENT_BRANCH%
+IF NOT "!ERRORLEVEL!"=="0" (
+    SET /A "RETRY_COUNT+=1"
+    IF !RETRY_COUNT! LEQ 3 (
+        echo 尝试获取更新失败，等待 5 秒后进行第 !RETRY_COUNT! 次重试...
+        timeout /t 5 >nul
+        goto CHECK_UPDATES_LOOP
+    )
+    echo 错误：无法从远程仓库获取更新，请检查网络连接或远程配置。
+    pause
+    EXIT /B 1
+)
+REM 比较本地分支与远程分支
+SET REMOTE_BRANCH=origin/%CURRENT_BRANCH%
+git rev-list --left-right --count %REMOTE_BRANCH%...%CURRENT_BRANCH% >nul 2>&1
+FOR /F "tokens=1,2 delims=	" %%A IN ('git rev-list --left-right --count %REMOTE_BRANCH%...%CURRENT_BRANCH%') DO (
+    SET BEHIND_COUNT=%%A
+    SET AHEAD_COUNT=%%B
+)
+echo ===========================================
+echo 本地分支与远程分支的差异：
+echo 当前分支落后远程分支 !BEHIND_COUNT! 次提交。
+echo 当前分支领先远程分支 !AHEAD_COUNT! 次提交。
+echo ===========================================
+REM 如果有更新，则拉取更改
+IF !BEHIND_COUNT! GTR 0 (
+    echo 正在从远程仓库拉取更新...
+    git pull origin %CURRENT_BRANCH%
+    IF "!ERRORLEVEL!"=="0" (
+        echo 更新成功！
+    ) ELSE (
+        echo 错误：拉取更新失败，请手动检查。
+    )
+) ELSE (
+    echo 本地分支已经是最新状态，无需更新。
+)
+echo ===========================================
+echo 单个项目更新脚本执行完成。
+EXIT /B 0
+
+
+:update_all_projects
+cd /d "%baseDir%"
+rem 检查目录是否存在
+if not exist "%baseDir%" (
+    echo 指定的目录 "%baseDir%" 不存在。
+    pause
+    exit /b 1
+)
+rem ========================= 拉取更新：所有项目 ==================================
+rem 遍历目录下的所有文件夹
+echo 正在检查 GitHub 文件夹中的项目...
+echo.
+for /d %%F in ("%baseDir%\*") do (
+    rem 检查文件夹是否是 Git 项目（通过检查 .git 文件夹是否存在）
+    if exist "%%F\.git" (
+        rem 切换到目录并执行 git pull
+        pushd "%%F"
+        echo.
+        echo ========================================
+        echo 正在更新项目: %%~nxF
+        echo 项目路径: %%F
+        echo ========================================
+        SET "RETRY_COUNT=0"
+        :ALL_PROJECT_CHECK_UPDATES_LOOP
+        git pull origin main
+        IF NOT "!ERRORLEVEL!"=="0" (
+            SET /A "RETRY_COUNT+=1"
+            IF !RETRY_COUNT! LEQ 3 (
+                echo 尝试更新项目失败，等待 5 秒后进行第 !RETRY_COUNT! 次重试...
+                timeout /t 5 >nul
+                goto ALL_PROJECT_CHECK_UPDATES_LOOP
+            )
+            echo 错误：项目 %%~nxF 更新失败，请手动检查。
+        )
+        popd
+        echo.
+        echo.
+    )
+)
+echo 所有项目更新完成。
+EXIT /B 0
+
+:after_update
+echo 操作完成，等待 3 秒后返回子菜单...
+timeout /t 3 >nul
+goto Pull_updates
+
+
+rem =========================  五 、项目更新标签  ============================
 :update_tags
 rem 清屏，显示项目更新标签子菜单
 cls
@@ -743,184 +1138,6 @@ echo 推送完成，等待3秒返回到update_tags
 timeout /t 3 >nul
 goto update_tags
 
-rem ==============================拉取更新的项目==================================
-:Pull_updates
-rem 清屏，显示项目拉取更新子菜单
-cls
-
-powershell -Command ^
-"Clear-Host; ^
-    Write-Host '*********************************************' -ForegroundColor Yellow; ^
-    Write-Host '**************  拉取更新的项目  *************' -ForegroundColor Green; ^
-    Write-Host '*********************************************' -ForegroundColor Yellow; ^
-    Write-Host '* 1. 拉取更新：hugo-main                    *' -ForegroundColor Cyan; ^
-    Write-Host '* 2. 拉取更新：music                        *' -ForegroundColor Magenta; ^
-    Write-Host '* 3. 拉取更新：file                         *' -ForegroundColor DarkCyan; ^
-    Write-Host '* 4. 拉取更新：bat                          *' -ForegroundColor DarkGreen; ^
-    Write-Host '* 5. 拉取更新：random-pic-api               *' -ForegroundColor DarkRed; ^
-    Write-Host '* 6. 拉取更新：compose                      *' -ForegroundColor DarkYellow; ^
-    Write-Host '* 7. 拉取更新：sh                           *' -ForegroundColor DarkBlue; ^
-    Write-Host '* 8. 拉取更新：所有项目                     *' -ForegroundColor Cyan; ^
-    Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
-    Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
-    Write-Host '*********************************************' -ForegroundColor Yellow"
-
-rem 提示用户输入项目编号
-set /p subchoice=请输入项目编号（0 - 9）：
-
-
-rem 根据用户输入跳转到相应的功能模块
-if "%subchoice%"=="1" call :update_single_project "%baseDir%\hugo-main" && goto after_update
-if "%subchoice%"=="2" call :update_single_project "%baseDir%\music" && goto after_update
-if "%subchoice%"=="3" call :update_single_project "%baseDir%\file" && goto after_update
-if "%subchoice%"=="4" call :update_single_project "%baseDir%\bat" && goto after_update
-if "%subchoice%"=="5" call :update_single_project "%baseDir%\random-pic-api" && goto after_update
-if "%subchoice%"=="6" call :update_single_project "%baseDir%\compose" && goto after_update
-if "%subchoice%"=="7" call :update_single_project "%baseDir%\sh" && goto after_update
-if "%subchoice%"=="8" call :update_all_projects && goto after_update
-if "%subchoice%"=="9" goto menu
-if "%subchoice%"=="0"  (
-    echo 正在退出...
-    goto exit_script
-)
-
-
-echo 无效的选择，请输入（0 - 9）之间的数字。
-timeout /t 3 >nul
-goto Pull_updates
-
-
-:update_single_project
-SET "REPO_PATH=%~1"
-REM 检查目标目录是否存在
-IF NOT EXIST "%REPO_PATH%" (
-    echo ===========================================
-    echo 错误：目录 %REPO_PATH% 不存在，请检查路径！
-    echo ===========================================
-    pause
-    EXIT /B 1
-)
-REM 切换到目标目录
-CD /D "%REPO_PATH%"
-REM 检查是否为有效的 Git 仓库
-IF NOT EXIST .git (
-    echo ===========================================
-    echo 错误：目录 %REPO_PATH% 不是一个有效的 Git 仓库。
-    echo ===========================================
-    pause
-    EXIT /B 1
-)
-REM 确保当前分支是 main 分支
-git rev-parse --abbrev-ref HEAD >nul 2>&1
-IF ERRORLEVEL 1 (
-    echo ===========================================
-    echo 错误：无法检测当前分支，请确保这是一个有效的 Git 仓库。
-    echo ===========================================
-    pause
-    EXIT /B 1
-)
-SET CURRENT_BRANCH=main
-git checkout %CURRENT_BRANCH% >nul 2>&1
-IF ERRORLEVEL 1 (
-    echo ===========================================
-    echo 错误：无法切换到分支 %CURRENT_BRANCH%，请检查分支名称。
-    echo ===========================================
-    pause
-    EXIT /B 1
-)
-REM 检查远程仓库是否有更新
-SET "RETRY_COUNT=0"
-:CHECK_UPDATES_LOOP
-echo ===========================================
-echo 正在检查远程仓库是否有更新...
-git fetch origin %CURRENT_BRANCH%
-IF NOT "!ERRORLEVEL!"=="0" (
-    SET /A "RETRY_COUNT+=1"
-    IF !RETRY_COUNT! LEQ 3 (
-        echo 尝试获取更新失败，等待 5 秒后进行第 !RETRY_COUNT! 次重试...
-        timeout /t 5 >nul
-        goto CHECK_UPDATES_LOOP
-    )
-    echo 错误：无法从远程仓库获取更新，请检查网络连接或远程配置。
-    pause
-    EXIT /B 1
-)
-REM 比较本地分支与远程分支
-SET REMOTE_BRANCH=origin/%CURRENT_BRANCH%
-git rev-list --left-right --count %REMOTE_BRANCH%...%CURRENT_BRANCH% >nul 2>&1
-FOR /F "tokens=1,2 delims=	" %%A IN ('git rev-list --left-right --count %REMOTE_BRANCH%...%CURRENT_BRANCH%') DO (
-    SET BEHIND_COUNT=%%A
-    SET AHEAD_COUNT=%%B
-)
-echo ===========================================
-echo 本地分支与远程分支的差异：
-echo 当前分支落后远程分支 !BEHIND_COUNT! 次提交。
-echo 当前分支领先远程分支 !AHEAD_COUNT! 次提交。
-echo ===========================================
-REM 如果有更新，则拉取更改
-IF !BEHIND_COUNT! GTR 0 (
-    echo 正在从远程仓库拉取更新...
-    git pull origin %CURRENT_BRANCH%
-    IF "!ERRORLEVEL!"=="0" (
-        echo 更新成功！
-    ) ELSE (
-        echo 错误：拉取更新失败，请手动检查。
-    )
-) ELSE (
-    echo 本地分支已经是最新状态，无需更新。
-)
-echo ===========================================
-echo 单个项目更新脚本执行完成。
-EXIT /B 0
-
-
-:update_all_projects
-cd /d "%baseDir%"
-rem 检查目录是否存在
-if not exist "%baseDir%" (
-    echo 指定的目录 "%baseDir%" 不存在。
-    pause
-    exit /b 1
-)
-rem ========================= 拉取更新：所有项目 ==================================
-rem 遍历目录下的所有文件夹
-echo 正在检查 GitHub 文件夹中的项目...
-echo.
-for /d %%F in ("%baseDir%\*") do (
-    rem 检查文件夹是否是 Git 项目（通过检查 .git 文件夹是否存在）
-    if exist "%%F\.git" (
-        rem 切换到目录并执行 git pull
-        pushd "%%F"
-        echo.
-        echo ========================================
-        echo 正在更新项目: %%~nxF
-        echo 项目路径: %%F
-        echo ========================================
-        SET "RETRY_COUNT=0"
-        :ALL_PROJECT_CHECK_UPDATES_LOOP
-        git pull origin main
-        IF NOT "!ERRORLEVEL!"=="0" (
-            SET /A "RETRY_COUNT+=1"
-            IF !RETRY_COUNT! LEQ 3 (
-                echo 尝试更新项目失败，等待 5 秒后进行第 !RETRY_COUNT! 次重试...
-                timeout /t 5 >nul
-                goto ALL_PROJECT_CHECK_UPDATES_LOOP
-            )
-            echo 错误：项目 %%~nxF 更新失败，请手动检查。
-        )
-        popd
-        echo.
-        echo.
-    )
-)
-echo 所有项目更新完成。
-EXIT /B 0
-
-
-:after_update
-echo 操作完成，等待 3 秒后返回子菜单...
-timeout /t 3 >nul
-goto Pull_updates
 
 rem ===========================================================================
 :exit_script
