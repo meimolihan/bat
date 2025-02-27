@@ -100,6 +100,9 @@ timeout /t 2 >nul
 goto git_menu
 
 rem ========================= 安装 Git 以管理员权限 ============================
+@echo off
+setlocal enabledelayedexpansion
+
 :install_git
     REM 检查 winget 是否可用
     winget --version >nul 2>&1
@@ -116,8 +119,28 @@ rem ========================= 安装 Git 以管理员权限 ============================
     ) else (
         echo Git 安装成功！
     )
-    pause
-    exit /b
+
+    REM 检查 Git 是否安装成功并打印版本号
+    git --version >nul 2>&1
+    if %errorlevel% equ 0 (
+        for /f "tokens=3 delims= " %%a in ('git --version') do (
+            set "git_version=%%a"
+        )
+        if defined git_version (
+            echo 当前安装的 Git 版本号为：!git_version!
+        ) else (
+            echo 无法获取 Git 版本号，请检查 Git 是否安装成功。
+        )
+    ) else (
+        echo 无法获取 Git 版本号，请检查 Git 是否安装成功。
+    )
+
+    echo 即将在 3 秒后返回 Git 命令菜单...
+	powershell -Command "Start-Sleep -Seconds 3"
+	goto git_menu  rem 定义要返回的菜单
+	exit /b
+
+endlocal
 
 rem ========================= 查看 Git 版本 ============================
 :check_git_version
@@ -126,8 +149,10 @@ rem ========================= 查看 Git 版本 ============================
     if %errorlevel% neq 0 (
         echo 无法获取 Git 版本信息，可能 Git 未安装。
     )
-    pause
-    exit /b
+    echo 即将在 3 秒后返回 Git 命令菜单...
+	powershell -Command "Start-Sleep -Seconds 3"
+	goto git_menu  rem 定义要返回的菜单
+	exit /b
 
 rem ========================= 克隆 Git 仓库 ============================
 :clone_git_repo
@@ -148,8 +173,10 @@ rem ========================= 克隆 Git 仓库 ============================
     ) else (
         echo 克隆成功！
     )
-    pause
-    exit /b
+    echo 即将在 3 秒后返回 Git 命令菜单...
+	powershell -Command "Start-Sleep -Seconds 3"
+	goto git_menu  rem 定义要返回的菜单
+	exit /b
 
 rem ========================= 设置 Git 用户名 ============================
 :set_user_name
@@ -161,8 +188,10 @@ rem ========================= 设置 Git 用户名 ============================
     )
     git config --global user.name "%userName%"
     echo 用户名已设置为 %userName%
-    pause
-    exit /b
+    echo 即将在 3 秒后返回 Git 命令菜单...
+	powershell -Command "Start-Sleep -Seconds 3"
+	goto git_menu  rem 定义要返回的菜单
+	exit /b
 
 rem ========================= 设置 Git 用户邮箱 ============================
 :set_user_email
@@ -174,8 +203,10 @@ rem ========================= 设置 Git 用户邮箱 ============================
     )
     git config --global user.email "%userEmail%"
     echo 用户邮箱已设置为 %userEmail%
-    pause
-    exit /b
+    echo 即将在 3 秒后返回 Git 命令菜单...
+	powershell -Command "Start-Sleep -Seconds 3"
+	goto git_menu  rem 定义要返回的菜单
+	exit /b
 
 rem ========================= 设置 Git 代理 ============================
 :set_git_proxy
@@ -186,8 +217,10 @@ rem ========================= 设置 Git 代理 ============================
     git config --global http.proxy 127.0.0.1:7890
     git config --global https.proxy 127.0.0.1:7890
     echo Git 代理已设置为 http://127.0.0.1:7890 和 https://127.0.0.1:7890
-    pause
-    exit /b
+    echo 即将在 3 秒后返回 Git 命令菜单...
+	powershell -Command "Start-Sleep -Seconds 3"
+	goto git_menu  rem 定义要返回的菜单
+	exit /b
 
 rem ======================== Hugo_命令菜单 =============================
 :hugo_commands
@@ -241,8 +274,11 @@ rem =================== 安装 hugo =====================
     winget --version >nul 2>&1
     if %errorlevel% neq 0 (
         echo winget 不可用，请确保你的系统支持并已正确安装 winget。
-        pause
-        exit /b
+        rem 等待两秒返回菜单
+	echo 即将在 2 秒后返回 Hugo 命令菜单...
+	powershell -Command "Start-Sleep -Seconds 2"
+	goto hugo_commands  rem 定义要返回的菜单
+	exit /b
     )
 
     echo 正在尝试以管理员权限安装 Hugo，请稍候...
@@ -252,14 +288,20 @@ rem =================== 安装 hugo =====================
     ) else (
         echo Hugo 安装成功！
     )
-    pause
-    exit /b
+    rem 等待两秒返回菜单
+	echo 即将在 2 秒后返回 Hugo 命令菜单...
+	powershell -Command "Start-Sleep -Seconds 2"
+	goto hugo_commands  rem 定义要返回的菜单
+	exit /b
 
 rem ================ 查看 hugo 版本 ========================
 :hugo_v
 rem 启动一个新的命令行窗口并运行hugo服务器
 start cmd /k "hugo version"
-pause >nul
+rem 等待两秒返回菜单
+echo 即将在 2 秒后返回 Hugo 命令菜单...
+powershell -Command "Start-Sleep -Seconds 2"
+goto hugo_commands  rem 定义要返回的菜单
 exit /b
 
 rem ================= 新建文章 =======================
@@ -299,14 +341,20 @@ if %errorlevel% neq 0 (
 )
 
 echo 请在notepad.exe中编辑文章，编辑完成后按任意键返回菜单。
-pause >nul
+rem 等待两秒返回菜单
+echo 即将在 2 秒后返回 Hugo 命令菜单...
+powershell -Command "Start-Sleep -Seconds 2"
+goto hugo_commands  rem 定义要返回的菜单
 exit /b
 
 rem ================== 打开文章目录 ======================
 :post_hugo
 :: 定义目标目录（使用 %USERPROFILE% 使路径通用）
 start "" "%baseDir%\hugo-main\content\post"
-pause >nul
+rem 等待两秒返回菜单
+echo 即将在 2 秒后返回 Hugo 命令菜单...
+powershell -Command "Start-Sleep -Seconds 2"
+goto hugo_commands  rem 定义要返回的菜单
 exit /b
 
 rem ================== 运行 hugo ======================
@@ -318,7 +366,10 @@ call :change_dir "%baseDir%\hugo-main" || (
 )
 rem 启动一个新的命令行窗口并运行hugo服务器
 start cmd /k "hugo server -D"
-pause >nul
+rem 等待两秒返回菜单
+echo 即将在 2 秒后返回 Hugo 命令菜单...
+powershell -Command "Start-Sleep -Seconds 2"
+goto hugo_commands  rem 定义要返回的菜单
 exit /b
 
 rem ================== 浏览器打开 :1313 ======================
@@ -328,7 +379,9 @@ timeout /t 2 >nul
 echo 浏览器已自动打开本地Hugo页面。
 rem 打开浏览器访问本地hugo服务器
 start "" "http://localhost:1313"
-pause >nul
+echo 即将在 2 秒后返回 Hugo 命令菜单...
+timeout /t 3 >nul  REM 等待 3 秒
+goto hugo_commands  REM 返回到 Hugo 命令菜单
 exit /b
 
 rem ================== 运行 hugo 并打开   ======================
@@ -345,7 +398,9 @@ timeout /t 5 >nul
 echo 浏览器已自动打开本地Hugo页面。
 rem 打开浏览器访问本地hugo服务器
 start "" "http://localhost:1313"
-pause >nul
+echo 即将在 2 秒后返回 Hugo 命令菜单...
+timeout /t 3 >nul  REM 等待 3 秒
+goto hugo_commands  REM 返回到 Hugo 命令菜单
 exit /b
 
 
@@ -378,13 +433,13 @@ call :handle_submenu_choice %subchoice%
 goto submenu
 
 :handle_submenu_choice
-if "%~1"=="1" set "REPO_PATH=%baseDir%\hugo-main" && call :ValidateRepoAndCommit && goto submenu
-if "%~1"=="2" set "REPO_PATH=%baseDir%\music" && call :ValidateRepoAndCommit && goto submenu
-if "%~1"=="3" set "REPO_PATH=%baseDir%\file" && call :ValidateRepoAndCommit && goto submenu
-if "%~1"=="4" set "REPO_PATH=%baseDir%\bat" && call :ValidateRepoAndCommit && goto submenu
-if "%~1"=="5" set "REPO_PATH=%baseDir%\random-pic-api" && call :ValidateRepoAndCommit && goto submenu
-if "%~1"=="6" set "REPO_PATH=%baseDir%\compose" && call :ValidateRepoAndCommit && goto submenu
-if "%~1"=="7" set "REPO_PATH=%baseDir%\sh" && call :ValidateRepoAndCommit && goto submenu
+if "%~1"=="1" set "REPO_PATH=%baseDir%\hugo-main" && call :ValidateRepoAndCommit && goto after_commit
+if "%~1"=="2" set "REPO_PATH=%baseDir%\music" && call :ValidateRepoAndCommit && goto after_commit
+if "%~1"=="3" set "REPO_PATH=%baseDir%\file" && call :ValidateRepoAndCommit && goto after_commit
+if "%~1"=="4" set "REPO_PATH=%baseDir%\bat" && call :ValidateRepoAndCommit && goto after_commit
+if "%~1"=="5" set "REPO_PATH=%baseDir%\random-pic-api" && call :ValidateRepoAndCommit && goto after_commit
+if "%~1"=="6" set "REPO_PATH=%baseDir%\compose" && call :ValidateRepoAndCommit && goto after_commit
+if "%~1"=="7" set "REPO_PATH=%baseDir%\sh" && call :ValidateRepoAndCommit && goto after_commit
 if "%~1"=="9" goto menu
 if "%~1"=="0" (
     echo 正在退出...
@@ -392,7 +447,7 @@ if "%~1"=="0" (
 )
 
 echo 无效的选择，请输入（0 - 9）之间的数字。
-timeout /t 2 >nul
+timeout /t 3 >nul
 goto submenu
 
 :ValidateRepoAndCommit
@@ -444,7 +499,6 @@ IF DEFINED CHANGES (
 
 REM 提示完成
 CALL :ShowMessage "脚本执行完成。"
-pause
 exit /b 0
 
 :ShowMessage
@@ -488,7 +542,12 @@ IF ERRORLEVEL 1 (
 )
 exit /b 0
 
-rem =====================================================
+:after_commit
+echo 操作完成，等待 3 秒后返回子菜单...
+timeout /t 3 >nul
+goto submenu
+
+rem =========================项目更新标签============================
 :update_tags
 rem 清屏，显示项目更新标签子菜单
 cls
@@ -509,19 +568,29 @@ cls
 powershell -ExecutionPolicy Bypass -File temp.ps1
 del temp.ps1
 
+:input_subchoice
 rem 提示用户输入操作编号
 set /p subchoice=请输入操作编号（0 - 9）：
+
+rem 检查输入是否为有效数字
+set "valid=01234569"
+echo %valid% | findstr /C:"%subchoice%" >nul
+if %errorlevel% neq 0 (
+    echo 无效的选择，请输入（0 - 9）之间的数字。
+    timeout /t 2 >nul
+    goto input_subchoice
+)
 
 call :handle_update_tags_choice %subchoice%
 goto update_tags
 
 :handle_update_tags_choice
-if "%~1"=="1" set "projectDir=%baseDir%\hugo-main" && call :update_project_tags && goto update_tags
-if "%~1"=="2" set "projectDir=%baseDir%\music" && call :update_project_tags && goto update_tags
-if "%~1"=="3" set "projectDir=%baseDir%\file" && call :update_project_tags && goto update_tags
-if "%~1"=="4" set "projectDir=%baseDir%\random-pic-api" && call :update_project_tags && goto update_tags
-if "%~1"=="5" set "projectDir=%baseDir%\bat" && call :update_project_tags && goto update_tags
-if "%~1"=="6" set "projectDir=%baseDir%\sh" && call :update_project_tags && goto update_tags
+if "%~1"=="1" set "projectDir=%baseDir%\hugo-main" && call :update_project_tags && goto after_update
+if "%~1"=="2" set "projectDir=%baseDir%\music" && call :update_project_tags && goto after_update
+if "%~1"=="3" set "projectDir=%baseDir%\file" && call :update_project_tags && goto after_update
+if "%~1"=="4" set "projectDir=%baseDir%\random-pic-api" && call :update_project_tags && goto after_update
+if "%~1"=="5" set "projectDir=%baseDir%\bat" && call :update_project_tags && goto after_update
+if "%~1"=="6" set "projectDir=%baseDir%\sh" && call :update_project_tags && goto after_update
 if "%~1"=="9" goto menu
 if "%~1"=="0"  (
     echo 正在退出...
@@ -544,7 +613,6 @@ call :git_add_and_commit
 call :git_push
 call :delete_tag v1.0.0
 call :create_and_push_tag v1.0.0 "Recreate tags for the latest submission"
-pause >nul
 exit /b
 
 :git_add_and_commit
@@ -558,6 +626,15 @@ if %errorlevel% neq 0 (
     exit /b
 )
 echo ===========================================
+
+rem 检查是否有文件被添加到暂存区
+git diff --cached --quiet
+if %errorlevel% equ 0 (
+    echo 没有可提交的更改，跳过提交步骤。
+    echo ===========================================
+    exit /b
+)
+
 echo 正在提交更改，提交信息为 "update"...
 rem 提交暂存区的文件到本地仓库
 git commit -m "update"
@@ -670,13 +747,18 @@ if %errorlevel% neq 0 (
 )
 exit /b 0
 
-rem ================================================================
+:after_update
+echo 推送完成，等待3秒返回到update_tags
+timeout /t 3 >nul
+goto update_tags
+
+rem ==============================拉取更新的项目==================================
 :Pull_updates
 rem 清屏，显示项目拉取更新子菜单
 cls
 (
     echo Write-Host '*********************************************' -ForegroundColor Yellow
-    echo Write-Host '*          请选择要拉取更新的项目           *' -ForegroundColor Green
+    echo Write-Host '*              拉取更新的项目               *' -ForegroundColor Green
     echo Write-Host '*********************************************' -ForegroundColor Yellow
     echo Write-Host '* 1. 拉取更新：hugo-main                    *' -ForegroundColor Cyan
     echo Write-Host '* 2. 拉取更新：music                        *' -ForegroundColor Magenta
@@ -693,27 +775,31 @@ cls
 powershell -ExecutionPolicy Bypass -File temp.ps1
 del temp.ps1
 
+
 rem 提示用户输入项目编号
 set /p subchoice=请输入项目编号（0 - 9）：
 
+
 rem 根据用户输入跳转到相应的功能模块
-if "%subchoice%"=="1" call :update_single_project "%baseDir%\hugo-main" && goto Pull_updates
-if "%subchoice%"=="2" call :update_single_project "%baseDir%\music" && goto Pull_updates
-if "%subchoice%"=="3" call :update_single_project "%baseDir%\file" && goto Pull_updates
-if "%subchoice%"=="4" call :update_single_project "%baseDir%\bat" && goto Pull_updates
-if "%subchoice%"=="5" call :update_single_project "%baseDir%\random-pic-api" && goto Pull_updates
-if "%subchoice%"=="6" call :update_single_project "%baseDir%\compose" && goto Pull_updates
-if "%subchoice%"=="7" call :update_single_project "%baseDir%\sh" && goto Pull_updates
-if "%subchoice%"=="8" call :update_all_projects && goto Pull_updates
+if "%subchoice%"=="1" call :update_single_project "%baseDir%\hugo-main" && goto after_update
+if "%subchoice%"=="2" call :update_single_project "%baseDir%\music" && goto after_update
+if "%subchoice%"=="3" call :update_single_project "%baseDir%\file" && goto after_update
+if "%subchoice%"=="4" call :update_single_project "%baseDir%\bat" && goto after_update
+if "%subchoice%"=="5" call :update_single_project "%baseDir%\random-pic-api" && goto after_update
+if "%subchoice%"=="6" call :update_single_project "%baseDir%\compose" && goto after_update
+if "%subchoice%"=="7" call :update_single_project "%baseDir%\sh" && goto after_update
+if "%subchoice%"=="8" call :update_all_projects && goto after_update
 if "%subchoice%"=="9" goto menu
 if "%subchoice%"=="0"  (
     echo 正在退出...
     goto exit_script
 )
 
+
 echo 无效的选择，请输入（0 - 9）之间的数字。
-timeout /t 2 >nul
+timeout /t 3 >nul
 goto Pull_updates
+
 
 :update_single_project
 SET "REPO_PATH=%~1"
@@ -754,10 +840,18 @@ IF ERRORLEVEL 1 (
     EXIT /B 1
 )
 REM 检查远程仓库是否有更新
+SET "RETRY_COUNT=0"
+:CHECK_UPDATES_LOOP
 echo ===========================================
 echo 正在检查远程仓库是否有更新...
 git fetch origin %CURRENT_BRANCH%
 IF NOT "!ERRORLEVEL!"=="0" (
+    SET /A "RETRY_COUNT+=1"
+    IF !RETRY_COUNT! LEQ 3 (
+        echo 尝试获取更新失败，等待 5 秒后进行第 !RETRY_COUNT! 次重试...
+        timeout /t 5 >nul
+        goto CHECK_UPDATES_LOOP
+    )
     echo 错误：无法从远程仓库获取更新，请检查网络连接或远程配置。
     pause
     EXIT /B 1
@@ -788,8 +882,8 @@ IF !BEHIND_COUNT! GTR 0 (
 )
 echo ===========================================
 echo 单个项目更新脚本执行完成。
-pause
 EXIT /B 0
+
 
 :update_all_projects
 cd /d "%baseDir%"
@@ -813,18 +907,35 @@ for /d %%F in ("%baseDir%\*") do (
         echo 正在更新项目: %%~nxF
         echo 项目路径: %%F
         echo ========================================
+        SET "RETRY_COUNT=0"
+        :ALL_PROJECT_CHECK_UPDATES_LOOP
         git pull origin main
+        IF NOT "!ERRORLEVEL!"=="0" (
+            SET /A "RETRY_COUNT+=1"
+            IF !RETRY_COUNT! LEQ 3 (
+                echo 尝试更新项目失败，等待 5 秒后进行第 !RETRY_COUNT! 次重试...
+                timeout /t 5 >nul
+                goto ALL_PROJECT_CHECK_UPDATES_LOOP
+            )
+            echo 错误：项目 %%~nxF 更新失败，请手动检查。
+        )
         popd
         echo.
         echo.
     )
 )
 echo 所有项目更新完成。
+EXIT /B 0
 
+
+:after_update
+echo 操作完成，等待 3 秒后返回子菜单...
+timeout /t 3 >nul
+goto Pull_updates
 
 rem ===========================================================================
 :exit_script
 echo 感谢使用，再见！
-timeout /t 2 >nul
+timeout /t 3 >nul
 exit
 rem ===========================================================================
