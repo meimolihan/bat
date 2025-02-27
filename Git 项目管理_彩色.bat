@@ -427,7 +427,7 @@ powershell -ExecutionPolicy Bypass -File temp.ps1
 del temp.ps1
 
 rem 提示用户输入项目编号
-set /p subchoice=请输入项目编号（0-9）：
+set /p subchoice=请输入项目编号（0 - 9）：
 
 call :handle_submenu_choice %subchoice%
 goto submenu
@@ -494,7 +494,8 @@ IF DEFINED CHANGES (
     CALL :PushChanges
     CALL :ShowMessage "提交和推送成功！"
 ) ELSE (
-    CALL :ShowMessage "没有文件需要提交。"
+    CALL :ShowMessage "没有文件需要提交，尝试推送到远程仓库..."
+    CALL :PushChanges
 )
 
 REM 提示完成
