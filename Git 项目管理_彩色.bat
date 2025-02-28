@@ -148,10 +148,9 @@ rem ========================= （1）安装 scoop 以管理员权限 =====================
 	)
 	echo 最新代码拉取成功。
 
-    echo 即将在 3 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 3"
+    echo 即将在 2 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 2"
 	goto git_menu  rem 定义要返回的菜单
-	exit /b
 
 rem ========================= （2）安装 Git 以管理员权限 ============================
 :install_git
@@ -186,10 +185,9 @@ rem ========================= （2）安装 Git 以管理员权限 =======================
         echo 无法获取 Git 版本号，请检查 Git 是否安装成功。
     )
 
-    echo 即将在 3 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 3"
+    echo 即将在 2 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 2"
 	goto git_menu  rem 定义要返回的菜单
-	exit /b
 
 endlocal
 
@@ -197,10 +195,9 @@ rem ========================= （3）更新 Git 版本 ============================
 :update_git
     echo 正在更新 Git 版本...
     git update-git-for-windows
-    echo 即将在 3 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 3"
+    echo 即将在 2 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 2"
 	goto git_menu  rem 定义要返回的菜单
-	exit /b
 
 rem ========================= （4）查看 Git 版本 ============================
 :check_git_version
@@ -209,8 +206,8 @@ rem ========================= （4）查看 Git 版本 ============================
     if %errorlevel% neq 0 (
         echo 无法获取 Git 版本信息，可能 Git 未安装。
     )
-    echo 即将在 3 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 3"
+	echo 按任意键返回菜单...
+    pause >nul
 	goto git_menu  rem 定义要返回的菜单
 	exit /b
 
@@ -236,10 +233,9 @@ rem ========================= （5）克隆 Git 仓库 ============================
     ) else (
         echo 克隆成功！
     )
-    echo 即将在 3 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 3"
+    echo 即将在 2 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 2"
 	goto git_menu  rem 定义要返回的菜单
-	exit /b
 
 rem ========================= （6）设置 Git 用户名和邮箱 ============================
 :set_user_name
@@ -261,10 +257,9 @@ rem ========================= （6）设置 Git 用户名和邮箱 =======================
 	git config --global user.email "%userEmail%"
 	echo 用户邮箱已设置为 %userEmail%
 	
-    echo 即将在 3 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 3"
+    echo 即将在 2 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 2"
 	goto git_menu  rem 定义要返回的菜单
-	exit /b
 
 rem ========================= （7）设置 Git 代理 ============================
 :set_git_proxy
@@ -275,10 +270,9 @@ rem ========================= （7）设置 Git 代理 ============================
     git config --global http.proxy 127.0.0.1:7890
     git config --global https.proxy 127.0.0.1:7890
     echo Git 代理已设置为 http://127.0.0.1:7890 和 https://127.0.0.1:7890
-    echo 即将在 3 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 3"
+    echo 即将在 2 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 2"
 	goto git_menu  rem 定义要返回的菜单
-	exit /b
 	
 rem ========================= （8）取消 Git 代理 ============================
 :unset_git_proxy
@@ -286,10 +280,9 @@ rem ========================= （8）取消 Git 代理 ============================
     git config --global --unset https.proxy
 	echo Git 取消历史配置成功
 	
-    echo 即将在 3 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 3"
+    echo 即将在 2 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 2"
 	goto git_menu  rem 定义要返回的菜单
-	exit /b
 
 rem ======================== 二 、Hugo_命令菜单 =============================
 :hugo_commands
@@ -393,10 +386,9 @@ rem ========================= （1）安装 scoop 以管理员权限 =====================
 	)
 	echo 最新代码拉取成功。
 
-    echo 即将在 3 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 3"
+    echo 即将在 2 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 2"
 	goto git_menu  rem 定义要返回的菜单
-	exit /b
 
 rem =================== （2）安装 hugo =====================
 :install_hugo
@@ -418,19 +410,17 @@ rem =================== （2）安装 hugo =====================
     ) else (
         echo Hugo 安装成功！
     )
-    echo 即将在 3 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 3"
+    echo 即将在 2 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 2"
 	goto hugo_commands  rem 定义要返回的菜单
-	exit /b
 
 rem ================ （3）查看 hugo 版本 ========================
 :hugo_v
 	rem 启动一个新的命令行窗口并运行hugo服务器
 	start cmd /k "hugo version"
-	echo 即将在 3 秒后返回 ...
+	echo 即将在 2 秒后返回 ...
 	powershell -Command "Start-Sleep -Seconds 2"
 	goto hugo_commands  rem 定义要返回的菜单
-	exit /b
 
 rem ================= （4）新建文章 =======================
 :create_article
@@ -470,20 +460,18 @@ rem ================= （4）新建文章 =======================
 	)
 
 	echo 请在typora.exe中编辑文章，编辑完成后按任意键返回菜单。
-    echo 即将在 3 秒后返回 ...
+    echo 即将在 2 秒后返回 ...
 	powershell -Command "Start-Sleep -Seconds 2"
 	goto hugo_commands  rem 定义要返回的菜单
-	exit /b
 
 rem ================== （5）打开文章目录 ======================
 :post_hugo
 	:: 定义目标目录（使用 %USERPROFILE% 使路径通用）
 	start "" "%baseDir%\hugo-main\content\post"
 	rem 等待两秒返回菜单
-    echo 即将在 3 秒后返回 ...
+    echo 即将在 2 秒后返回 ...
 	powershell -Command "Start-Sleep -Seconds 2"
 	goto hugo_commands  rem 定义要返回的菜单
-	exit /b
 
 rem ================== （6）运行 hugo ======================
 :run_hugo
@@ -494,10 +482,9 @@ rem ================== （6）运行 hugo ======================
 	)
 	rem 启动一个新的命令行窗口并运行hugo服务器
 	start cmd /k "hugo server -D"
-    echo 即将在 3 秒后返回 ...
+    echo 即将在 2 秒后返回 ...
 	powershell -Command "Start-Sleep -Seconds 2"
 	goto hugo_commands  rem 定义要返回的菜单
-	exit /b
 
 rem ================== （7）浏览器打开 :1313 ======================
 :open_browser
@@ -506,10 +493,9 @@ rem ================== （7）浏览器打开 :1313 ======================
 	echo 浏览器已自动打开本地Hugo页面。
 	rem 打开浏览器访问本地hugo服务器
 	start "" "http://localhost:1313"
-    echo 即将在 3 秒后返回 ...
-	timeout /t 3 >nul  REM 等待 3 秒
-	goto hugo_commands  REM 返回到 Hugo 命令菜单
-	exit /b
+    echo 即将在 2 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 2"
+	goto hugo_commands  rem 返回到 Hugo 命令菜单
 
 rem ================== （8）运行 hugo 并打开   ======================
 :run_hugo_link
@@ -525,10 +511,9 @@ rem ================== （8）运行 hugo 并打开   ======================
 	echo 浏览器已自动打开本地Hugo页面。
 	rem 打开浏览器访问本地hugo服务器
 	start "" "http://localhost:1313"
-    echo 即将在 3 秒后返回 ...
-	timeout /t 3 >nul
-	goto hugo_commands  REM 返回到 Hugo 命令菜单
-	exit /b
+    echo 即将在 2 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 2"
+	goto hugo_commands  rem 返回到 Hugo 命令菜单
 
 
 rem =======================  三 、GitHub 项目提交  ==============================
@@ -571,7 +556,7 @@ powershell -Command ^
 	)
 
 	echo 无效的编号，请输入（0 - 9）之间的数字。
-	timeout /t 3 >nul
+	timeout /t 2 >nul
 	goto submenu
 
 :ValidateRepoAndCommit
@@ -668,8 +653,8 @@ powershell -Command ^
 	exit /b 0
 
 :after_commit
-	echo 操作完成，等待 3 秒后返回子菜单...
-	timeout /t 3 >nul
+    echo 即将在 2 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 2"
 	goto submenu
 
 rem ================== 提交所有项目 ======================
@@ -729,8 +714,8 @@ rem ================== 提交所有项目 ======================
 	echo 所有项目处理完成。
 	echo %separator%
 
-	echo 操作完成，等待 6 秒后返回 ...
-	timeout /t 6 >nul
+	echo 按任意键返回菜单...
+    pause >nul
 	goto submenu
 
 rem ==============================  四 、拉取更新的项目  ==================================
@@ -905,8 +890,8 @@ powershell -Command ^
 	EXIT /B 0
 
 :after_update
-	echo 操作完成，等待 3 秒后返回 ...
-	timeout /t 3 >nul
+	echo 按任意键返回菜单...
+    pause >nul
 	goto Pull_updates rem 定义要返回的菜单
 
 
@@ -1097,8 +1082,8 @@ powershell -Command ^
 	exit /b 0
 
 :after_update
-	echo 推送完成，等待 3 秒返回 ...
-	timeout /t 3 >nul
+    echo 即将在 2 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 2"
 	goto update_tags rem 定义要返回的菜单
 
 rem ======================== 六 、打开图床目录 =============================
@@ -1163,7 +1148,7 @@ powershell -Command ^
 	if "%choice%"=="0" goto exit_script
 
 	echo 无效的编号，请输入（0 - 9）之间的数字。
-	timeout /t 3 >nul
+	timeout /t 2 >nul
 	goto dakai_tucuang
 	
 rem ======================== 七 、XXXXXXXXXXXXXXXX =============================
@@ -1172,6 +1157,6 @@ rem ======================== 七 、XXXXXXXXXXXXXXXX =============================
 rem ===========================================================================
 :exit_script
 	echo 感谢使用，再见！
-	timeout /t 3 >nul
+	timeout /t 2 >nul
 	exit
 rem ===========================================================================
