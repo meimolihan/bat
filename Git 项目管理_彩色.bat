@@ -224,6 +224,9 @@ rem ========================= （4）查看 Git 版本 ============================
 
 rem ========================= （5）克隆 Git 仓库 ============================
 :clone_git_repo
+	REM 切换到目标目录
+	CD /D %baseDir%
+
     REM 提示用户输入 Git 仓库的 URL
     set /p repoUrl="请输入 Git 仓库的 URL: "
     REM 检查是否输入了 URL
@@ -463,7 +466,7 @@ if %errorlevel% neq 0 (
     goto menu
 )
 
-echo 文章创建成功，正在打开notepad.exe编辑器...
+echo 文章创建成功，正在打开typora.exe编辑器...
 
 rem 打开记事本编辑器编辑新创建的文章
 set articlePath=%baseDir%\hugo-main\content\post\%name%\index.md
@@ -473,13 +476,14 @@ if not exist "%articlePath%" (
     goto menu
 )
 
-start "" "notepad.exe" "%articlePath%"
+REM start "" "notepad.exe" "%articlePath%"
+start "" "typora.exe" "%articlePath%"
 if %errorlevel% neq 0 (
-    echo 无法打开notepad.exe编辑器，请检查notepad.exe是否安装。
+    echo 无法打开typora.exe编辑器，请检查typora.exe是否安装。
     pause >nul
 )
 
-echo 请在notepad.exe中编辑文章，编辑完成后按任意键返回菜单。
+echo 请在typora.exe中编辑文章，编辑完成后按任意键返回菜单。
 rem 等待两秒返回菜单
 echo 即将在 2 秒后返回 Hugo 命令菜单...
 powershell -Command "Start-Sleep -Seconds 2"
