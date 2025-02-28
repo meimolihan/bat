@@ -1,5 +1,5 @@
 @echo off
-start notepad "Y:\file\music\cdn-歌曲文件夹.txt"
+start notepad "Y:\file\music\music.txt"
  
 rem pause ::去掉rem执行暂停命令 
 rem exit ::去掉rem执行退出命令 
