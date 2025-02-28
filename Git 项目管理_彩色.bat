@@ -29,24 +29,22 @@ powershell -Command ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
-	rem 提示用户输入编号
-	set /p choice="请输入操作编号 (0 - 9): "
-
-:handle_choice
+    set "choice="
+    set /p choice="请输入操作编号 (0 - 9): "
+    if not defined choice (
+        echo 输入不能为空，请输入（0 - 9）之间的数字。
+        timeout /t 2 >nul
+		rem 定义要返回的菜单
+        goto menu
+    )
+	
 	if "%choice%"=="1" goto git_menu
 	if "%choice%"=="2" goto hugo_commands
 	if "%choice%"=="3" goto submenu
 	if "%choice%"=="4" goto Pull_updates
 	if "%choice%"=="5" goto update_tags
 	if "%choice%"=="6" goto dakai_tucuang
-	if "%choice%"=="0"  (
-		echo 正在退出...
-		goto exit_script
-	)
-
-	echo 无效的编号，请输入（0 - 9）之间的数字。
-	timeout /t 2 >nul
-	goto menu
+	if "%choice%"=="0" goto exit_script
 
 rem ==========================  一 、命令菜单  ===========================
 :git_menu
@@ -70,7 +68,16 @@ powershell -Command ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
-	set /p choice="请输入操作编号 (0 - 9): "
+	rem 提示用户输入编号
+    set "choice="
+    set /p choice="请输入操作编号 (0 - 9): "
+    if not defined choice (
+        echo 输入不能为空，请输入（0 - 9）之间的数字。
+        timeout /t 2 >nul
+		rem 定义要返回的菜单
+        goto git_menu
+    )
+	
 	if "%choice%"=="1" call :install_scoop && goto git_menu
 	if "%choice%"=="2" call :install_git && goto git_menu
 	if "%choice%"=="3" call :update_git && goto git_menu
@@ -80,14 +87,7 @@ powershell -Command ^
 	if "%choice%"=="7" call :set_git_proxy && goto git_menu
 	if "%choice%"=="8" call :unset_git_proxy && goto git_menu
 	if "%choice%"=="9" goto menu
-	if "%choice%"=="0"  (
-		echo 正在退出...
-		goto exit_script
-	)
-
-	echo 无效的编号，请输入（0 - 9）之间的数字。
-	timeout /t 2 >nul
-	goto git_menu
+	if "%choice%"=="0" goto exit_script
 
 rem ========================= （1）安装 scoop 以管理员权限 ============================
 :install_scoop
@@ -148,9 +148,15 @@ rem ========================= （1）安装 scoop 以管理员权限 =====================
 	)
 	echo 最新代码拉取成功。
 
-    echo 即将在 2 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 2"
-	goto git_menu  rem 定义要返回的菜单
+	echo 按任意键返回菜单...
+    pause >nul
+	rem 定义要返回的菜单
+	goto git_menu
+	
+    rem echo 即将在 2 秒后返回 ...
+	rem powershell -Command "Start-Sleep -Seconds 2"
+	rem 定义要返回的菜单
+	rem goto git_menu
 
 rem ========================= （2）安装 Git 以管理员权限 ============================
 :install_git
@@ -184,19 +190,27 @@ rem ========================= （2）安装 Git 以管理员权限 =======================
     ) else (
         echo 无法获取 Git 版本号，请检查 Git 是否安装成功。
     )
+	
+	echo 按任意键返回菜单...
+    pause >nul
+	rem 定义要返回的菜单
+	goto git_menu
+	
+    rem echo 即将在 2 秒后返回 ...
+	rem powershell -Command "Start-Sleep -Seconds 2"
+	rem 定义要返回的菜单
+	rem goto git_menu
 
-    echo 即将在 2 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 2"
-	goto git_menu  rem 定义要返回的菜单
-
-endlocal
+    endlocal
 
 rem ========================= （3）更新 Git 版本 ============================
 :update_git
     echo 正在更新 Git 版本...
     git update-git-for-windows
-    echo 即将在 2 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 2"
+	
+    echo 即将在 1 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 1"
+	rem 定义要返回的菜单
 	goto git_menu  rem 定义要返回的菜单
 
 rem ========================= （4）查看 Git 版本 ============================
@@ -206,10 +220,10 @@ rem ========================= （4）查看 Git 版本 ============================
     if %errorlevel% neq 0 (
         echo 无法获取 Git 版本信息，可能 Git 未安装。
     )
+	
 	echo 按任意键返回菜单...
     pause >nul
 	goto git_menu  rem 定义要返回的菜单
-	exit /b
 
 rem ========================= （5）克隆 Git 仓库 ============================
 :clone_git_repo
@@ -233,9 +247,11 @@ rem ========================= （5）克隆 Git 仓库 ============================
     ) else (
         echo 克隆成功！
     )
-    echo 即将在 2 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 2"
-	goto git_menu  rem 定义要返回的菜单
+	
+    echo 即将在 1 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 1"
+	rem 定义要返回的菜单
+	goto git_menu
 
 rem ========================= （6）设置 Git 用户名和邮箱 ============================
 :set_user_name
@@ -257,9 +273,10 @@ rem ========================= （6）设置 Git 用户名和邮箱 =======================
 	git config --global user.email "%userEmail%"
 	echo 用户邮箱已设置为 %userEmail%
 	
-    echo 即将在 2 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 2"
-	goto git_menu  rem 定义要返回的菜单
+    echo 即将在 1 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 1"
+	rem 定义要返回的菜单
+	goto git_menu
 
 rem ========================= （7）设置 Git 代理 ============================
 :set_git_proxy
@@ -270,9 +287,11 @@ rem ========================= （7）设置 Git 代理 ============================
     git config --global http.proxy 127.0.0.1:7890
     git config --global https.proxy 127.0.0.1:7890
     echo Git 代理已设置为 http://127.0.0.1:7890 和 https://127.0.0.1:7890
-    echo 即将在 2 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 2"
-	goto git_menu  rem 定义要返回的菜单
+	
+    echo 即将在 1 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 1"
+	rem 定义要返回的菜单
+	goto git_menu
 	
 rem ========================= （8）取消 Git 代理 ============================
 :unset_git_proxy
@@ -280,9 +299,10 @@ rem ========================= （8）取消 Git 代理 ============================
     git config --global --unset https.proxy
 	echo Git 取消历史配置成功
 	
-    echo 即将在 2 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 2"
-	goto git_menu  rem 定义要返回的菜单
+    echo 即将在 1 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 1"
+	rem 定义要返回的菜单
+	goto git_menu
 
 rem ======================== 二 、Hugo_命令菜单 =============================
 :hugo_commands
@@ -306,10 +326,16 @@ powershell -Command ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
-	rem 提示用户输入操作编号
-	set /p choice=请输入操作编号（0 - 9）：
+	rem 提示用户输入编号
+    set "choice="
+    set /p choice="请输入操作编号 (0 - 9): "
+    if not defined choice (
+        echo 输入不能为空，请输入（0 - 9）之间的数字。
+        timeout /t 2 >nul
+		rem 定义要返回的菜单
+        goto hugo_commands
+    )
 
-:handle_hugo_choice
 	if "%choice%"=="1" call :install_scoop && goto hugo_commands
 	if "%choice%"=="2" call :install_hugo && goto hugo_commands
 	if "%choice%"=="3" call :hugo_v && goto hugo_commands
@@ -319,14 +345,7 @@ powershell -Command ^
 	if "%choice%"=="7" call :open_browser && goto hugo_commands
 	if "%choice%"=="8" call :run_hugo_link && goto hugo_commands
 	if "%choice%"=="9" goto menu
-	if "%choice%"=="0"  (
-		echo 正在退出...
-		goto exit_script
-	)
-
-	echo 无效的编号，请输入（0 - 9）之间的数字。
-	timeout /t 2 >nul
-	goto hugo_commands
+	if "%choice%"=="0" goto exit_script
 
 rem ========================= （1）安装 scoop 以管理员权限 ============================
 :install_scoop
@@ -386,8 +405,9 @@ rem ========================= （1）安装 scoop 以管理员权限 =====================
 	)
 	echo 最新代码拉取成功。
 
-    echo 即将在 2 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 2"
+    echo 即将在 1 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 1"
+	rem 定义要返回的菜单
 	goto git_menu  rem 定义要返回的菜单
 
 rem =================== （2）安装 hugo =====================
@@ -396,11 +416,11 @@ rem =================== （2）安装 hugo =====================
     winget --version >nul 2>&1
     if %errorlevel% neq 0 (
         echo winget 不可用，请确保你的系统支持并已正确安装 winget。
-        rem 等待两秒返回菜单
+
 	echo 即将在 2 秒后返回 Hugo 命令菜单...
 	powershell -Command "Start-Sleep -Seconds 2"
-	goto hugo_commands  rem 定义要返回的菜单
-	exit /b
+	rem 定义要返回的菜单
+	goto hugo_commands
     )
 
     echo 正在尝试以管理员权限安装 Hugo，请稍候...
@@ -410,17 +430,21 @@ rem =================== （2）安装 hugo =====================
     ) else (
         echo Hugo 安装成功！
     )
-    echo 即将在 2 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 2"
-	goto hugo_commands  rem 定义要返回的菜单
+	
+    echo 即将在 1 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 1"
+	rem 定义要返回的菜单
+	goto hugo_commands
 
 rem ================ （3）查看 hugo 版本 ========================
 :hugo_v
 	rem 启动一个新的命令行窗口并运行hugo服务器
 	start cmd /k "hugo version"
-	echo 即将在 2 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 2"
-	goto hugo_commands  rem 定义要返回的菜单
+	
+    echo 即将在 1 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 1"
+	rem 定义要返回的菜单
+	goto hugo_commands
 
 rem ================= （4）新建文章 =======================
 :create_article
@@ -431,7 +455,7 @@ rem ================= （4）新建文章 =======================
 	call :change_dir "%baseDir%\hugo-main" || (
 		echo 无法切换到hugo项目根目录，请检查路径。
 		pause >nul
-		goto menu
+		goto hugo_commands
 	)
 
 	rem 使用hugo命令创建新文章
@@ -439,7 +463,7 @@ rem ================= （4）新建文章 =======================
 	if %errorlevel% neq 0 (
 		echo 文章创建失败，请检查Hugo配置或路径。
 		pause >nul
-		goto menu
+		goto hugo_commands
 	)
 
 	echo 文章创建成功，正在打开typora.exe编辑器...
@@ -449,42 +473,46 @@ rem ================= （4）新建文章 =======================
 	if not exist "%articlePath%" (
 		echo 文章文件未正确生成，请检查Hugo配置。
 		pause >nul
-		goto menu
+		goto hugo_commands
 	)
 
-	REM start "" "notepad.exe" "%articlePath%"
+	rem start "" "notepad.exe" "%articlePath%"
 	start "" "typora.exe" "%articlePath%"
 	if %errorlevel% neq 0 (
 		echo 无法打开typora.exe编辑器，请检查typora.exe是否安装。
 		pause >nul
 	)
-
 	echo 请在typora.exe中编辑文章，编辑完成后按任意键返回菜单。
-    echo 即将在 2 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 2"
+	
+    echo 即将在 1 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 1"
+	rem 定义要返回的菜单
 	goto hugo_commands  rem 定义要返回的菜单
 
 rem ================== （5）打开文章目录 ======================
 :post_hugo
-	:: 定义目标目录（使用 %USERPROFILE% 使路径通用）
+	rem 定义目标目录（使用 %USERPROFILE% 使路径通用）
 	start "" "%baseDir%\hugo-main\content\post"
-	rem 等待两秒返回菜单
-    echo 即将在 2 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 2"
-	goto hugo_commands  rem 定义要返回的菜单
+	
+    echo 即将在 1 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 1"
+	rem 定义要返回的菜单
+	goto hugo_commands
 
 rem ================== （6）运行 hugo ======================
 :run_hugo
 	call :change_dir "%baseDir%\hugo-main" || (
 		echo 无法切换到hugo项目根目录，请检查路径。
 		pause >nul
-		goto menu
+		goto hugo_commands
 	)
 	rem 启动一个新的命令行窗口并运行hugo服务器
 	start cmd /k "hugo server -D"
-    echo 即将在 2 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 2"
-	goto hugo_commands  rem 定义要返回的菜单
+	
+    echo 即将在 1 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 1"
+	rem 定义要返回的菜单
+	goto hugo_commands
 
 rem ================== （7）浏览器打开 :1313 ======================
 :open_browser
@@ -493,27 +521,31 @@ rem ================== （7）浏览器打开 :1313 ======================
 	echo 浏览器已自动打开本地Hugo页面。
 	rem 打开浏览器访问本地hugo服务器
 	start "" "http://localhost:1313"
-    echo 即将在 2 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 2"
-	goto hugo_commands  rem 返回到 Hugo 命令菜单
+	
+    echo 即将在 1 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 1"
+	rem 定义要返回的菜单
+	goto hugo_commands
 
 rem ================== （8）运行 hugo 并打开   ======================
 :run_hugo_link
 	call :change_dir "%baseDir%\hugo-main" || (
 		echo 无法切换到hugo项目根目录，请检查路径。
 		pause >nul
-		goto menu
+		goto hugo_commands
 	)
 	rem 启动一个新的命令行窗口并运行hugo服务器
 	start cmd /k "hugo server -D"
 	echo 本地服务器已启动，请访问 http://localhost:1313/，浏览器将在服务器启动后5秒内自动打开。
-	timeout /t 5 >nul
+	timeout /t 3 >nul
 	echo 浏览器已自动打开本地Hugo页面。
 	rem 打开浏览器访问本地hugo服务器
 	start "" "http://localhost:1313"
-    echo 即将在 2 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 2"
-	goto hugo_commands  rem 返回到 Hugo 命令菜单
+	
+    echo 即将在 1 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 1"
+	rem 定义要返回的菜单
+	goto hugo_commands
 
 
 rem =======================  三 、GitHub 项目提交  ==============================
@@ -537,10 +569,16 @@ powershell -Command ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
-	rem 提示用户输入项目编号
-	set /p choice=请输入项目编号（0 - 9）：
+	rem 提示用户输入编号
+    set "choice="
+    set /p choice="请输入操作编号 (0 - 9): "
+    if not defined choice (
+        echo 输入不能为空，请输入（0 - 9）之间的数字。
+        timeout /t 2 >nul
+		rem 定义要返回的菜单
+        goto submenu
+    )
 
-:handle_submenu_choice
 	if "%choice%"=="1" set "REPO_PATH=%baseDir%\hugo-main" && call :ValidateRepoAndCommit && goto after_commit
 	if "%choice%"=="2" set "REPO_PATH=%baseDir%\music" && call :ValidateRepoAndCommit && goto after_commit
 	if "%choice%"=="3" set "REPO_PATH=%baseDir%\file" && call :ValidateRepoAndCommit && goto after_commit
@@ -550,36 +588,29 @@ powershell -Command ^
 	if "%choice%"=="7" set "REPO_PATH=%baseDir%\sh" && call :ValidateRepoAndCommit && goto after_commit
 	if "%choice%"=="8" set "REPO_PATH=%baseDir%\" && call :git_push_add && goto after_commit
 	if "%choice%"=="9" goto menu
-	if "%choice%"=="0" (
-		echo 正在退出...
-		goto exit_script
-	)
-
-	echo 无效的编号，请输入（0 - 9）之间的数字。
-	timeout /t 2 >nul
-	goto submenu
+	if "%choice%"=="0" goto exit_script
 
 :ValidateRepoAndCommit
 	REM 检查目标目录是否存在
 	IF NOT EXIST "%REPO_PATH%" (
 		CALL :ShowError "错误：目录 %REPO_PATH% 不存在，请检查路径！"
-		EXIT /B 1
+		exit /b 1
 	)
 
 	REM 切换到目标目录
 	CD /D "%REPO_PATH%" 2>NUL
 	IF ERRORLEVEL 1 (
 		CALL :ShowError "错误：无法切换到目录 %REPO_PATH%，请检查 Git 仓库。"
-		EXIT /B 1
+		exit /b 1
 	)
 
 	REM 检查是否为有效的 Git 仓库
 	IF NOT EXIST .git (
 		CALL :ShowError "错误：目录 %REPO_PATH% 不是一个有效的 Git 仓库。"
-		EXIT /B 1
+		exit /b 1
 	)
 
-	:CheckForChanges
+:CheckForChanges
 	REM 检查是否有修改需要提交
 	CALL :ShowMessage "正在检查是否有文件需要提交..."
 
@@ -653,9 +684,15 @@ powershell -Command ^
 	exit /b 0
 
 :after_commit
-    echo 即将在 2 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 2"
-	goto submenu
+	echo 按任意键返回菜单...
+    pause >nul
+	rem 定义要返回的菜单
+	goto Pull_updates
+	
+    rem echo 即将在 2 秒后返回 ...
+	rem powershell -Command "Start-Sleep -Seconds 2"
+	rem 定义要返回的菜单
+	rem goto submenu
 
 rem ================== 提交所有项目 ======================
 :git_push_add
@@ -716,7 +753,13 @@ rem ================== 提交所有项目 ======================
 
 	echo 按任意键返回菜单...
     pause >nul
+	rem 定义要返回的菜单
 	goto submenu
+	
+    rem echo 即将在 2 秒后返回 ...
+	rem powershell -Command "Start-Sleep -Seconds 2"
+	rem 定义要返回的菜单
+	rem goto submenu
 
 rem ==============================  四 、拉取更新的项目  ==================================
 :Pull_updates
@@ -740,10 +783,16 @@ powershell -Command ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
-	rem 提示用户输入操作编号
-	set /p choice=请输入操作编号（0 - 9）：
-
-	rem 根据用户输入跳转到相应的功能模块
+	rem 提示用户输入编号
+    set "choice="
+    set /p choice="请输入操作编号 (0 - 9): "
+    if not defined choice (
+        echo 输入不能为空，请输入（0 - 9）之间的数字。
+        timeout /t 2 >nul
+		rem 定义要返回的菜单
+        goto Pull_updates
+    )
+	
 	if "%choice%"=="1" call :update_single_project "%baseDir%\hugo-main" && goto after_update
 	if "%choice%"=="2" call :update_single_project "%baseDir%\music" && goto after_update
 	if "%choice%"=="3" call :update_single_project "%baseDir%\file" && goto after_update
@@ -753,14 +802,7 @@ powershell -Command ^
 	if "%choice%"=="7" call :update_single_project "%baseDir%\sh" && goto after_update
 	if "%choice%"=="8" call :update_all_projects && goto after_update
 	if "%choice%"=="9" goto menu
-	if "%choice%"=="0"  (
-		echo 正在退出...
-		goto exit_script
-	)
-
-	echo 无效的编号，请输入（0 - 9）之间的数字。
-	timeout /t 3 >nul
-	goto Pull_updates
+	if "%choice%"=="0" goto exit_script
 
 :update_single_project
 	SET "REPO_PATH=%~1"
@@ -770,7 +812,7 @@ powershell -Command ^
 		echo 错误：目录 %REPO_PATH% 不存在，请检查路径！
 		echo ===========================================
 		pause
-		EXIT /B 1
+		exit /b 1
 	)
 	REM 切换到目标目录
 	CD /D "%REPO_PATH%"
@@ -780,7 +822,7 @@ powershell -Command ^
 		echo 错误：目录 %REPO_PATH% 不是一个有效的 Git 仓库。
 		echo ===========================================
 		pause
-		EXIT /B 1
+		exit /b 1
 	)
 	REM 确保当前分支是 main 分支
 	git rev-parse --abbrev-ref HEAD >nul 2>&1
@@ -789,7 +831,7 @@ powershell -Command ^
 		echo 错误：无法检测当前分支，请确保这是一个有效的 Git 仓库。
 		echo ===========================================
 		pause
-		EXIT /B 1
+		exit /b 1
 	)
 	SET CURRENT_BRANCH=main
 	git checkout %CURRENT_BRANCH% >nul 2>&1
@@ -798,7 +840,7 @@ powershell -Command ^
 		echo 错误：无法切换到分支 %CURRENT_BRANCH%，请检查分支名称。
 		echo ===========================================
 		pause
-		EXIT /B 1
+		exit /b 1
 	)
 	REM 检查远程仓库是否有更新
 	SET "RETRY_COUNT=0"
@@ -816,7 +858,7 @@ powershell -Command ^
 		)
 		echo 错误：无法从远程仓库获取更新，请检查网络连接或远程配置。
 		pause
-		EXIT /B 1
+		exit /b 1
 	)
 	REM 比较本地分支与远程分支
 	SET REMOTE_BRANCH=origin/%CURRENT_BRANCH%
@@ -844,8 +886,7 @@ powershell -Command ^
 	)
 	echo ===========================================
 	echo 单个项目更新脚本执行完成。
-	EXIT /B 0
-
+	exit /b 0
 
 :update_all_projects
 	cd /d "%baseDir%"
@@ -887,13 +928,18 @@ powershell -Command ^
 		)
 	)
 	echo 所有项目更新完成。
-	EXIT /B 0
+	exit /b 0
 
 :after_update
 	echo 按任意键返回菜单...
     pause >nul
-	goto Pull_updates rem 定义要返回的菜单
-
+	rem 定义要返回的菜单
+	goto Pull_updates
+	
+    rem echo 即将在 2 秒后返回 ...
+	rem powershell -Command "Start-Sleep -Seconds 2"
+	rem 定义要返回的菜单
+	rem goto submenu rem 定义要返回的菜单
 
 rem =========================  五 、项目更新标签  ============================
 :update_tags
@@ -915,10 +961,16 @@ powershell -Command ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
-	rem 提示用户输入操作编号
-	set /p choice=请输入操作编号（0 - 9）：
+	rem 提示用户输入编号
+    set "choice="
+    set /p choice="请输入操作编号 (0 - 9): "
+    if not defined choice (
+        echo 输入不能为空，请输入（0 - 9）之间的数字。
+        timeout /t 2 >nul
+		rem 定义要返回的菜单
+        goto update_tags
+    )
 
-:handle_update_tags_choice
 	if "%choice%"=="1" set "projectDir=%baseDir%\hugo-main" && call :update_project_tags && goto after_update
 	if "%choice%"=="2" set "projectDir=%baseDir%\music" && call :update_project_tags && goto after_update
 	if "%choice%"=="3" set "projectDir=%baseDir%\file" && call :update_project_tags && goto after_update
@@ -926,14 +978,7 @@ powershell -Command ^
 	if "%choice%"=="5" set "projectDir=%baseDir%\bat" && call :update_project_tags && goto after_update
 	if "%choice%"=="6" set "projectDir=%baseDir%\sh" && call :update_project_tags && goto after_update
 	if "%choice%"=="9" goto menu
-	if "%choice%"=="0"  (
-		echo 正在退出...
-		goto exit_script
-	)
-
-	echo 无效的编号，请输入（0 - 9）之间的数字。
-	timeout /t 2 >nul
-	goto update_tags
+	if "%choice%"=="0" goto exit_script
 
 :update_project_tags
 	call :change_dir "%projectDir%" || (
@@ -956,7 +1001,7 @@ powershell -Command ^
 	git add .
 	if %errorlevel% neq 0 (
 		echo "git add ." 执行失败，请检查您的Git配置或文件权限。
-		pause >nul
+		pause
 		exit /b
 	)
 	echo ===========================================
@@ -974,7 +1019,7 @@ powershell -Command ^
 	git commit -m "update"
 	if %errorlevel% neq 0 (
 		echo "git commit -m 'update'" 执行失败，请检查您的Git配置或网络连接。
-		pause >nul
+		pause
 		exit /b
 	)
 	echo ===========================================
@@ -986,7 +1031,7 @@ powershell -Command ^
 	git push
 	if %errorlevel% neq 0 (
 		echo "git push" 执行失败，请检查您的Git配置或网络连接。
-		pause >nul
+		pause
 		exit /b
 	)
 	echo ===========================================
@@ -1004,7 +1049,7 @@ powershell -Command ^
 	git tag -d %1
 	if %errorlevel% neq 0 (
 		echo 本地标签 %1 删除失败，请手动检查。
-		pause >nul
+		pause
 		exit /b
 	)
 	echo ===========================================
@@ -1016,7 +1061,7 @@ powershell -Command ^
 	git push origin :refs/tags/%1
 	if %errorlevel% neq 0 (
 		echo 远程标签 %1 删除失败，请手动检查。
-		pause >nul
+		pause
 		exit /b
 	)
 	echo ===========================================
@@ -1045,7 +1090,7 @@ powershell -Command ^
 	git tag -a %1 -m "%2"
 	if %errorlevel% neq 0 (
 		echo 新标签 %1 创建失败，请手动检查。
-		pause >nul
+		pause
 		exit /b
 	)
 	echo ===========================================
@@ -1057,7 +1102,7 @@ powershell -Command ^
 	git push origin %1
 	if %errorlevel% neq 0 (
 		echo 标签 %1 推送失败，请手动检查。
-		pause >nul
+		pause
 		exit /b
 	)
 	echo ===========================================
@@ -1082,9 +1127,15 @@ powershell -Command ^
 	exit /b 0
 
 :after_update
-    echo 即将在 2 秒后返回 ...
-	powershell -Command "Start-Sleep -Seconds 2"
-	goto update_tags rem 定义要返回的菜单
+	echo 按任意键返回菜单...
+    pause >nul
+	rem 定义要返回的菜单
+	goto update_tags
+	
+    rem echo 即将在 2 秒后返回 ...
+	rem powershell -Command "Start-Sleep -Seconds 2"
+	rem 定义要返回的菜单
+	rem goto update_tags
 
 rem ======================== 六 、打开图床目录 =============================
 :dakai_tucuang
@@ -1107,8 +1158,15 @@ powershell -Command ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
-	rem 提示用户输入操作编号（0 - 9）
-	set /p choice=请输入操作编号（0 - 9）：
+	rem 提示用户输入编号
+    set "choice="
+    set /p choice="请输入操作编号 (0 - 9): "
+    if not defined choice (
+        echo 输入不能为空，请输入（0 - 9）之间的数字。
+        timeout /t 2 >nul
+		rem 定义要返回的菜单
+        goto dakai_tucuang
+    )
 
 	if "%choice%"=="1" (
 		start "" "%USERPROFILE%\Desktop\GitHub\file\img"
@@ -1146,10 +1204,6 @@ powershell -Command ^
 	)
 	if "%choice%"=="9" goto menu
 	if "%choice%"=="0" goto exit_script
-
-	echo 无效的编号，请输入（0 - 9）之间的数字。
-	timeout /t 2 >nul
-	goto dakai_tucuang
 	
 rem ======================== 七 、XXXXXXXXXXXXXXXX =============================
 
