@@ -7,13 +7,13 @@ CLS
 PROMPT $P$G
 
 :init
-rem 定义基础工作目录，设置为用户桌面下的GitHub文件夹
-set "baseDir=%USERPROFILE%\Desktop\GitHub"
-echo 基础工作目录: %baseDir%
+	rem 定义基础工作目录，设置为用户桌面下的GitHub文件夹
+	set "baseDir=%USERPROFILE%\Desktop\GitHub"
+	echo 基础工作目录: %baseDir%
 
 :menu
-rem 清屏，显示主菜单
-cls
+	rem 清屏，显示主菜单
+	cls
 
 powershell -Command ^
 "Clear-Host; ^
@@ -29,37 +29,29 @@ powershell -Command ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
-rem 提示用户输入编号
-set /p choice=请输入操作编号（0 - 9）：
-
-rem 根据用户输入跳转到相应的功能模块
-call :handle_choice %choice%
-goto menu
-
-::--------------------------
-:: 功能模块
-::--------------------------
+	rem 提示用户输入编号
+	set /p choice="请输入操作编号 (0 - 9): "
 
 :handle_choice
-if "%~1"=="1" goto git_menu
-if "%~1"=="2" goto hugo_commands
-if "%~1"=="3" goto submenu
-if "%~1"=="4" goto Pull_updates
-if "%~1"=="5" goto update_tags
-if "%~1"=="6" goto dakai_tucuang
-if "%~1"=="0"  (
-    echo 正在退出...
-    goto exit_script
-)
+	if "%choice%"=="1" goto git_menu
+	if "%choice%"=="2" goto hugo_commands
+	if "%choice%"=="3" goto submenu
+	if "%choice%"=="4" goto Pull_updates
+	if "%choice%"=="5" goto update_tags
+	if "%choice%"=="6" goto dakai_tucuang
+	if "%choice%"=="0"  (
+		echo 正在退出...
+		goto exit_script
+	)
 
-echo 无效的编号，请输入（0 - 9）之间的数字。
-timeout /t 2 >nul
-goto menu
+	echo 无效的编号，请输入（0 - 9）之间的数字。
+	timeout /t 2 >nul
+	goto menu
 
 rem ==========================  一 、命令菜单  ===========================
 :git_menu
-rem 清屏，显示 Git 命令子菜单
-cls
+	rem 清屏，显示 Git 命令子菜单
+	cls
 
 powershell -Command ^
 "Clear-Host; ^
@@ -78,25 +70,24 @@ powershell -Command ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
-set /p choice="请输入操作编号 (0 - 9): "
+	set /p choice="请输入操作编号 (0 - 9): "
+	if "%choice%"=="1" call :install_scoop && goto git_menu
+	if "%choice%"=="2" call :install_git && goto git_menu
+	if "%choice%"=="3" call :update_git && goto git_menu
+	if "%choice%"=="4" call :check_git_version && goto git_menu
+	if "%choice%"=="5" call :clone_git_repo && goto git_menu
+	if "%choice%"=="6" call :set_user_name && goto git_menu
+	if "%choice%"=="7" call :set_git_proxy && goto git_menu
+	if "%choice%"=="8" call :unset_git_proxy && goto git_menu
+	if "%choice%"=="9" goto menu
+	if "%choice%"=="0"  (
+		echo 正在退出...
+		goto exit_script
+	)
 
-if "%choice%"=="1" call :install_scoop && goto git_menu
-if "%choice%"=="2" call :install_git && goto git_menu
-if "%choice%"=="3" call :update_git && goto git_menu
-if "%choice%"=="4" call :check_git_version && goto git_menu
-if "%choice%"=="5" call :clone_git_repo && goto git_menu
-if "%choice%"=="6" call :set_user_name && goto git_menu
-if "%choice%"=="7" call :set_git_proxy && goto git_menu
-if "%choice%"=="8" call :unset_git_proxy && goto git_menu
-if "%choice%"=="9" goto menu
-if "%choice%"=="0"  (
-    echo 正在退出...
-    goto exit_script
-)
-
-echo 无效的编号，请输入（0 - 9）之间的数字。
-timeout /t 2 >nul
-goto git_menu
+	echo 无效的编号，请输入（0 - 9）之间的数字。
+	timeout /t 2 >nul
+	goto git_menu
 
 rem ========================= （1）安装 scoop 以管理员权限 ============================
 :install_scoop
@@ -173,7 +164,7 @@ rem ========================= （2）安装 Git 以管理员权限 =======================
     )
 
     echo 正在尝试以管理员权限安装 Git，请稍候...
-    powershell -Command "Start-Process powershell -Verb runAs -ArgumentList 'winget install --id Git.Git -e --source winget -h'" > install_log.txt 2>&1
+    powershell -Command "Start-Process powershell -Verb runAs -ArgumentList 'winget install --id Git.Git -e --source winget -h'"
     if %errorlevel% neq 0 (
         echo Git 安装失败！
     ) else (
@@ -302,8 +293,8 @@ rem ========================= （8）取消 Git 代理 ============================
 
 rem ======================== 二 、Hugo_命令菜单 =============================
 :hugo_commands
-rem 清屏，显示hugo命令子菜单
-cls
+	rem 清屏，显示hugo命令子菜单
+	cls
 
 powershell -Command ^
 "Clear-Host; ^
@@ -322,34 +313,30 @@ powershell -Command ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
-rem 提示用户输入操作编号
-set /p subchoice=请输入操作编号（0 - 9）：
-
-call :handle_hugo_choice %subchoice%
-goto hugo_commands
+	rem 提示用户输入操作编号
+	set /p choice=请输入操作编号（0 - 9）：
 
 :handle_hugo_choice
-if "%~1"=="1" call :install_scoop && goto hugo_commands
-if "%~1"=="2" call :install_hugo && goto hugo_commands
-if "%~1"=="3" call :hugo_v && goto hugo_commands
-if "%~1"=="4" call :create_article && goto hugo_commands
-if "%~1"=="5" call :post_hugo && goto hugo_commands
-if "%~1"=="6" call :run_hugo && goto hugo_commands
-if "%~1"=="7" call :open_browser && goto hugo_commands
-if "%~1"=="8" call :run_hugo_link && goto hugo_commands
-if "%~1"=="9" goto menu
-if "%~1"=="0"  (
-    echo 正在退出...
-    goto exit_script
-)
+	if "%choice%"=="1" call :install_scoop && goto hugo_commands
+	if "%choice%"=="2" call :install_hugo && goto hugo_commands
+	if "%choice%"=="3" call :hugo_v && goto hugo_commands
+	if "%choice%"=="4" call :create_article && goto hugo_commands
+	if "%choice%"=="5" call :post_hugo && goto hugo_commands
+	if "%choice%"=="6" call :run_hugo && goto hugo_commands
+	if "%choice%"=="7" call :open_browser && goto hugo_commands
+	if "%choice%"=="8" call :run_hugo_link && goto hugo_commands
+	if "%choice%"=="9" goto menu
+	if "%choice%"=="0"  (
+		echo 正在退出...
+		goto exit_script
+	)
 
-echo 无效的编号，请输入（0 - 9）之间的数字。
-timeout /t 2 >nul
-goto hugo_commands
+	echo 无效的编号，请输入（0 - 9）之间的数字。
+	timeout /t 2 >nul
+	goto hugo_commands
 
 rem ========================= （1）安装 scoop 以管理员权限 ============================
 :install_scoop
-
 	REM 定义 scoop 的 main 存储桶目录
 	set "scoop_main_dir=%USERPROFILE%\scoop\buckets\main"
 
@@ -425,7 +412,7 @@ rem =================== （2）安装 hugo =====================
     )
 
     echo 正在尝试以管理员权限安装 Hugo，请稍候...
-    powershell -Command "Start-Process powershell -Verb runAs -ArgumentList 'winget install --id Hugo.Hugo.Extended -e --source winget'" > install_log.txt 2>&1
+    powershell -Command "Start-Process powershell -Verb runAs -ArgumentList 'winget install --id Hugo.Hugo.Extended -e --source winget'"
     if %errorlevel% neq 0 (
         echo Hugo 安装失败！
     ) else (
@@ -546,8 +533,8 @@ rem ================== （8）运行 hugo 并打开   ======================
 
 rem =======================  三 、GitHub 项目提交  ==============================
 :submenu
-rem 清屏，显示项目提交子菜单
-cls
+	rem 清屏，显示项目提交子菜单
+	cls
 powershell -Command ^
 "Clear-Host; ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
@@ -565,30 +552,27 @@ powershell -Command ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
-rem 提示用户输入项目编号
-set /p subchoice=请输入项目编号（0 - 9）：
-
-call :handle_submenu_choice %subchoice%
-goto submenu
+	rem 提示用户输入项目编号
+	set /p choice=请输入项目编号（0 - 9）：
 
 :handle_submenu_choice
-if "%~1"=="1" set "REPO_PATH=%baseDir%\hugo-main" && call :ValidateRepoAndCommit && goto after_commit
-if "%~1"=="2" set "REPO_PATH=%baseDir%\music" && call :ValidateRepoAndCommit && goto after_commit
-if "%~1"=="3" set "REPO_PATH=%baseDir%\file" && call :ValidateRepoAndCommit && goto after_commit
-if "%~1"=="4" set "REPO_PATH=%baseDir%\bat" && call :ValidateRepoAndCommit && goto after_commit
-if "%~1"=="5" set "REPO_PATH=%baseDir%\random-pic-api" && call :ValidateRepoAndCommit && goto after_commit
-if "%~1"=="6" set "REPO_PATH=%baseDir%\compose" && call :ValidateRepoAndCommit && goto after_commit
-if "%~1"=="7" set "REPO_PATH=%baseDir%\sh" && call :ValidateRepoAndCommit && goto after_commit
-if "%~1"=="8" set "REPO_PATH=%baseDir%\" && call :git_push_add && goto after_commit
-if "%~1"=="9" goto menu
-if "%~1"=="0" (
-    echo 正在退出...
-    goto exit_script
-)
+	if "%choice%"=="1" set "REPO_PATH=%baseDir%\hugo-main" && call :ValidateRepoAndCommit && goto after_commit
+	if "%choice%"=="2" set "REPO_PATH=%baseDir%\music" && call :ValidateRepoAndCommit && goto after_commit
+	if "%choice%"=="3" set "REPO_PATH=%baseDir%\file" && call :ValidateRepoAndCommit && goto after_commit
+	if "%choice%"=="4" set "REPO_PATH=%baseDir%\bat" && call :ValidateRepoAndCommit && goto after_commit
+	if "%choice%"=="5" set "REPO_PATH=%baseDir%\random-pic-api" && call :ValidateRepoAndCommit && goto after_commit
+	if "%choice%"=="6" set "REPO_PATH=%baseDir%\compose" && call :ValidateRepoAndCommit && goto after_commit
+	if "%choice%"=="7" set "REPO_PATH=%baseDir%\sh" && call :ValidateRepoAndCommit && goto after_commit
+	if "%choice%"=="8" set "REPO_PATH=%baseDir%\" && call :git_push_add && goto after_commit
+	if "%choice%"=="9" goto menu
+	if "%choice%"=="0" (
+		echo 正在退出...
+		goto exit_script
+	)
 
-echo 无效的编号，请输入（0 - 9）之间的数字。
-timeout /t 3 >nul
-goto submenu
+	echo 无效的编号，请输入（0 - 9）之间的数字。
+	timeout /t 3 >nul
+	goto submenu
 
 :ValidateRepoAndCommit
 	REM 检查目标目录是否存在
@@ -751,8 +735,8 @@ rem ================== 提交所有项目 ======================
 
 rem ==============================  四 、拉取更新的项目  ==================================
 :Pull_updates
-rem 清屏，显示项目拉取更新子菜单
-cls
+	rem 清屏，显示项目拉取更新子菜单
+	cls
 
 powershell -Command ^
 "Clear-Host; ^
@@ -771,30 +755,27 @@ powershell -Command ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
-rem 提示用户输入操作编号
-set /p subchoice=请输入操作编号（0 - 9）：
+	rem 提示用户输入操作编号
+	set /p choice=请输入操作编号（0 - 9）：
 
+	rem 根据用户输入跳转到相应的功能模块
+	if "%choice%"=="1" call :update_single_project "%baseDir%\hugo-main" && goto after_update
+	if "%choice%"=="2" call :update_single_project "%baseDir%\music" && goto after_update
+	if "%choice%"=="3" call :update_single_project "%baseDir%\file" && goto after_update
+	if "%choice%"=="4" call :update_single_project "%baseDir%\bat" && goto after_update
+	if "%choice%"=="5" call :update_single_project "%baseDir%\random-pic-api" && goto after_update
+	if "%choice%"=="6" call :update_single_project "%baseDir%\compose" && goto after_update
+	if "%choice%"=="7" call :update_single_project "%baseDir%\sh" && goto after_update
+	if "%choice%"=="8" call :update_all_projects && goto after_update
+	if "%choice%"=="9" goto menu
+	if "%choice%"=="0"  (
+		echo 正在退出...
+		goto exit_script
+	)
 
-rem 根据用户输入跳转到相应的功能模块
-if "%subchoice%"=="1" call :update_single_project "%baseDir%\hugo-main" && goto after_update
-if "%subchoice%"=="2" call :update_single_project "%baseDir%\music" && goto after_update
-if "%subchoice%"=="3" call :update_single_project "%baseDir%\file" && goto after_update
-if "%subchoice%"=="4" call :update_single_project "%baseDir%\bat" && goto after_update
-if "%subchoice%"=="5" call :update_single_project "%baseDir%\random-pic-api" && goto after_update
-if "%subchoice%"=="6" call :update_single_project "%baseDir%\compose" && goto after_update
-if "%subchoice%"=="7" call :update_single_project "%baseDir%\sh" && goto after_update
-if "%subchoice%"=="8" call :update_all_projects && goto after_update
-if "%subchoice%"=="9" goto menu
-if "%subchoice%"=="0"  (
-    echo 正在退出...
-    goto exit_script
-)
-
-
-echo 无效的编号，请输入（0 - 9）之间的数字。
-timeout /t 3 >nul
-goto Pull_updates
-
+	echo 无效的编号，请输入（0 - 9）之间的数字。
+	timeout /t 3 >nul
+	goto Pull_updates
 
 :update_single_project
 	SET "REPO_PATH=%~1"
@@ -836,6 +817,7 @@ goto Pull_updates
 	)
 	REM 检查远程仓库是否有更新
 	SET "RETRY_COUNT=0"
+	
 :CHECK_UPDATES_LOOP
 	echo ===========================================
 	echo 正在检查远程仓库是否有更新...
@@ -925,13 +907,13 @@ goto Pull_updates
 :after_update
 	echo 操作完成，等待 3 秒后返回 ...
 	timeout /t 3 >nul
-	goto Pull_updates
+	goto Pull_updates rem 定义要返回的菜单
 
 
 rem =========================  五 、项目更新标签  ============================
 :update_tags
-rem 清屏，显示项目更新标签子菜单
-cls
+	rem 清屏，显示项目更新标签子菜单
+	cls
 
 powershell -Command ^
 "Clear-Host; ^
@@ -948,38 +930,25 @@ powershell -Command ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
-:input_subchoice
 	rem 提示用户输入操作编号
-	set /p subchoice=请输入操作编号（0 - 9）：
-
-	rem 检查输入是否为有效数字
-	set "valid=01234569"
-	echo %valid% | findstr /C:"%subchoice%" >nul
-	if %errorlevel% neq 0 (
-		echo 无效的编号，请输入（0 - 9）之间的数字。
-		timeout /t 2 >nul
-		goto input_subchoice
-	)
-
-	call :handle_update_tags_choice %subchoice%
-	goto update_tags
+	set /p choice=请输入操作编号（0 - 9）：
 
 :handle_update_tags_choice
-if "%~1"=="1" set "projectDir=%baseDir%\hugo-main" && call :update_project_tags && goto after_update
-if "%~1"=="2" set "projectDir=%baseDir%\music" && call :update_project_tags && goto after_update
-if "%~1"=="3" set "projectDir=%baseDir%\file" && call :update_project_tags && goto after_update
-if "%~1"=="4" set "projectDir=%baseDir%\random-pic-api" && call :update_project_tags && goto after_update
-if "%~1"=="5" set "projectDir=%baseDir%\bat" && call :update_project_tags && goto after_update
-if "%~1"=="6" set "projectDir=%baseDir%\sh" && call :update_project_tags && goto after_update
-if "%~1"=="9" goto menu
-if "%~1"=="0"  (
-    echo 正在退出...
-    goto exit_script
-)
+	if "%choice%"=="1" set "projectDir=%baseDir%\hugo-main" && call :update_project_tags && goto after_update
+	if "%choice%"=="2" set "projectDir=%baseDir%\music" && call :update_project_tags && goto after_update
+	if "%choice%"=="3" set "projectDir=%baseDir%\file" && call :update_project_tags && goto after_update
+	if "%choice%"=="4" set "projectDir=%baseDir%\random-pic-api" && call :update_project_tags && goto after_update
+	if "%choice%"=="5" set "projectDir=%baseDir%\bat" && call :update_project_tags && goto after_update
+	if "%choice%"=="6" set "projectDir=%baseDir%\sh" && call :update_project_tags && goto after_update
+	if "%choice%"=="9" goto menu
+	if "%choice%"=="0"  (
+		echo 正在退出...
+		goto exit_script
+	)
 
-echo 无效的编号，请输入（0 - 9）之间的数字。
-timeout /t 2 >nul
-goto update_tags
+	echo 无效的编号，请输入（0 - 9）之间的数字。
+	timeout /t 2 >nul
+	goto update_tags
 
 :update_project_tags
 	call :change_dir "%projectDir%" || (
@@ -1130,12 +1099,12 @@ goto update_tags
 :after_update
 	echo 推送完成，等待 3 秒返回 ...
 	timeout /t 3 >nul
-	goto update_tags
+	goto update_tags rem 定义要返回的菜单
 
 rem ======================== 六 、打开图床目录 =============================
 :dakai_tucuang
-rem 清屏，显示hugo命令子菜单
-cls
+	rem 清屏，显示hugo命令子菜单
+	cls
 powershell -Command ^
 "Clear-Host; ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
@@ -1153,58 +1122,56 @@ powershell -Command ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
+	rem 提示用户输入操作编号（0 - 9）
+	set /p choice=请输入操作编号（0 - 9）：
 
-:input_loop
-    rem 提示用户输入操作编号（0 - 9）
-	set /p subchoice=请输入操作编号（0 - 9）：
-	echo %subchoice%| findstr /r "^[0-9]$" >nul
-	if errorlevel 1 (
-		echo 无效的编号，请输入（0 - 9）之间的数字。
-		timeout /t 2 >nul
-		goto input_loop
-	)
-
-	call :dakai_tucuang_choice %subchoice%
-	goto dakai_tucuang
-
-:dakai_tucuang_choice
-	if "%~1"=="1" call :open_folder "%USERPROFILE%\Desktop\GitHub\file\img" && goto dakai_tucuang
-	if "%~1"=="2" call :open_folder "%USERPROFILE%\Desktop\GitHub\file\screenshot" && goto dakai_tucuang
-	if "%~1"=="3" call :open_folder "%USERPROFILE%\Desktop\GitHub\file\gif" && goto dakai_tucuang
-	if "%~1"=="4" call :open_folder "Y:\file\blog\img" && goto dakai_tucuang
-	if "%~1"=="5" call :open_folder "Y:\file\blog\screenshot" && goto dakai_tucuang
-	if "%~1"=="6" call :open_folder "Y:\file\blog\gif" && goto dakai_tucuang
-	if "%~1"=="7" (
-		call :open_folder "%USERPROFILE%\Desktop\GitHub\file\img"
-		call :open_folder "Y:\file\blog\img"
+	if "%choice%"=="1" (
+		start "" "%USERPROFILE%\Desktop\GitHub\file\img"
 		goto dakai_tucuang
 	)
-	if "%~1"=="8" (
-		call :open_folder "%USERPROFILE%\Desktop\GitHub\file\screenshot"
-		call :open_folder "Y:\file\blog\screenshot"
+	if "%choice%"=="2" (
+		start "" "%USERPROFILE%\Desktop\GitHub\file\screenshot"
 		goto dakai_tucuang
 	)
-	if "%~1"=="9" goto menu
-	if "%~1"=="0" (
-		echo 正在退出...
-		goto exit_script
+	if "%choice%"=="3" (
+		start "" "%USERPROFILE%\Desktop\GitHub\file\gif"
+		goto dakai_tucuang
 	)
+	if "%choice%"=="4" (
+		start "" "Y:\file\blog\img"
+		goto dakai_tucuang
+	)
+	if "%choice%"=="5" (
+		start "" "Y:\file\blog\screenshot"
+		goto dakai_tucuang
+	)
+	if "%choice%"=="6" (
+		start "" "Y:\file\blog\gif"
+		goto dakai_tucuang
+	)
+	if "%choice%"=="7" (
+		start "" "%USERPROFILE%\Desktop\GitHub\file\img"
+		start "" "Y:\file\blog\img"
+		goto dakai_tucuang
+	)
+	if "%choice%"=="8" (
+		start "" "%USERPROFILE%\Desktop\GitHub\file\screenshot"
+		start "" "Y:\file\blog\screenshot"
+		goto dakai_tucuang
+	)
+	if "%choice%"=="9" goto menu
+	if "%choice%"=="0" goto exit_script
 
 	echo 无效的编号，请输入（0 - 9）之间的数字。
-	timeout /t 2 >nul
+	timeout /t 3 >nul
 	goto dakai_tucuang
-
-rem 打开文件夹并等待3秒后返回菜单的函数
-:open_folder
-start "" "%~1"
-echo 即将在 3 秒后返回 ...
-powershell -Command "Start-Sleep -Seconds 3"
-exit /b
+	
+rem ======================== 七 、XXXXXXXXXXXXXXXX =============================
 
 
 rem ===========================================================================
 :exit_script
-echo 感谢使用，再见！
-timeout /t 3 >nul
-exit
+	echo 感谢使用，再见！
+	timeout /t 3 >nul
+	exit
 rem ===========================================================================
