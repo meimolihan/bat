@@ -19,18 +19,19 @@ cls
 powershell -Command ^
 "Clear-Host; ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
-    Write-Host '*************  Git 项目管理  ****************' -ForegroundColor Green; ^
+    Write-Host '*************  Git 命令菜单  ****************' -ForegroundColor Green; ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
     Write-Host '* 1. Git_命令菜单                           *' -ForegroundColor Cyan; ^
     Write-Host '* 2. Hugo_命令菜单                          *' -ForegroundColor Magenta; ^
     Write-Host '* 3. 项目_提交更新                          *' -ForegroundColor Red; ^
     Write-Host '* 4. 项目_拉取更新                          *' -ForegroundColor Blue; ^
     Write-Host '* 5. 项目_更新标签                          *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 6. 打开_图床目录                          *' -ForegroundColor DarkGreen; ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
-rem 提示用户输入选择
-set /p choice=请输入您的选择（0 - 9）：
+rem 提示用户输入编号
+set /p choice=请输入操作编号（0 - 9）：
 
 rem 根据用户输入跳转到相应的功能模块
 call :handle_choice %choice%
@@ -46,16 +47,17 @@ if "%~1"=="2" goto hugo_commands
 if "%~1"=="3" goto submenu
 if "%~1"=="4" goto Pull_updates
 if "%~1"=="5" goto update_tags
+if "%~1"=="6" goto dakai_tucuang
 if "%~1"=="0"  (
     echo 正在退出...
     goto exit_script
 )
 
-echo 无效的选择，请输入（0 - 9）之间的数字。
+echo 无效的编号，请输入（0 - 9）之间的数字。
 timeout /t 2 >nul
 goto menu
 
-rem ==========================  一 、Git 命令菜单  ===========================
+rem ==========================  一 、命令菜单  ===========================
 :git_menu
 rem 清屏，显示 Git 命令子菜单
 cls
@@ -63,7 +65,7 @@ cls
 powershell -Command ^
 "Clear-Host; ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
-    Write-Host '*****************Git 命令菜单****************' -ForegroundColor Green; ^
+    Write-Host '*****************  命令菜单  ****************' -ForegroundColor Green; ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
 	Write-Host '* 1. 安装 scoop                             *' -ForegroundColor Cyan; ^
     Write-Host '* 2. 安装 Git                               *' -ForegroundColor DarkYellow; ^
@@ -77,7 +79,7 @@ powershell -Command ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
-set /p choice="请输入你的选择 (0 - 9): "
+set /p choice="请输入操作编号 (0 - 9): "
 
 if "%choice%"=="1" call :install_scoop && goto git_menu
 if "%choice%"=="2" call :install_git && goto git_menu
@@ -93,7 +95,7 @@ if "%choice%"=="0"  (
     goto exit_script
 )
 
-echo 无效的选择，请输入（0 - 9）之间的数字。
+echo 无效的编号，请输入（0 - 9）之间的数字。
 timeout /t 2 >nul
 goto git_menu
 
@@ -342,7 +344,7 @@ if "%~1"=="0"  (
     goto exit_script
 )
 
-echo 无效的选择，请输入（0 - 9）之间的数字。
+echo 无效的编号，请输入（0 - 9）之间的数字。
 timeout /t 2 >nul
 goto hugo_commands
 
@@ -589,7 +591,7 @@ if "%~1"=="0" (
     goto exit_script
 )
 
-echo 无效的选择，请输入（0 - 9）之间的数字。
+echo 无效的编号，请输入（0 - 9）之间的数字。
 timeout /t 3 >nul
 goto submenu
 
@@ -781,8 +783,8 @@ powershell -Command ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
-rem 提示用户输入项目编号
-set /p subchoice=请输入项目编号（0 - 9）：
+rem 提示用户输入操作编号
+set /p subchoice=请输入操作编号（0 - 9）：
 
 
 rem 根据用户输入跳转到相应的功能模块
@@ -801,7 +803,7 @@ if "%subchoice%"=="0"  (
 )
 
 
-echo 无效的选择，请输入（0 - 9）之间的数字。
+echo 无效的编号，请输入（0 - 9）之间的数字。
 timeout /t 3 >nul
 goto Pull_updates
 
@@ -966,7 +968,7 @@ rem 检查输入是否为有效数字
 set "valid=01234569"
 echo %valid% | findstr /C:"%subchoice%" >nul
 if %errorlevel% neq 0 (
-    echo 无效的选择，请输入（0 - 9）之间的数字。
+    echo 无效的编号，请输入（0 - 9）之间的数字。
     timeout /t 2 >nul
     goto input_subchoice
 )
@@ -987,7 +989,7 @@ if "%~1"=="0"  (
     goto exit_script
 )
 
-echo 无效的选择，请输入（0 - 9）之间的数字。
+echo 无效的编号，请输入（0 - 9）之间的数字。
 timeout /t 2 >nul
 goto update_tags
 
@@ -1141,6 +1143,75 @@ exit /b 0
 echo 推送完成，等待3秒返回到update_tags
 timeout /t 3 >nul
 goto update_tags
+
+
+rem ======================== 六 、打开图床目录 =============================
+:dakai_tucuang
+rem 清屏，显示hugo命令子菜单
+cls
+powershell -Command ^
+"Clear-Host; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+    Write-Host '*************  打开图床目录  ****************' -ForegroundColor Green; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+    Write-Host '* 1. vercel图床 封面图片                    *' -ForegroundColor DarkBlue; ^
+    Write-Host '* 2. vercel图床 截屏图片                    *' -ForegroundColor Cyan; ^
+    Write-Host '* 3. vercel图床 GIF图片                     *' -ForegroundColor Magenta; ^
+    Write-Host '* 4. nginx图床 封面图片                     *' -ForegroundColor DarkCyan; ^
+    Write-Host '* 5. nginx图床 截屏图片                     *' -ForegroundColor DarkGreen; ^
+    Write-Host '* 6. nginx图床 GIF图片                      *' -ForegroundColor DarkRed; ^
+    Write-Host '* 7. vercel+nginx 封面图片                  *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 8. vercel+nginx 截屏图片                  *' -ForegroundColor DarkBlue; ^
+    Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
+    Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow"
+
+rem 提示用户输入操作编号
+:input_loop
+set /p subchoice=请输入操作编号（0 - 9）：
+echo %subchoice%| findstr /r "^[0-9]$" >nul
+if errorlevel 1 (
+    echo 无效的编号，请输入（0 - 9）之间的数字。
+    timeout /t 2 >nul
+    goto input_loop
+)
+
+call :dakai_tucuang_choice %subchoice%
+goto dakai_tucuang
+
+:dakai_tucuang_choice
+if "%~1"=="1" call :open_folder "%USERPROFILE%\Desktop\GitHub\file\img" && goto dakai_tucuang
+if "%~1"=="2" call :open_folder "%USERPROFILE%\Desktop\GitHub\file\screenshot" && goto dakai_tucuang
+if "%~1"=="3" call :open_folder "%USERPROFILE%\Desktop\GitHub\file\gif" && goto dakai_tucuang
+if "%~1"=="4" call :open_folder "Y:\file\blog\img" && goto dakai_tucuang
+if "%~1"=="5" call :open_folder "Y:\file\blog\screenshot" && goto dakai_tucuang
+if "%~1"=="6" call :open_folder "Y:\file\blog\gif" && goto dakai_tucuang
+if "%~1"=="7" (
+    call :open_folder "%USERPROFILE%\Desktop\GitHub\file\img"
+    call :open_folder "Y:\file\blog\img"
+    goto dakai_tucuang
+)
+if "%~1"=="8" (
+    call :open_folder "%USERPROFILE%\Desktop\GitHub\file\screenshot"
+    call :open_folder "Y:\file\blog\screenshot"
+    goto dakai_tucuang
+)
+if "%~1"=="9" goto menu
+if "%~1"=="0" (
+    echo 正在退出...
+    goto exit_script
+)
+
+echo 无效的编号，请输入（0 - 9）之间的数字。
+timeout /t 2 >nul
+goto dakai_tucuang
+
+rem 打开文件夹并等待3秒后返回菜单的函数
+:open_folder
+start "" "%~1"
+echo 即将在 3 秒后返回 Hugo 命令菜单...
+powershell -Command "Start-Sleep -Seconds 3"
+exit /b
 
 
 rem ===========================================================================
