@@ -26,6 +26,7 @@ powershell -Command ^
     Write-Host '* 4. 项目_拉取更新                          *' -ForegroundColor Blue; ^
     Write-Host '* 5. 项目_更新标签                          *' -ForegroundColor DarkYellow; ^
     Write-Host '* 6. 打开_图床目录                          *' -ForegroundColor DarkGreen; ^
+    Write-Host '* 7. 打开_常用目录                          *' -ForegroundColor DarkBlue; ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
@@ -44,6 +45,7 @@ powershell -Command ^
 	if "%choice%"=="4" goto Pull_updates
 	if "%choice%"=="5" goto update_tags
 	if "%choice%"=="6" goto dakai_tucuang
+	if "%choice%"=="7" goto samba_menu
 	if "%choice%"=="0" goto exit_script
 
 rem ==========================  一 、命令菜单  ===========================
@@ -1205,7 +1207,160 @@ powershell -Command ^
 	if "%choice%"=="9" goto menu
 	if "%choice%"=="0" goto exit_script
 	
-rem ======================== 七 、XXXXXXXXXXXXXXXX =============================
+rem ==========================  七 、打开常用目录  ===========================
+:samba_menu
+	rem 清屏，显示 Git 命令子菜单
+	cls
+
+powershell -Command ^
+"Clear-Host; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+    Write-Host '*****************  打开常用目录  ************' -ForegroundColor Green; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+	Write-Host '* 1. 打开_Debian                            *' -ForegroundColor Cyan; ^
+    Write-Host '* 2. 打开_Ubuntu                            *' -ForegroundColor DarkYellow; ^
+	Write-Host '* 3. 打开_CentOS                            *' -ForegroundColor Magenta; ^
+    Write-Host '* 4. 打开_Alpine                            *' -ForegroundColor DarkCyan; ^
+    Write-Host '* 5. 打开_Pve                               *' -ForegroundColor DarkGreen; ^
+    Write-Host '* 6. 打开_本地阿里云盘                      *' -ForegroundColor DarkRed; ^
+    Write-Host '* 7. 打开_SMB阿里云盘                       *' -ForegroundColor DarkYellow; ^
+	Write-Host '* 8. 打开_本地+SMB阿里云盘                  *' -ForegroundColor Cyan; ^
+    Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
+    Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow"
+
+	rem 提示用户输入编号
+    set "choice="
+    set /p choice="请输入操作编号 (0 - 9): "
+    if not defined choice (
+        echo 输入不能为空，请输入（0 - 9）之间的数字。
+        timeout /t 2 >nul
+		rem 定义要返回的菜单
+        goto git_menu
+    )
+	
+	if "%choice%"=="1" call :samba_debian && goto samba_menu
+	if "%choice%"=="2" call :samba_ubuntu && goto samba_menu
+	if "%choice%"=="3" call :samba_centos && goto samba_menu
+	if "%choice%"=="4" call :samba_alpine && goto samba_menu
+	if "%choice%"=="5" call :samba_pve && goto samba_menu
+	if "%choice%"=="6" call :samba_bendi_ali && goto samba_menu
+	if "%choice%"=="7" call :samba_smb_ali && goto samba_menu
+	if "%choice%"=="8" call :samba_bendi_smb_ali && goto samba_menu
+	if "%choice%"=="9" goto menu
+	if "%choice%"=="0" goto exit_script
+
+rem ========================= （1）打开_Debian ============================
+:samba_debian
+	set ip=10.10.10.245\Debian
+	set username=admin
+	set password=yifan0719
+
+	rem 使用net use命令连接Samba共享
+	net use \\%ip% /user:%username% %password%
+	REM 打开资源管理器并定位到Samba共享
+	explorer \\%ip%
+	rem 定义要返回的菜单
+	goto samba_menu
+
+rem ========================= （2）打开_Ubuntu ============================
+:samba_ubuntu
+	set ip=10.10.10.247\Ubuntu
+	set username=admin
+	set password=yifan0719
+
+	REM 使用net use命令连接Samba共享
+	net use \\%ip% /user:%username% %password%
+	REM 打开资源管理器并定位到Samba共享
+	explorer \\%ip%
+	rem 定义要返回的菜单
+	goto samba_menu
+
+rem ========================= （3）打开_CentOS ============================
+:samba_centos
+    :: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    echo 此项未配置，2 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 1"
+	rem 定义要返回的菜单
+	goto samba_menu
+    :: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx	
+	set ip=10.10.10.246\CentOS
+	set username=admin
+	set password=yifan0719
+
+	REM 使用net use命令连接Samba共享
+	net use \\%ip% /user:%username% %password%
+	REM 打开资源管理器并定位到Samba共享
+	taskkill /f /im explorer.exe >nul 2>&1
+	start explorer.exe \\%ip%
+	goto samba_menu
+
+rem ========================= （4）打开_Alpine ============================
+:samba_alpine
+    :: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+    echo 此项未配置，2 秒后返回 ...
+	powershell -Command "Start-Sleep -Seconds 1"
+	rem 定义要返回的菜单
+	goto samba_menu
+    :: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+	
+    set ip=10.10.10.242\Alpine
+    set username=admin
+    set password=yifan0719
+
+	REM 使用net use命令连接Samba共享
+	net use \\%ip% /user:%username% %password%
+	REM 打开资源管理器并定位到Samba共享
+    explorer "\\%ip%"
+    rem 定义要返回的菜单
+    goto samba_menu
+	
+rem ========================= （5）打开_Pve ============================
+:samba_pve
+	set ip=10.10.10.254
+	set username=root
+	set password=yifan0719
+
+	REM 使用net use命令连接Samba共享
+	net use \\%ip% /user:%username% %password%
+	REM 打开资源管理器并定位到Samba共享
+	explorer \\%ip%
+	rem 定义要返回的菜单
+	goto samba_menu
+	
+rem ========================= （6）打开_本地阿里云盘 ============================
+:samba_bendi_ali
+	start "" "E:\教程文件"
+	rem 定义要返回的菜单
+	goto samba_menu
+	
+rem ========================= （7）打开_SMB阿里云盘 ============================
+:samba_smb_ali
+	set ip=10.10.10.254\PVE-ntfs\阿里云盘\教程文件
+	set username=root
+	set password=yifan0719
+
+	REM 使用net use命令连接Samba共享
+	net use \\%ip% /user:%username% %password%
+	REM 打开资源管理器并定位到Samba共享
+	explorer \\%ip%
+	rem 定义要返回的菜单
+	goto samba_menu
+	
+rem ========================= （8）打开_本地+SMB阿里云盘 ============================
+:samba_bendi_smb_ali
+	start "" "E:\教程文件"
+	
+	set ip=10.10.10.254\PVE-ntfs\阿里云盘\教程文件
+	set username=root
+	set password=yifan0719
+
+	REM 使用net use命令连接Samba共享
+	net use \\%ip% /user:%username% %password%
+	REM 打开资源管理器并定位到Samba共享
+	explorer \\%ip%
+	rem 定义要返回的菜单
+	goto samba_menu
 
 
 rem ===========================================================================
