@@ -42,7 +42,7 @@ powershell -Command ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
     Write-Host '* 1. Git_命令菜单                           *' -ForegroundColor Cyan; ^
     Write-Host '* 2. Hugo_命令菜单                          *' -ForegroundColor Magenta; ^
-    Write-Host '* 3. 项目_提交更新                          *' -ForegroundColor Blue; ^
+    Write-Host '* 3. 项目_推送更新                          *' -ForegroundColor Blue; ^
     Write-Host '* 4. 项目_拉取更新                          *' -ForegroundColor Red; ^
     Write-Host '* 5. 项目_更新标签                          *' -ForegroundColor DarkYellow; ^
     Write-Host '* 6. 打开_图床目录                          *' -ForegroundColor DarkGreen; ^
@@ -63,7 +63,7 @@ powershell -Command ^
 	
 	if "%choice%"=="1" goto git_menu
 	if "%choice%"=="2" goto hugo_commands
-	if "%choice%"=="3" goto submenu
+	if "%choice%"=="3" goto push_menu
 	if "%choice%"=="4" goto Pull_updates
 	if "%choice%"=="5" goto update_tags
 	if "%choice%"=="6" goto dakai_tucuang
@@ -573,8 +573,8 @@ rem ================== （8）运行 hugo 并打开   ======================
 	goto hugo_commands
 
 
-rem =======================  三 、GitHub 项目提交  ==============================
-:submenu
+rem =======================  三 、GitHub 项目推送  ==============================
+:push_menu
 	rem 清屏，显示项目提交子菜单
 	cls
 powershell -Command ^
@@ -582,14 +582,14 @@ powershell -Command ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
     Write-Host '**************  GitHub 项目提交  ************' -ForegroundColor Green; ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
-    Write-Host '* 1. 项目提交：hugo-main                    *' -ForegroundColor Cyan; ^
-    Write-Host '* 2. 项目提交：music                        *' -ForegroundColor Magenta; ^
-    Write-Host '* 3. 项目提交：file                         *' -ForegroundColor Blue; ^
-    Write-Host '* 4. 项目提交：bat                          *' -ForegroundColor Red; ^
-    Write-Host '* 5. 项目提交：random-pic-api               *' -ForegroundColor DarkYellow; ^
-    Write-Host '* 6. 项目提交：compose                      *' -ForegroundColor DarkGreen; ^
-    Write-Host '* 7. 项目提交：sh                           *' -ForegroundColor DarkBlue; ^
-	Write-Host '* 8. 项目提交：所有项目                     *' -ForegroundColor DarkCyan; ^
+    Write-Host '* 1. 项目推送：hugo-main                    *' -ForegroundColor Cyan; ^
+    Write-Host '* 2. 项目推送：music                        *' -ForegroundColor Magenta; ^
+    Write-Host '* 3. 项目推送：file                         *' -ForegroundColor Blue; ^
+    Write-Host '* 4. 项目推送：bat                          *' -ForegroundColor Red; ^
+    Write-Host '* 5. 项目推送：random-pic-api               *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 6. 项目推送：compose                      *' -ForegroundColor DarkGreen; ^
+    Write-Host '* 7. 项目推送：sh                           *' -ForegroundColor DarkBlue; ^
+	Write-Host '* 8. 项目推送：所有项目                     *' -ForegroundColor DarkCyan; ^
     Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
@@ -604,14 +604,14 @@ powershell -Command ^
         goto submenu
     )
 
-	if "%choice%"=="1" set "REPO_PATH=%baseDir%\hugo-main" && call :ValidateRepoAndCommit && goto after_commit
-	if "%choice%"=="2" set "REPO_PATH=%baseDir%\music" && call :ValidateRepoAndCommit && goto after_commit
-	if "%choice%"=="3" set "REPO_PATH=%baseDir%\file" && call :ValidateRepoAndCommit && goto after_commit
-	if "%choice%"=="4" set "REPO_PATH=%baseDir%\bat" && call :ValidateRepoAndCommit && goto after_commit
-	if "%choice%"=="5" set "REPO_PATH=%baseDir%\random-pic-api" && call :ValidateRepoAndCommit && goto after_commit
-	if "%choice%"=="6" set "REPO_PATH=%baseDir%\compose" && call :ValidateRepoAndCommit && goto after_commit
-	if "%choice%"=="7" set "REPO_PATH=%baseDir%\sh" && call :ValidateRepoAndCommit && goto after_commit
-	if "%choice%"=="8" set "REPO_PATH=%baseDir%\" && call :git_push_add && goto after_commit
+	if "%choice%"=="1" set "REPO_PATH=%baseDir%\hugo-main" && call :ValidateRepoAndCommit && goto push_menu
+	if "%choice%"=="2" set "REPO_PATH=%baseDir%\music" && call :ValidateRepoAndCommit && goto push_menu
+	if "%choice%"=="3" set "REPO_PATH=%baseDir%\file" && call :ValidateRepoAndCommit && goto push_menu
+	if "%choice%"=="4" set "REPO_PATH=%baseDir%\bat" && call :ValidateRepoAndCommit && goto push_menu
+	if "%choice%"=="5" set "REPO_PATH=%baseDir%\random-pic-api" && call :ValidateRepoAndCommit && goto push_menu
+	if "%choice%"=="6" set "REPO_PATH=%baseDir%\compose" && call :ValidateRepoAndCommit && goto push_menu
+	if "%choice%"=="7" set "REPO_PATH=%baseDir%\sh" && call :ValidateRepoAndCommit && goto push_menu
+	if "%choice%"=="8" set "REPO_PATH=%baseDir%\" && call :git_push_add && goto push_menu
 	if "%choice%"=="9" goto menu
 	if "%choice%"=="0" goto exit_script
 
@@ -712,14 +712,14 @@ powershell -Command ^
 	echo 按任意键返回菜单...
     pause >nul
 	rem 定义要返回的菜单
-	goto Pull_updates
+	goto push_menu
 	
     rem echo 即将在 2 秒后返回 ...
 	rem powershell -Command "Start-Sleep -Seconds 2"
 	rem 定义要返回的菜单
-	rem goto submenu
+	rem goto push_menu
 
-rem ================== 提交所有项目 ======================
+rem ================== 推送所有项目 ======================
 :git_push_add
 	set "separator=------------------------------"
 	rem 检查基础目录是否存在
@@ -779,12 +779,12 @@ rem ================== 提交所有项目 ======================
 	echo 按任意键返回菜单...
     pause >nul
 	rem 定义要返回的菜单
-	goto submenu
+	goto push_menu
 	
     rem echo 即将在 2 秒后返回 ...
 	rem powershell -Command "Start-Sleep -Seconds 2"
 	rem 定义要返回的菜单
-	rem goto submenu
+	rem goto push_menu
 
 rem ==============================  四 、拉取更新的项目  ==================================
 :Pull_updates
