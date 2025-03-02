@@ -6,6 +6,26 @@ COLOR 0A
 CLS
 PROMPT $P$G
 
+rem ========================== PowerShell 代码示例 ===========================
+rem Write-Host "这是青色文本" -ForegroundColor Cyan         选项（1）
+rem Write-Host "这是洋红色文本" -ForegroundColor Magenta    选项（2）
+rem Write-Host "这是蓝色文本" -ForegroundColor Blue         选项（3）
+rem Write-Host "这是红色文本" -ForegroundColor Red          选项（4）
+rem Write-Host "这是深黄色文本" -ForegroundColor DarkYellow 选项（5）
+rem Write-Host "这是深绿色文本" -ForegroundColor DarkGreen  选项（6）
+rem Write-Host "这是深蓝色文本" -ForegroundColor DarkBlue   选项（7）
+rem Write-Host "这是深青色文本" -ForegroundColor DarkCyan   选项（8）
+rem Write-Host "这是白色文本" -ForegroundColor White （0退出）（9返回主菜单）
+rem Write-Host "这是黄色文本" -ForegroundColor Yellow (分割线)
+rem Write-Host "这是黑色文本" -ForegroundColor Black
+rem Write-Host "这是深蓝色文本" -ForegroundColor DarkBlue
+rem Write-Host "这是深红色文本" -ForegroundColor DarkRed
+rem Write-Host "这是深洋红色文本" -ForegroundColor DarkMagenta
+rem Write-Host "这是灰色文本" -ForegroundColor Gray
+rem Write-Host "这是深灰色文本" -ForegroundColor DarkGray
+rem Write-Host "这是绿色文本" -ForegroundColor Green
+rem ========================== PowerShell 代码示例 ===========================
+
 :init
 	rem 定义基础工作目录，设置为用户桌面下的GitHub文件夹
 	set "baseDir=%USERPROFILE%\Desktop\GitHub"
@@ -22,11 +42,13 @@ powershell -Command ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
     Write-Host '* 1. Git_命令菜单                           *' -ForegroundColor Cyan; ^
     Write-Host '* 2. Hugo_命令菜单                          *' -ForegroundColor Magenta; ^
-    Write-Host '* 3. 项目_提交更新                          *' -ForegroundColor Red; ^
-    Write-Host '* 4. 项目_拉取更新                          *' -ForegroundColor Blue; ^
+    Write-Host '* 3. 项目_提交更新                          *' -ForegroundColor Blue; ^
+    Write-Host '* 4. 项目_拉取更新                          *' -ForegroundColor Red; ^
     Write-Host '* 5. 项目_更新标签                          *' -ForegroundColor DarkYellow; ^
     Write-Host '* 6. 打开_图床目录                          *' -ForegroundColor DarkGreen; ^
     Write-Host '* 7. 打开_常用目录                          *' -ForegroundColor DarkBlue; ^
+    Write-Host '* 8. 打开_杂项菜单                          *' -ForegroundColor DarkCyan; ^
+    Write-Host '* 9. 已是主菜单                             *' -ForegroundColor White; ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
 
@@ -46,6 +68,7 @@ powershell -Command ^
 	if "%choice%"=="5" goto update_tags
 	if "%choice%"=="6" goto dakai_tucuang
 	if "%choice%"=="7" goto samba_menu
+	if "%choice%"=="8" goto zhaxiang_menu
 	if "%choice%"=="0" goto exit_script
 
 rem ==========================  一 、命令菜单  ===========================
@@ -59,13 +82,13 @@ powershell -Command ^
     Write-Host '*****************  命令菜单  ****************' -ForegroundColor Green; ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
 	Write-Host '* 1. 安装 scoop                             *' -ForegroundColor Cyan; ^
-    Write-Host '* 2. 安装 Git                               *' -ForegroundColor DarkYellow; ^
-	Write-Host '* 3. 更新 Git 版本                          *' -ForegroundColor Magenta; ^
-    Write-Host '* 4. 查看 Git 版本                          *' -ForegroundColor DarkCyan; ^
-    Write-Host '* 5. 克隆 Git 仓库                          *' -ForegroundColor DarkGreen; ^
-    Write-Host '* 6. 设置 Git 用户名和邮箱                  *' -ForegroundColor Cyan; ^
-    Write-Host '* 7. 设置 Git 代理                          *' -ForegroundColor DarkYellow; ^
-	Write-Host '* 8. 取消 Git 代理                          *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 2. 安装 Git                               *' -ForegroundColor Magenta; ^
+	Write-Host '* 3. 更新 Git 版本                          *' -ForegroundColor Blue; ^
+    Write-Host '* 4. 查看 Git 版本                          *' -ForegroundColor Red; ^
+    Write-Host '* 5. 克隆 Git 仓库                          *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 6. 设置 Git 用户名和邮箱                  *' -ForegroundColor DarkGreen; ^
+    Write-Host '* 7. 设置 Git 代理                          *' -ForegroundColor DarkBlue; ^
+	Write-Host '* 8. 取消 Git 代理                          *' -ForegroundColor DarkCyan; ^
     Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
@@ -316,14 +339,14 @@ powershell -Command ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
     Write-Host '*************  Hugo_命令菜单  ***************' -ForegroundColor Green; ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
-	Write-Host '* 1. 安装 scoop                             *' -ForegroundColor DarkBlue; ^
-    Write-Host '* 2. 安装 hugo                              *' -ForegroundColor Cyan; ^
-    Write-Host '* 3. 查看 hugo 版本                         *' -ForegroundColor Magenta; ^
-    Write-Host '* 4. 新建文章                               *' -ForegroundColor DarkCyan; ^
-    Write-Host '* 5. 打开文章目录                           *' -ForegroundColor DarkGreen; ^
-    Write-Host '* 6. 运行 hugo                              *' -ForegroundColor DarkRed; ^
-    Write-Host '* 7. 浏览器打开 :1313                       *' -ForegroundColor DarkYellow; ^
-    Write-Host '* 8. 运行 hugo 并打开                       *' -ForegroundColor DarkBlue; ^
+	Write-Host '* 1. 安装 scoop                             *' -ForegroundColor Cyan; ^
+    Write-Host '* 2. 安装 hugo                              *' -ForegroundColor Magenta; ^
+    Write-Host '* 3. 查看 hugo 版本                         *' -ForegroundColor Blue; ^
+    Write-Host '* 4. 新建文章                               *' -ForegroundColor Red; ^
+    Write-Host '* 5. 打开文章目录                           *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 6. 运行 hugo                              *' -ForegroundColor DarkGreen; ^
+    Write-Host '* 7. 浏览器打开 :1313                       *' -ForegroundColor DarkBlue; ^
+    Write-Host '* 8. 运行 hugo 并打开                       *' -ForegroundColor DarkCyan; ^
     Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
@@ -561,12 +584,12 @@ powershell -Command ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
     Write-Host '* 1. 项目提交：hugo-main                    *' -ForegroundColor Cyan; ^
     Write-Host '* 2. 项目提交：music                        *' -ForegroundColor Magenta; ^
-    Write-Host '* 3. 项目提交：file                         *' -ForegroundColor DarkCyan; ^
-    Write-Host '* 4. 项目提交：bat                          *' -ForegroundColor DarkGreen; ^
-    Write-Host '* 5. 项目提交：random-pic-api               *' -ForegroundColor DarkRed; ^
-    Write-Host '* 6. 项目提交：compose                      *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 3. 项目提交：file                         *' -ForegroundColor Blue; ^
+    Write-Host '* 4. 项目提交：bat                          *' -ForegroundColor Red; ^
+    Write-Host '* 5. 项目提交：random-pic-api               *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 6. 项目提交：compose                      *' -ForegroundColor DarkGreen; ^
     Write-Host '* 7. 项目提交：sh                           *' -ForegroundColor DarkBlue; ^
-	Write-Host '* 8. 项目提交：所有项目                     *' -ForegroundColor Cyan; ^
+	Write-Host '* 8. 项目提交：所有项目                     *' -ForegroundColor DarkCyan; ^
     Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
@@ -775,12 +798,12 @@ powershell -Command ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
     Write-Host '* 1. 拉取更新：hugo-main                    *' -ForegroundColor Cyan; ^
     Write-Host '* 2. 拉取更新：music                        *' -ForegroundColor Magenta; ^
-    Write-Host '* 3. 拉取更新：file                         *' -ForegroundColor DarkCyan; ^
-    Write-Host '* 4. 拉取更新：bat                          *' -ForegroundColor DarkGreen; ^
-    Write-Host '* 5. 拉取更新：random-pic-api               *' -ForegroundColor DarkRed; ^
-    Write-Host '* 6. 拉取更新：compose                      *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 3. 拉取更新：file                         *' -ForegroundColor Blue; ^
+    Write-Host '* 4. 拉取更新：bat                          *' -ForegroundColor Red; ^
+    Write-Host '* 5. 拉取更新：random-pic-api               *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 6. 拉取更新：compose                      *' -ForegroundColor DarkGreen; ^
     Write-Host '* 7. 拉取更新：sh                           *' -ForegroundColor DarkBlue; ^
-    Write-Host '* 8. 拉取更新：所有项目                     *' -ForegroundColor Cyan; ^
+    Write-Host '* 8. 拉取更新：所有项目                     *' -ForegroundColor DarkCyan; ^
     Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
@@ -955,10 +978,10 @@ powershell -Command ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
     Write-Host '* 1. 更新标签：hugo-main                    *' -ForegroundColor Cyan; ^
     Write-Host '* 2. 更新标签：music                        *' -ForegroundColor Magenta; ^
-    Write-Host '* 3. 更新标签：file                         *' -ForegroundColor DarkCyan; ^
-    Write-Host '* 4. 更新标签：random-pic-api               *' -ForegroundColor DarkGreen; ^
-    Write-Host '* 5. 更新标签：bat                          *' -ForegroundColor DarkRed; ^
-    Write-Host '* 6. 更新标签：sh                           *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 3. 更新标签：file                         *' -ForegroundColor Blue; ^
+    Write-Host '* 4. 更新标签：random-pic-api               *' -ForegroundColor Red; ^
+    Write-Host '* 5. 更新标签：bat                          *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 6. 更新标签：sh                           *' -ForegroundColor DarkGreen; ^
     Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
@@ -1148,14 +1171,14 @@ powershell -Command ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
     Write-Host '*************  打开图床目录  ****************' -ForegroundColor Green; ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
-    Write-Host '* 1. vercel图床 封面图片                    *' -ForegroundColor DarkBlue; ^
-    Write-Host '* 2. vercel图床 截屏图片                    *' -ForegroundColor Cyan; ^
-    Write-Host '* 3. vercel图床 GIF图片                     *' -ForegroundColor Magenta; ^
-    Write-Host '* 4. nginx图床 封面图片                     *' -ForegroundColor DarkCyan; ^
-    Write-Host '* 5. nginx图床 截屏图片                     *' -ForegroundColor DarkGreen; ^
-    Write-Host '* 6. nginx图床 GIF图片                      *' -ForegroundColor DarkRed; ^
-    Write-Host '* 7. vercel+nginx 封面图片                  *' -ForegroundColor DarkYellow; ^
-    Write-Host '* 8. vercel+nginx 截屏图片                  *' -ForegroundColor DarkBlue; ^
+    Write-Host '* 1. vercel图床 封面图片                    *' -ForegroundColor Cyan; ^
+    Write-Host '* 2. vercel图床 截屏图片                    *' -ForegroundColor Magenta; ^
+    Write-Host '* 3. vercel图床 GIF图片                     *' -ForegroundColor Blue; ^
+    Write-Host '* 4. nginx图床 封面图片                     *' -ForegroundColor Red; ^
+    Write-Host '* 5. nginx图床 截屏图片                     *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 6. nginx图床 GIF图片                      *' -ForegroundColor DarkGreen; ^
+    Write-Host '* 7. vercel+nginx 封面图片                  *' -ForegroundColor DarkBlue; ^
+    Write-Host '* 8. vercel+nginx 截屏图片                  *' -ForegroundColor DarkCyan; ^
     Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
@@ -1218,13 +1241,13 @@ powershell -Command ^
     Write-Host '*****************  打开常用目录  ************' -ForegroundColor Green; ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
 	Write-Host '* 1. 打开_Debian                            *' -ForegroundColor Cyan; ^
-    Write-Host '* 2. 打开_Ubuntu                            *' -ForegroundColor DarkYellow; ^
-	Write-Host '* 3. 打开_CentOS                            *' -ForegroundColor Magenta; ^
-    Write-Host '* 4. 打开_Alpine                            *' -ForegroundColor DarkCyan; ^
-    Write-Host '* 5. 打开_Pve                               *' -ForegroundColor DarkGreen; ^
-    Write-Host '* 6. 打开_本地阿里云盘                      *' -ForegroundColor DarkRed; ^
-    Write-Host '* 7. 打开_SMB阿里云盘                       *' -ForegroundColor DarkYellow; ^
-	Write-Host '* 8. 打开_本地+SMB阿里云盘                  *' -ForegroundColor Cyan; ^
+    Write-Host '* 2. 打开_Ubuntu                            *' -ForegroundColor Magenta; ^
+	Write-Host '* 3. 打开_CentOS                            *' -ForegroundColor Blue; ^
+    Write-Host '* 4. 打开_Alpine                            *' -ForegroundColor Red; ^
+    Write-Host '* 5. 打开_Pve                               *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 6. 打开_本地阿里云盘                      *' -ForegroundColor DarkGreen; ^
+    Write-Host '* 7. 打开_SMB阿里云盘                       *' -ForegroundColor DarkBlue; ^
+	Write-Host '* 8. 打开_本地+SMB阿里云盘                  *' -ForegroundColor DarkCyan; ^
     Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
     Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
     Write-Host '*********************************************' -ForegroundColor Yellow"
@@ -1361,6 +1384,146 @@ rem ========================= （8）打开_本地+SMB阿里云盘 =======================
 	explorer \\%ip%
 	rem 定义要返回的菜单
 	goto samba_menu
+	
+rem ==========================  八 、杂项菜单  ===========================
+:zhaxiang_menu
+	rem 清屏，显示 Git 命令子菜单
+	cls
+
+powershell -Command ^
+"Clear-Host; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+    Write-Host '*****************  杂项菜单  ****************' -ForegroundColor Green; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow; ^
+	Write-Host '* 1. 批量克隆所有项目                       *' -ForegroundColor Cyan; ^
+    Write-Host '* 2. 批量修改为SSH连接                      *' -ForegroundColor Magenta; ^
+	Write-Host '* 3. XXXXXXXXXXXXX                          *' -ForegroundColor Blue; ^
+    Write-Host '* 4. XXXXXXXXXXXXX                          *' -ForegroundColor Red; ^
+    Write-Host '* 5. XXXXXXXXXXXXX                          *' -ForegroundColor DarkYellow; ^
+    Write-Host '* 6. XXXXXXXXXXXXX                          *' -ForegroundColor DarkGreen; ^
+    Write-Host '* 7. XXXXXXXXXXXXX                          *' -ForegroundColor DarkBlue; ^
+	Write-Host '* 8. XXXXXXXXXXXXX                          *' -ForegroundColor DarkCyan; ^
+    Write-Host '* 9. 返回主菜单                             *' -ForegroundColor White; ^
+    Write-Host '* 0. 退出                                   *' -ForegroundColor White; ^
+    Write-Host '*********************************************' -ForegroundColor Yellow"
+	
+	rem 提示用户输入编号
+    set "choice="
+    set /p choice="请输入操作编号 (0 - 9): "
+    if not defined choice (
+        echo 输入不能为空，请输入（0 - 9）之间的数字。
+        timeout /t 2 >nul
+		rem 定义要返回的菜单
+        goto git_menu
+    )
+	
+	if "%choice%"=="1" call :git_clone_add && goto zhaxiang_menu
+	if "%choice%"=="2" call :git_ssh_add && goto zhaxiang_menu
+	if "%choice%"=="3" call :update_git && goto zhaxiang_menu
+	if "%choice%"=="4" call :check_git_version && zhaxiang_menu
+	if "%choice%"=="5" call :clone_git_repo && zhaxiang_menu
+	if "%choice%"=="6" call :set_user_name && zhaxiang_menu
+	if "%choice%"=="7" call :set_git_proxy && zhaxiang_menu
+	if "%choice%"=="8" call :unset_git_proxy && zhaxiang_menu
+	if "%choice%"=="9" goto menu
+	if "%choice%"=="0" goto exit_script
+
+rem ========================= （1）批量克隆所有项目 ============================
+:git_clone_add
+	echo %baseDir%
+	echo ==================================================
+	:: 检查目标目录是否存在，如果不存在则创建
+	if not exist "%baseDir%" (
+		mkdir "%baseDir%"
+	)
+
+	:: 进入目标目录
+	cd /d "%baseDir%"
+
+	:: 定义要克隆的仓库列表
+	set "repos=https://github.com/meimolihan/music.git https://github.com/meimolihan/file.git https://github.com/meimolihan/bat.git https://github.com/meimolihan/hugo-main.git https://github.com/meimolihan/sh.git https://github.com/meimolihan/random-pic-api.git https://github.com/meimolihan/compose.git https://github.com/meimolihan/typecho_Pytools.git"
+
+	echo ==================================================
+	echo 开始克隆所有仓库
+	echo ==================================================
+
+	:: 循环克隆每个仓库
+	for %%i in (%repos%) do (
+		echo --------------------------------------------------
+		echo 正在克隆仓库: %%i
+		git clone %%i
+		if %errorlevel% equ 0 (
+			echo 仓库 %%i 克隆成功。
+		) else (
+			echo 仓库 %%i 克隆失败。
+		)
+		echo --------------------------------------------------
+	)
+	echo ==================================================
+	echo 所有仓库克隆操作完成。
+	echo ==================================================
+
+	echo 按任意键返回菜单...
+    pause >nul
+	rem 定义要返回的菜单
+	goto git_menu
+
+rem ========================= （2）批量修改为SSH连接 ============================
+:git_ssh_add
+	echo 基础工作目录: %baseDir%
+
+	REM 检查基础工作目录是否存在
+	if not exist "%baseDir%" (
+		echo 错误：基础工作目录 %baseDir% 不存在。
+		pause
+		exit /b 1
+	)
+
+	REM 定义要操作的目录
+	set "dirs=bat hugo-main file music compose sh"
+	REM 定义对应的 Git 仓库地址
+	set "repos=git@github.com:meimolihan/bat.git git@github.com:meimolihan/hugo-main.git git@github.com:meimolihan/file.git git@github.com:meimolihan/music.git git@github.com:meimolihan/compose.git git@github.com:meimolihan/sh.git"
+
+	REM 将目录和仓库地址拆分成数组
+	set i=0
+	for %%a in (%dirs%) do (
+		set "dir[!i!]=%%a"
+		set /a i+=1
+	)
+	set i=0
+	for %%a in (%repos%) do (
+		set "repo[!i!]=%%a"
+		set /a i+=1
+	)
+
+	REM 遍历目录和仓库地址，依次设置 Git 远程仓库 URL
+	set count=0
+	for %%i in (%dirs%) do (
+		set "targetDir=%baseDir%\!dir[%count%]!"
+		if not exist "!targetDir!" (
+			echo 错误：目标目录 !targetDir! 不存在。
+		) else (
+			echo ===========================================================
+			cd /d "!targetDir!"
+			echo 正在尝试为 !targetDir! 设置 Git 远程仓库的 URL...
+			git remote set-url origin !repo[%count%]!
+			if !errorlevel! neq 0 (
+				echo 错误：为 !targetDir! 设置 Git 远程仓库 URL 时出现问题。
+			) else (
+				echo 已成功为 !targetDir! 设置 Git 远程仓库 URL 为 !repo[%count%]!。
+			)
+		)
+		set /a count+=1
+	)
+	echo ===========================================================
+	
+	echo 按任意键返回菜单...
+    pause >nul
+	rem 定义要返回的菜单
+	goto git_menu
+	
+rem ========================= （3）XXXXXXXXXXXXXXX ============================
+
 
 
 rem ===========================================================================
