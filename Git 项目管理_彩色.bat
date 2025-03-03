@@ -1397,8 +1397,8 @@ powershell -Command ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
 	Write-Host '* 1. 批量克隆所有项目                       *' -ForegroundColor Cyan; ^
     Write-Host '* 2. 批量修改为SSH连接                      *' -ForegroundColor Magenta; ^
-	Write-Host '* 3. 打开photos壁纸目录                     *' -ForegroundColor Blue; ^
-    Write-Host '* 4. XXXXXXXXXXXXX                          *' -ForegroundColor Red; ^
+	Write-Host '* 3. 预整理photos壁纸                       *' -ForegroundColor Blue; ^
+    Write-Host '* 4. 整理photos壁纸api                      *' -ForegroundColor Red; ^
     Write-Host '* 5. XXXXXXXXXXXXX                          *' -ForegroundColor DarkYellow; ^
     Write-Host '* 6. XXXXXXXXXXXXX                          *' -ForegroundColor DarkGreen; ^
     Write-Host '* 7. XXXXXXXXXXXXX                          *' -ForegroundColor DarkBlue; ^
@@ -1419,8 +1419,8 @@ powershell -Command ^
 	
 	if "%choice%"=="1" call :git_clone_add && goto zhaxiang_menu
 	if "%choice%"=="2" call :git_ssh_add && goto zhaxiang_menu
-	if "%choice%"=="3" call :debian_photos && goto zhaxiang_menu
-	if "%choice%"=="4" call :check_git_version && zhaxiang_menu
+	if "%choice%"=="3" call :downloads_photos && goto zhaxiang_menu
+	if "%choice%"=="4" call :debian_photos && zhaxiang_menu
 	if "%choice%"=="5" call :clone_git_repo && zhaxiang_menu
 	if "%choice%"=="6" call :set_user_name && zhaxiang_menu
 	if "%choice%"=="7" call :set_git_proxy && zhaxiang_menu
@@ -1522,15 +1522,51 @@ rem ========================= （2）批量修改为SSH连接 ===========================
 	rem 定义要返回的菜单
 	goto zhaxiang_menu
 	
-rem ========================= （3）打开 photos 壁纸目录 ============================
-:debian_photos
-	start "" "Y:\mydisk\home\random-pic-api\photos"
+rem ========================= （3）预整理photos壁纸 ============================
+:downloads_photos
+	:: 检查目录是否存在，不存在则创建
+	set "targetDir=Y:\img\photos"
+	if not exist "%targetDir%\" (
+		mkdir "%targetDir%"
+		echo 目录 "%targetDir%" 已创建。
+	) else (
+		echo 目录 "%targetDir%" 已存在。
+	)
+
+	:: 打开目标目录
+	start "" "%targetDir%"
 	
 	echo 执行以下命令整理壁纸：
 	echo ============================
-	echo cd /mnt/mydisk/home/random-pic-api
-	echo python3 classify.py
+	echo cd /mnt/img ^&^& python3 classify.py
 	echo ============================
+	
+	:: 连接到远程服务器
+	start cmd /k "ssh root@10.10.10.245"
+	:: ssh root@10.10.10.245
+	
+	echo 按任意键返回菜单...
+    pause >nul
+	rem 定义要返回的菜单
+	goto zhaxiang_menu
+
+rem ========================= （4）整理photos壁纸API ============================
+:debian_photos
+	:: 检查目录是否存在，不存在则创建
+	set "targetDir=Y:\mydisk\home\random-pic-api\photos"
+	if not exist "%targetDir%\" (
+		mkdir "%targetDir%"
+		echo 目录 "%targetDir%" 已创建。
+	) else (
+		echo 目录 "%targetDir%" 已存在。
+	)
+	
+	echo 执行以下命令整理壁纸：
+	echo ============================
+	echo cd /mnt/mydisk/home/random-pic-api ^&^& python3 classify.py
+	echo ============================
+	
+	:: 连接到远程服务器
 	start cmd /k "ssh root@10.10.10.245"
 	:: ssh root@10.10.10.245
 	
@@ -1539,7 +1575,7 @@ rem ========================= （3）打开 photos 壁纸目录 ========================
 	rem 定义要返回的菜单
 	goto zhaxiang_menu
 	
-rem ========================= （4）XXXXXXXXXXXXXXXXXXXXXX ============================
+rem ========================= （5）XXXXXXXXXXXXXXXXXXXXXX ============================
 
 
 rem ===========================================================================
