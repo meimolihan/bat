@@ -1524,18 +1524,8 @@ rem ========================= （2）批量修改为SSH连接 ===========================
 	
 rem ========================= （3）打开 photos 壁纸目录 ============================
 :debian_photos
-	set ip=10.10.10.245\Debian\mydisk\home\random-pic-api\photos
-	set username=admin
-	set password=yifan0719
-
-	rem 使用net use命令连接Samba共享
-	net use \\%ip% /user:%username% %password%
-	REM 打开资源管理器并定位到Samba共享
-	explorer \\%ip%
-	rem 定义要返回的菜单
-	goto debian_photos_ssh
-
-:debian_photos_ssh
+	start "" "Y:\mydisk\home\random-pic-api\photos"
+	
 	echo 执行以下命令整理壁纸：
 	echo ============================
 	echo cd /mnt/mydisk/home/random-pic-api
