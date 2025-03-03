@@ -580,7 +580,7 @@ rem =======================  三 、GitHub 项目推送  =============================
 powershell -Command ^
 "Clear-Host; ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
-    Write-Host '**************  GitHub 项目提交  ************' -ForegroundColor Green; ^
+    Write-Host '**************  GitHub 项目推送  ************' -ForegroundColor Green; ^
     Write-Host '*********************************************' -ForegroundColor Yellow; ^
     Write-Host '* 1. 项目推送：hugo-main                    *' -ForegroundColor Cyan; ^
     Write-Host '* 2. 项目推送：music                        *' -ForegroundColor Magenta; ^
@@ -604,14 +604,14 @@ powershell -Command ^
         goto submenu
     )
 
-	if "%choice%"=="1" set "REPO_PATH=%baseDir%\hugo-main" && call :ValidateRepoAndCommit && goto push_menu
-	if "%choice%"=="2" set "REPO_PATH=%baseDir%\music" && call :ValidateRepoAndCommit && goto push_menu
-	if "%choice%"=="3" set "REPO_PATH=%baseDir%\file" && call :ValidateRepoAndCommit && goto push_menu
-	if "%choice%"=="4" set "REPO_PATH=%baseDir%\bat" && call :ValidateRepoAndCommit && goto push_menu
-	if "%choice%"=="5" set "REPO_PATH=%baseDir%\random-pic-api" && call :ValidateRepoAndCommit && goto push_menu
-	if "%choice%"=="6" set "REPO_PATH=%baseDir%\compose" && call :ValidateRepoAndCommit && goto push_menu
-	if "%choice%"=="7" set "REPO_PATH=%baseDir%\sh" && call :ValidateRepoAndCommit && goto push_menu
-	if "%choice%"=="8" set "REPO_PATH=%baseDir%\" && call :git_push_add && goto push_menu
+	if "%choice%"=="1" set "REPO_PATH=%baseDir%\hugo-main" && call :ValidateRepoAndCommit && goto after_commit
+	if "%choice%"=="2" set "REPO_PATH=%baseDir%\music" && call :ValidateRepoAndCommit && goto after_commit
+	if "%choice%"=="3" set "REPO_PATH=%baseDir%\file" && call :ValidateRepoAndCommit && goto after_commit
+	if "%choice%"=="4" set "REPO_PATH=%baseDir%\bat" && call :ValidateRepoAndCommit && goto after_commit
+	if "%choice%"=="5" set "REPO_PATH=%baseDir%\random-pic-api" && call :ValidateRepoAndCommit && goto after_commit
+	if "%choice%"=="6" set "REPO_PATH=%baseDir%\compose" && call :ValidateRepoAndCommit && goto after_commit
+	if "%choice%"=="7" set "REPO_PATH=%baseDir%\sh" && call :ValidateRepoAndCommit && goto after_commit
+	if "%choice%"=="8" set "REPO_PATH=%baseDir%\" && call :git_push_add && goto after_commit
 	if "%choice%"=="9" goto menu
 	if "%choice%"=="0" goto exit_script
 
