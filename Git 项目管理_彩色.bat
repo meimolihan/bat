@@ -69,6 +69,7 @@ powershell -Command ^
 	if "%choice%"=="6" goto dakai_tucuang
 	if "%choice%"=="7" goto samba_menu
 	if "%choice%"=="8" goto zhaxiang_menu
+	if "%choice%"=="9" goto menu
 	if "%choice%"=="0" goto exit_script
 
 rem ==========================  “ª °¢√¸¡Ó≤Àµ•  ===========================
