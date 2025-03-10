@@ -49,6 +49,7 @@ rem 生成文章模板
 	echo tags:
     echo   - hexo
     echo ---
+	echo.
 ) > "%fullPath%\index.md"
 
 if exist "%fullPath%\index.md" (
@@ -59,4 +60,24 @@ if exist "%fullPath%\index.md" (
     echo 错误：模板文件生成失败
 )
 
+	echo 文章创建成功，正在打开typora.exe编辑器...
+
+	rem 打开记事本编辑器编辑新创建的文章
+	set articlePath=%fullPath%\index.md
+	if not exist "%articlePath%" (
+		echo 文章文件未正确生成，请检查 Hexo 配置。
+		pause >nul
+		goto hugo_commands
+	)
+
+	rem start "" "notepad.exe" "%articlePath%"
+	start "" "typora.exe" "%articlePath%"
+	if %errorlevel% neq 0 (
+		echo 无法打开typora.exe编辑器，请检查typora.exe是否安装。
+		pause >nul
+	)
+	echo 请在typora.exe中编辑文章，编辑完成后按任意键返回菜单。
+
 endlocal
+
+
